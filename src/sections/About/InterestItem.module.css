@@ -1,0 +1,24 @@
+:root {
+  --size: 100px;
+}
+
+.item {
+  overflow: hidden;
+  position: relative;
+}
+
+.item::after {
+  content: '';
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background-color: rgba(80, 153, 244, 50%);
+  top: -100%;
+  right: -100%;
+  transition: 300ms;
+}
+.item:hover::after {
+  top: calc(var(--size) * -0.4);
+  right: calc(var(--size) * -0.4);
+}
