@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './Navbar.module.css';
+import NavLink from './NavLink';
 
 const Navbar = () => {
   const navbarRef = useRef();
@@ -50,54 +51,22 @@ const Navbar = () => {
             >
               <i className="fa fa-times" aria-hidden="true"></i>
             </button>
-            <a
-              href="#"
-              className={`block px-6 py-3 md:p-0 md:inline-block hover:bg-blue-400 hover:bg-opacity-50 md:hover:bg-transparent text-black text-opacity-80 font-quicksand relative ${styles['navlink']}`}
-            >
-              Home
-              <div
-                className={`${styles['navlink-underline']} hidden md:block`}
-              ></div>
-            </a>
-            <a
-              href="#"
-              className={`block px-6 py-3 md:p-0 md:inline-block hover:bg-blue-400 hover:bg-opacity-50 md:hover:bg-transparent text-black text-opacity-80 font-quicksand relative ${styles['navlink']}`}
-            >
-              About
-              <div
-                className={`${styles['navlink-underline']} hidden md:block`}
-              ></div>
-            </a>
-            <a
-              href="#"
-              className={`block px-6 py-3 md:p-0 md:inline-block hover:bg-blue-400 hover:bg-opacity-50 md:hover:bg-transparent text-black text-opacity-80 font-quicksand relative ${styles['navlink']}`}
-            >
-              Skills
-              <div
-                className={`${styles['navlink-underline']} hidden md:block`}
-              ></div>
-            </a>
-            <a
-              href="#"
-              className={`block px-6 py-3 md:p-0 md:inline-block hover:bg-blue-400 hover:bg-opacity-50 md:hover:bg-transparent text-black text-opacity-80 font-quicksand relative ${styles['navlink']}`}
-            >
-              Portfolio
-              <div
-                className={`${styles['navlink-underline']} hidden md:block`}
-              ></div>
-            </a>
+            <NavLink title="Home" link="/#" onClick={toggleNav} />
+            <NavLink title="About" link="/#about" onClick={toggleNav} />
+            <NavLink title="Skills" link="/#skills" onClick={toggleNav} />
+            <NavLink title="Portfolio" link="/#portfolio" onClick={toggleNav} />
           </div>
 
           <div className="space-x-3">
             <a
               href="#"
-              className="bg-white font-quicksand inline-block px-4 py-2 text-blue-400 border border-blue-400 rounded-lg hover:shadow-lg focus:ring transition-all duration-300"
+              className={`bg-white font-quicksand inline-block px-4 py-2 text-blue-400 border border-blue-400 rounded-lg hover:shadow-lg focus:ring transition-all duration-300 ${styles['nav-button']}`}
             >
               Contact
             </a>
             <a
               href="#"
-              className="font-quicksand inline-block px-4 py-2 bg-blue-400 text-white rounded-lg hover:shadow-lg focus:ring transition-all duration-300"
+              className={`font-quicksand inline-block px-4 py-2 bg-blue-400 text-white rounded-lg hover:shadow-lg focus:ring transition-all duration-300`}
             >
               Hire Me
             </a>

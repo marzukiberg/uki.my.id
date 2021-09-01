@@ -1,7 +1,16 @@
 import Aos from 'aos';
 import React, { useEffect } from 'react';
-import { Header, Navbar } from './components';
-import { About, Hero, Portfolio, TechStack, Tools } from './sections';
+import {
+  About,
+  Footer,
+  Header,
+  Hero,
+  Navbar,
+  Portfolio,
+  TechStack,
+  ThankYou,
+  Tools,
+} from './components/organisms';
 
 const App = () => {
   useEffect(() => {
@@ -19,6 +28,8 @@ const App = () => {
       <TechStack />
       <Tools />
       <Portfolio />
+      <ThankYou />
+      <Footer />
     </>
   );
 };

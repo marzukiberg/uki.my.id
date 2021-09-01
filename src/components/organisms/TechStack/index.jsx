@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from './TechStack.module.css';
+import Blobs from './Blobs';
+import TechStackItem from './TechStackItem';
 
 const dataTechStacks = [
   {
@@ -45,13 +46,8 @@ const dataTechStacks = [
 ];
 const TechStack = () => {
   return (
-    <section className="relative">
-      <img
-        src="/img/blob5.png"
-        alt="Overlay"
-        className="absolute left-0 bottom-0 h-full transform translate-y-24"
-        style={{ zIndex: -1 }}
-      />
+    <section className="relative" id="skills">
+      <Blobs />
 
       <div className="container mx-auto max-w-7xl p-8 lg:p-16">
         <div className="space-y-6 text-center">
@@ -64,20 +60,11 @@ const TechStack = () => {
 
           <div className="grid gap-6 md:grid-cols-4">
             {dataTechStacks.map((item, index) => (
-              <div
-                className={`flex items-center border space-x-3 rounded-md overflow-hidden group hover:drop-shadow-xl duration-300 ${styles.card}`}
+              <TechStackItem
                 key={index.toString()}
-                data-aos="fade-up"
-              >
-                <div className="w-1/3 p-2">
-                  <img src={`/img/logos/${item.img}`} alt="logo" />
-                </div>
-                <div className="py-2">
-                  <h4 className="text-lg md:text-xl group-hover:text-white duration-300 font-quicksand">
-                    {item.text}
-                  </h4>
-                </div>
-              </div>
+                img={item.img}
+                text={item.text}
+              />
             ))}
           </div>
         </div>

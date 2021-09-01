@@ -2,7 +2,13 @@ import React from 'react';
 
 const Tools = () => {
   return (
-    <section id="tools">
+    <section id="tools" className="relative">
+      <img
+        src="/img/logos/reactjs-hd.png"
+        alt="ReactJS"
+        className="absolute w-64 h-64 left-[10%] -bottom-24 transform rotate-45 opacity-20"
+      />
+
       <div className="container mx-auto max-w-7xl p-8 lg:p-16">
         <h2
           className="text-2xl md:text-4xl font-semibold font-poppins mb-6 text-center"
