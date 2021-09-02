@@ -29,7 +29,7 @@ const Footer = () => {
               <PoweredByItem logo="reactjs.png" text="ReactJS" />
               <PoweredByItem logo="tailwindcss.svg" text="TailwindCSS" />
               <PoweredByItem logo="vite.svg" text="Vite" />
-              <PoweredByItem logo="vercel.pnh" text="Vercel" />
+              <PoweredByItem logo="vercel.png" text="Vercel" />
             </div>
           </div>
         </div>
