@@ -11,6 +11,23 @@ import {
   ThankYou,
   Tools,
 } from './components/organisms';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import SifdevsCreative from './components/pages/SifdevsCreative';
+import WebTemplates from './components/pages/SifdevsCreative/[web]';
+
+const Home = () => (
+  <>
+    <Header />
+    <Navbar />
+    <Hero />
+    <About />
+    <TechStack />
+    <Tools />
+    <Portfolio />
+    <ThankYou />
+    <Footer />
+  </>
+);
 
 const App = () => {
   useEffect(() => {
@@ -20,17 +37,19 @@ const App = () => {
     });
   }, [Aos]);
   return (
-    <>
-      <Header />
-      <Navbar />
-      <Hero />
-      <About />
-      <TechStack />
-      <Tools />
-      <Portfolio />
-      <ThankYou />
-      <Footer />
-    </>
+    <Router>
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/sifdevs-creative/:web">
+          <WebTemplates />
+        </Route>
+        <Route path="/sifdevs-creative">
+          <SifdevsCreative />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 

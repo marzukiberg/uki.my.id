@@ -2,7 +2,7 @@ import React from 'react';
 
 const NameSection = () => {
   return (
-    <>
+    <div className="bg-white bg-opacity-50 inline-block shadow-lg md:p-5">
       <p className="text-3xl font-poppins">Hello, I am</p>
       <h2 className="text-6xl md:text-6xl font-semibold tracking-widest font-poppins">
         Marz<span className="text-blue-400">uki</span>
@@ -11,7 +11,7 @@ const NameSection = () => {
         <span>Frontend Web Developer</span> <span>|</span>{' '}
         <span>React Native Developer</span>
       </p>
-    </>
+    </div>
   );
 };
 
