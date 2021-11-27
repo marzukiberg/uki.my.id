@@ -8,7 +8,6 @@ const UcupDL = () => {
     if (cpuType) setCpu(cpuType?.architecture);
   }, []);
 
-  console.log(cpu);
   return (
     <div className="container mx-auto max-w-xl space-y-6 p-6 text-center font-quicksand border rounded shadow-lg m-6">
       <h1 className="text-center text-2xl">
