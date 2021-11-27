@@ -40,7 +40,7 @@ const UcupDL = () => {
           <li>
             Github Repo :{" "}
             <a
-              href="https://github.com/marzukiberg/ucup_dl"
+              href="https://github.com/marzukiberg/UcupDL"
               className="text-red-500 font-bold"
               target="_blank"
             >
@@ -59,12 +59,21 @@ const UcupDL = () => {
           <hr />
           <li>
             Download :
-            <a
-              className="block mt-3 mx-auto bg-green-500 w-32 py-2 text-center text-white"
-              href="/apks/ucupdl/"
-            >
-              <i className="fas fa-download"></i> Download
-            </a>
+            <p className="text-red-500 font-bold">VERSI CPU ANDA : {cpu}</p>
+            <div className="mt-3 space-x-3">
+              <a
+                className="mx-auto bg-green-500 px-4 py-2 text-center text-white"
+                href="/apks/ucupdl/app-armeabi-v7a-release.apk"
+              >
+                <i className="fas fa-download"></i>Download: armeabi-v7a
+              </a>
+              <a
+                className="mx-auto bg-green-500 px-4 py-2 text-center text-white"
+                href="/apks/ucupdl/app-arm64-v8a-release.apk"
+              >
+                <i className="fas fa-download"></i>Download: arm64-v8a
+              </a>
+            </div>
           </li>
         </ul>
       </div>
