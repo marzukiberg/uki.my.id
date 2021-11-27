@@ -1,26 +1,27 @@
-const colors = require('tailwindcss/colors');
+const colors = require("tailwindcss/colors");
 
 module.exports = {
-  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  mode: 'jit',
+  purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  mode: "jit",
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
     fontFamily: {
-      quicksand: ['Quicksand'],
-      poppins: ['Poppins'],
+      quicksand: ["Quicksand", "sans-serif"],
+      poppins: ["Poppins", "sans-serif"],
     },
     colors: {
       // Build your palette here
-      transparent: 'transparent',
-      current: 'currentColor',
+      transparent: "transparent",
+      current: "currentColor",
       gray: colors.trueGray,
       red: colors.red,
       blue: colors.blue,
-      'blue-400': '#5099F4',
+      "blue-400": "#5099F4",
       yellow: colors.amber,
       white: colors.white,
       black: colors.black,
+      green: colors.green,
     },
   },
   variants: {

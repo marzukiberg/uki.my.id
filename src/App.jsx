@@ -1,5 +1,5 @@
-import Aos from 'aos';
-import React, { useEffect } from 'react';
+import Aos from "aos";
+import React, { useEffect } from "react";
 import {
   About,
   Footer,
@@ -10,10 +10,12 @@ import {
   TechStack,
   ThankYou,
   Tools,
-} from './components/organisms';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import SifdevsCreative from './components/pages/SifdevsCreative';
-import WebTemplates from './components/pages/SifdevsCreative/[web]';
+} from "./components/organisms";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import SifdevsCreative from "./components/pages/SifdevsCreative";
+import WebTemplates from "./components/pages/SifdevsCreative/[web]";
+import UcupDL from "./components/pages/UcupDL";
+import Helmet from "react-helmet";
 
 const Home = () => (
   <>
@@ -32,7 +34,7 @@ const Home = () => (
 const App = () => {
   useEffect(() => {
     Aos.init({
-      easing: 'ease',
+      easing: "ease",
       duration: 700,
     });
   }, [Aos]);
@@ -47,6 +49,12 @@ const App = () => {
         </Route>
         <Route path="/sifdevs-creative">
           <SifdevsCreative />
+        </Route>
+        <Route path="/UcupDL">
+          <Helmet>
+            <title>UcupDL - Pengunduh YouTube sederhana | uki.thedev.id</title>
+          </Helmet>
+          <UcupDL />
         </Route>
       </Switch>
     </Router>
