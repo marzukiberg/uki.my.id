@@ -80,7 +80,7 @@ const UcupDL = () => {
               >
                 https://www.whatsmyua.info/
               </a>{" "}
-              atau {console.log(devicesInfo)}
+              atau
               <a
                 href={`https://play.google.com/store/apps/details?id=com.cpuid.cpu_z&hl=in&gl=US`}
                 target="_blank"
