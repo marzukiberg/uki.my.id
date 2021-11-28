@@ -61,14 +61,14 @@ const UcupDL = () => {
                 href="/apks/ucupdl/app-armeabi-v7a-release.apk"
               >
                 <i className="fas fa-download"></i>
-                <span className="ml-2">Download: armeabi-v7a</span>
+                <span className="ml-2">Download: ARM</span>
               </a>
               <a
                 className="mx-auto bg-green-500 px-4 py-2 text-center text-white"
                 href="/apks/ucupdl/app-arm64-v8a-release.apk"
               >
                 <i className="fas fa-download"></i>
-                <span className="ml-2">Download: arm64-v8a</span>
+                <span className="ml-2">Download: ARM64</span>
               </a>
             </div>
             <p>
