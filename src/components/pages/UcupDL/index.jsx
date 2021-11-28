@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UAParser from "ua-parser-js";
 
 const UcupDL = () => {
-  const [cpu, setCpu] = useState(null);
-  useEffect(() => {
-    const cpuType = new UAParser().getCPU();
-    if (cpuType) setCpu(cpuType?.architecture);
-  }, []);
+  const devicesInfo = new UAParser().getResult();
 
   return (
     <div className="container mx-auto max-w-xl space-y-6 p-6 text-center font-quicksand border rounded shadow-lg m-6">
@@ -21,7 +17,7 @@ const UcupDL = () => {
 
       <div
         className="border-2 
-      p-3 m-3"
+      p-3 m-3 "
       >
         <ul className="space-y-3 text-left">
           <li>Nama : UcupDL - Pengunduh YouTube sederhana</li>
@@ -59,21 +55,40 @@ const UcupDL = () => {
           <hr />
           <li>
             Download :
-            <p className="text-red-500 font-bold">VERSI CPU ANDA : {cpu}</p>
-            <div className="mt-3 space-x-3">
+            <div className="my-3 gap-3 grid md:grid-cols-2 place-items-center">
               <a
                 className="mx-auto bg-green-500 px-4 py-2 text-center text-white"
                 href="/apks/ucupdl/app-armeabi-v7a-release.apk"
               >
-                <i className="fas fa-download"></i>Download: armeabi-v7a
+                <i className="fas fa-download"></i>
+                <span className="ml-2">Download: armeabi-v7a</span>
               </a>
               <a
                 className="mx-auto bg-green-500 px-4 py-2 text-center text-white"
                 href="/apks/ucupdl/app-arm64-v8a-release.apk"
               >
-                <i className="fas fa-download"></i>Download: arm64-v8a
+                <i className="fas fa-download"></i>
+                <span className="ml-2">Download: arm64-v8a</span>
               </a>
             </div>
+            <p>
+              Bingung menentukan download? cek arsitektur perangkat Saya di{" "}
+              <a
+                href="https://www.whatsmyua.info/"
+                target="_blank"
+                className="text-red-500"
+              >
+                https://www.whatsmyua.info/
+              </a>{" "}
+              atau {console.log(devicesInfo)}
+              <a
+                href={`https://play.google.com/store/apps/details?id=com.cpuid.cpu_z&hl=in&gl=US`}
+                target="_blank"
+                className="text-red-500"
+              >
+                aplikasi CPU-Z
+              </a>
+            </p>
           </li>
         </ul>
       </div>
