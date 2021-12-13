@@ -11,11 +11,13 @@ import {
   ThankYou,
   Tools,
 } from "./components/organisms";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SifdevsCreative from "./components/pages/SifdevsCreative";
 import WebTemplates from "./components/pages/SifdevsCreative/[web]";
 import UcupDL from "./components/pages/UcupDL";
 import Helmet from "react-helmet";
+import HaditsHarian from "./components/pages/HaditsHarian";
 
 const Home = () => (
   <>
@@ -40,23 +42,35 @@ const App = () => {
   }, [Aos]);
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route path="/sifdevs-creative/:web">
-          <WebTemplates />
-        </Route>
-        <Route path="/sifdevs-creative">
-          <SifdevsCreative />
-        </Route>
-        <Route path="/UcupDL">
-          <Helmet>
-            <title>UcupDL - Pengunduh YouTube sederhana | uki.thedev.id</title>
-          </Helmet>
-          <UcupDL />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/" exact element={<Home />} />
+        <Route path="/sifdevs-creative/:web" element={<WebTemplates />} />
+        <Route path="/sifdevs-creative" element={<SifdevsCreative />} />
+        <Route
+          path="/UcupDL"
+          element={
+            <>
+              <Helmet>
+                <title>
+                  UcupDL - Pengunduh YouTube sederhana | uki.thedev.id
+                </title>
+              </Helmet>
+              <UcupDL />
+            </>
+          }
+        />
+        <Route
+          path="/hadits-harian"
+          element={
+            <>
+              <Helmet>
+                <title>Dapatkan Notifikasi Hadits Harian | uki.thedev.id</title>
+              </Helmet>
+              <HaditsHarian />
+            </>
+          }
+        />
+      </Routes>
     </Router>
   );
 };

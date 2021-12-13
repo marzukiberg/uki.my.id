@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styles from './PortfolioCard.module.css';
+import React from "react";
+import PropTypes from "prop-types";
+import styles from "./PortfolioCard.module.css";
 
 const PortfolioCard = ({ title, text, img, link, stacks }) => {
   return (
@@ -33,18 +33,22 @@ const PortfolioCard = ({ title, text, img, link, stacks }) => {
         <div className="px-6 pb-3">
           <div className="flex justify-between items-center border-t pt-3">
             <div className={`flex gap-2 flex-wrap`}>
-              {stacks.map((stack) => (
-                <img src={`/img/logos/${stack}`} className="w-8 h-8" />
+              {stacks.map((stack, index) => (
+                <img
+                  src={`/img/logos/${stack}`}
+                  className="w-8 h-8"
+                  key={`${index}`}
+                />
               ))}
             </div>
             <div>
               <a
                 href={link}
-                target={link !== '/#' && `_blank`}
+                target={link === "/#" ? null : `_blank`}
                 className={`rounded-lg p-3 text-white space-x-3 inline-flex items-center ${
-                  link === '/#'
-                    ? 'bg-gray-300 cursor-default'
-                    : 'bg-blue-400 hover:bg-blue-600 focus:ring focus:bg-blue-600'
+                  link === "/#"
+                    ? "bg-gray-300 cursor-default"
+                    : "bg-blue-400 hover:bg-blue-600 focus:ring focus:bg-blue-600"
                 } duration-300`}
               >
                 <span className="font-quicksand">Demo</span>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const EmailMeSection = () => {
   return (
@@ -20,7 +20,7 @@ const EmailMeSection = () => {
         <button className="px-6 py-3 rounded-md  bg-blue-600 text-white font-quicksand hover:bg-blue-800 hover:shadow-xl focus:ring duration-300">
           <span className="hidden md:inline">Submit</span>
           <span className="md:hidden">
-            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+            <i className="fa fa-paper-plane" aria-hidden="true"></i>
           </span>
         </button>
       </div>

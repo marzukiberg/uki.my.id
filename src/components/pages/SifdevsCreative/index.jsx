@@ -1,10 +1,10 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const SifdevsCreative = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const goBack = () => {
-    history.goBack();
+    navigate("/");
   };
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center">
