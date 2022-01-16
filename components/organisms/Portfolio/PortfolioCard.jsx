@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { externalImgLoader, imgLoader } from "../../../utils/img-loader";
+import { imgLoader } from "../../../utils/img-loader";
 import styles from "./PortfolioCard.module.css";
 
 const PortfolioCard = ({ title, text, img, link, stacks }) => {
@@ -14,7 +14,7 @@ const PortfolioCard = ({ title, text, img, link, stacks }) => {
             <div className="w-full h-64 relative">
               <Image
                 src={"https://res.cloudinary.com/uki14/image/upload" + img}
-                loader={externalImgLoader}
+                loader={imgLoader}
                 alt={title}
                 loading="lazy"
                 layout="fill"
