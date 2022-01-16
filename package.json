@@ -8,12 +8,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "aos": "^2.3.4",
+    "extracted-loader": "^1.0.7",
+    "file-loader": "^6.2.0",
+    "ignore-loader": "^0.1.2",
+    "img-loader": "^4.0.0",
     "next": "12.0.8",
+    "next-compose-plugins": "^2.2.1",
+    "next-optimized-images": "^2.6.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "url-loader": "^4.1.1"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.2",
     "eslint": "8.6.0",
-    "eslint-config-next": "12.0.8"
+    "eslint-config-next": "12.0.8",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.13"
   }
 }

@@ -1,0 +1,21 @@
+.card {
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  width: 300px;
+  height: 300px;
+  background-color: rgba(80, 153, 244, 20%);
+  border-radius: 50%;
+  position: absolute;
+  transition: 300ms;
+  bottom: -100%;
+  left: -100%;
+  z-index: -1;
+}
+
+.card:hover::before {
+  bottom: -100px;
+  left: -100px;
+}

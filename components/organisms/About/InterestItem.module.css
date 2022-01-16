@@ -1,0 +1,20 @@
+.item {
+  overflow: hidden;
+  position: relative;
+}
+
+.item::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: rgba(80, 153, 244, 50%);
+  top: -100%;
+  right: -100%;
+  transition: 300ms;
+}
+.item:hover::after {
+  top: calc(100px * -0.4);
+  right: calc(100px * -0.4);
+}
