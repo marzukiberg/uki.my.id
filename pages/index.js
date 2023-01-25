@@ -21,7 +21,7 @@ const App = () => {
     });
   }, []);
   return (
-    <>
+    <div className="overflow-x-hidden">
       <Head>
         <title>Marzuki | Frontend Engineer</title>
       </Head>
@@ -66,7 +66,7 @@ const App = () => {
         />
       </Routes>
     </Router> */}
-    </>
+    </div>
   );
 };
 

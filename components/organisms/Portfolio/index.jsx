@@ -6,13 +6,21 @@ const Portfolio = () => {
     <section id="portfolio">
       <div className="container mx-auto max-w-7xl p-8 lg:p-16">
         <h2
-          className="text-2xl md:text-4xl font-semibold font-poppins mb-6"
+          className="font-poppins mb-6 text-2xl font-semibold md:text-4xl"
           data-aos="fade-in"
         >
           Portfolio
         </h2>
 
         <div className="grid gap-6 md:grid-cols-3">
+          <PortfolioCard
+            title="Hadits Harian"
+            text="Terima Notfikiasi Hadits Random Harian Langsung dari Web"
+            img="hadits-harian-v2.png"
+            localImage
+            stacks={["reactjs.png", "tailwindcss.svg"]}
+            link="https://hadits-harian-v2.vercel.app/"
+          />
           <PortfolioCard
             title="Bagi Ilmu Landing Page"
             text="A Landing Page of Civil Servant Candidate Online Test"

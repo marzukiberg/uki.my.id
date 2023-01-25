@@ -2,9 +2,9 @@
   position: relative;
   background-color: white;
 }
-
+/* 
 .card::before {
-  content: '';
+  content: "";
   position: absolute;
   z-index: -1;
   left: -100%;
@@ -22,3 +22,7 @@
 .card:hover::before {
   left: 33%;
 }
+
+.card img.img {
+  display: none;
+} */

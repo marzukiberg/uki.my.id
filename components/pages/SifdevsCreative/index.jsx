@@ -7,12 +7,10 @@ const SifdevsCreative = () => {
     navigate("/");
   };
   return (
-    <div className="w-screen h-screen flex flex-col justify-center items-center">
-      <h1 className="text-3xl font-quicksand text-red-500 mb-6">
-        No Direct Access!
-      </h1>
+    <div className="flex h-screen w-screen flex-col items-center justify-center">
+      <h1 className="font-qs mb-6 text-3xl text-red-500">No Direct Access!</h1>
       <button
-        className="text-xl text-white bg-blue-500 px-4 py-3 rounded font-quicksand hover:bg-blue-700 duration-300"
+        className="font-qs rounded bg-blue-500 px-4 py-3 text-xl text-white duration-300 hover:bg-blue-700"
         role="link"
         onClick={goBack}
       >

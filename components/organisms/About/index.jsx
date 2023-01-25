@@ -6,15 +6,15 @@ import Socials from "./Socials";
 const About = () => {
   return (
     <section id="about">
-      <div className="bg-blue-400 rounded-r-md p-6 md:px-28 md:py-12 inline-block space-y-6 md:w-4/5 relative">
+      <div className="relative inline-block space-y-6 rounded-r-md bg-blue-400 p-6 md:w-4/5 md:px-28 md:py-12">
         <BackgroundAndBlobs />
         <h2
-          className="text-2xl md:text-3xl font-semibold text-white font-poppins text-center md:text-left"
+          className="font-poppins text-center text-2xl font-semibold text-white md:text-left md:text-3xl"
           data-aos="slide-right"
         >
           About Me
         </h2>
-        <p className="text-white leading-8 font-quicksand" data-aos="fade-up">
+        <p className="font-qs leading-8 text-white" data-aos="fade-up">
           Saya adalah seorang yang memiliki ketertarikan di dunia Teknologi
           Informasi, salah satunya dunia pengembangan software. Dalam waktu 1
           tahun saya sudah menguasai beberapa framework dalam pengembangan

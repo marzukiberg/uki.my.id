@@ -1,26 +1,27 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./TechStack.module.css";
 import Image from "next/image";
-import { imgLoader } from "../../../utils/img-loader";
+import PropTypes from "prop-types";
+import React from "react";
 
 const TechStackItem = ({ img, text }) => {
   return (
     <div
-      className={`flex items-center border space-x-3 rounded-md overflow-hidden group hover:drop-shadow-xl duration-300 ${styles.card}`}
+      className={
+        "group relative flex overflow-hidden rounded-md border bg-white p-0 duration-300 hover:drop-shadow-xl"
+      }
       data-aos="fade-up"
     >
-      <div className="w-20 h-20 p-2 relative">
+      <div className="absolute -left-full top-0 z-[-1] h-full w-full bg-blue-400 duration-300 group-hover:left-0"></div>
+      <div className="relative flex h-20 w-20 items-center justify-center bg-white p-2">
         <Image
-          layout="fill"
-          objectFit="contain"
-          loader={imgLoader}
+          data-el={(e) => e.target.clientWidth}
           src={`/img/logos/${img}`}
+          width={100}
+          height={100}
           alt="logo"
         />
       </div>
-      <div className="py-2">
-        <h4 className="text-lg md:text-xl group-hover:text-white duration-300 font-quicksand">
+      <div className="p-4">
+        <h4 className="font-qs text-lg duration-300 group-hover:text-white md:text-xl">
           {text}
         </h4>
       </div>

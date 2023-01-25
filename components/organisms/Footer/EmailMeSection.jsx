@@ -1,28 +1,33 @@
-import React from "react";
+import React, { useRef } from "react";
 
 const EmailMeSection = () => {
+  const messageRef = useRef({});
   return (
     <div className="container" data-aos="slide-left">
-      <h4 className="text-lg text-white font-semibold font-quicksand">
-        Email Me
-      </h4>
+      <h4 className="font-qs text-lg font-semibold text-white">Email Me</h4>
       <div className="flex space-x-2">
-        <div className="relative bg-white w-full rounded-md overflow-hidden focus-within:drop-shadow-xl flex items-center">
-          <div className="text-xl p-3 text-gray-300">
+        <div className="relative flex w-full items-center overflow-hidden rounded-md bg-white focus-within:drop-shadow-xl">
+          <div className="p-3 text-xl text-gray-300">
             <i className="fa fa-envelope" aria-hidden="true"></i>
           </div>
           <input
             type="text"
-            className="py-3 focus:outline-none w-full font-quicksand"
+            className="font-qs w-full py-3 focus:outline-none"
             placeholder="Your message..."
+            ref={messageRef}
           />
         </div>
-        <button className="px-6 py-3 rounded-md  bg-blue-600 text-white font-quicksand hover:bg-blue-800 hover:shadow-xl focus:ring duration-300">
+        <a
+          href={`mailto:marzukiberg@gmail.com?subject=Would like to hiring&body=${messageRef.current.value}`}
+          target={"_blank"}
+          className="font-qs rounded-md bg-blue-500  px-6 py-3 text-white duration-300 hover:bg-blue-800 hover:shadow-xl focus:ring"
+          rel="noreferrer"
+        >
           <span className="hidden md:inline">Submit</span>
           <span className="md:hidden">
             <i className="fa fa-paper-plane" aria-hidden="true"></i>
           </span>
-        </button>
+        </a>
       </div>
     </div>
   );

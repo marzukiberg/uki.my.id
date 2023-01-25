@@ -1,14 +1,45 @@
-import React, { useEffect, useRef, useState } from 'react';
-import styles from './Navbar.module.css';
-import NavLink from './NavLink';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import styles from "./Navbar.module.css";
+import NavLink from "./NavLink";
+
+const MobileSidebar = ({ open, onClose }) => {
+  const innerRef = useRef();
+
+  const navCx = open ? "translate-x-0" : "-translate-x-full";
+
+  const handleClose = (e) => {
+    if (e.target !== innerRef.current) {
+      onClose();
+    }
+  };
+  return (
+    <nav
+      className={`fixed top-0 z-[999999] h-full w-full backdrop-blur-sm transition-transform ${navCx}`}
+      onClick={handleClose}
+    >
+      <div
+        ref={innerRef}
+        className={"z-1 h-full w-3/4 bg-white drop-shadow-xl"}
+      >
+        <h4 className="font-qs border-b p-6 text-center text-3xl font-bold">
+          Marzuki
+        </h4>
+        <NavLink title="Home" link="/#" onClick={handleClose} />
+        <NavLink title="About" link="/#about" onClick={handleClose} />
+        <NavLink title="Skills" link="/#skills" onClick={handleClose} />
+        <NavLink title="Portfolio" link="/#portfolio" onClick={handleClose} />
+      </div>
+    </nav>
+  );
+};
 
 const Navbar = () => {
   const navbarRef = useRef();
-  const [open, setopen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (window !== undefined) {
-      detectScrolling();
+      // detectScrolling();
     }
   }, []);
 
@@ -18,17 +49,50 @@ const Navbar = () => {
       const top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
       if (top > 100) {
-        navbarRef.current.classList.add('bg-white', 'shadow-lg', 'h-16');
+        navbarRef.current.classList.add("bg-white", "shadow-lg", "h-16");
       } else {
-        navbarRef.current.classList.remove('bg-white', 'shadow-lg', 'h-16');
+        navbarRef.current.classList.remove("bg-white", "shadow-lg", "h-16");
       }
     };
   };
-  const toggleNav = () => setopen(!open);
+  const toggleNav = () => setOpen(!open);
 
   return (
-    <nav
-      className="fixed left-0 top-0 w-full z-50 duration-300 flex items-center h-20"
+    <>
+      <header className="sticky top-0 left-0 z-[9999] flex justify-between bg-white p-6">
+        <div className="hidden gap-12 md:flex">
+          <NavLink title="Home" link="/#" />
+          <NavLink title="About" link="/#about" />
+          <NavLink title="Skills" link="/#skills" />
+          <NavLink title="Portfolio" link="/#portfolio" />
+        </div>
+        <div className="">
+          <button
+            className="h-11 w-11 rounded-md border border-blue-400 text-blue-400 md:hidden"
+            onClick={toggleNav}
+          >
+            <i className="fa fa-bars" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div className="space-x-6">
+          <a
+            href="#"
+            className={`font-qs inline-block rounded-lg border border-blue-400 bg-white px-4 py-2 text-blue-400 transition-all duration-300 hover:shadow-lg focus:ring ${styles["nav-button"]}`}
+          >
+            Contact
+          </a>
+          <a
+            href="#"
+            className={`font-qs inline-block rounded-lg bg-blue-400 px-4 py-2 text-white transition-all duration-300 hover:shadow-lg focus:ring`}
+          >
+            Hire Me
+          </a>
+        </div>
+      </header>
+
+      <MobileSidebar open={open} onClose={toggleNav} />
+      {/* <nav
+      className="fixed left-0 top-0 w-full z-[9999] duration-300 flex items-center h-20"
       ref={navbarRef}
       data-aos="slide-down"
     >
@@ -60,20 +124,21 @@ const Navbar = () => {
           <div className="space-x-3">
             <a
               href="#"
-              className={`bg-white font-quicksand inline-block px-4 py-2 text-blue-400 border border-blue-400 rounded-lg hover:shadow-lg focus:ring transition-all duration-300 ${styles['nav-button']}`}
+              className={`bg-white font-qs inline-block px-4 py-2 text-blue-400 border border-blue-400 rounded-lg hover:shadow-lg focus:ring transition-all duration-300 ${styles['nav-button']}`}
             >
               Contact
             </a>
             <a
               href="#"
-              className={`font-quicksand inline-block px-4 py-2 bg-blue-400 text-white rounded-lg hover:shadow-lg focus:ring transition-all duration-300`}
+              className={`font-qs inline-block px-4 py-2 bg-blue-400 text-white rounded-lg hover:shadow-lg focus:ring transition-all duration-300`}
             >
               Hire Me
             </a>
           </div>
         </div>
       </div>
-    </nav>
+    </nav> */}
+    </>
   );
 };
 

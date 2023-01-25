@@ -1,16 +1,16 @@
-import React from 'react';
-import InterestItem from './InterestItem';
+import React from "react";
+import InterestItem from "./InterestItem";
 
 const Interest = () => {
   return (
     <div>
       <h4
-        className="text-xl text-white font-semibold mb-3 font-poppins"
+        className="font-poppins mb-3 text-xl font-semibold text-white"
         data-aos="fade-up"
       >
         My Interests
       </h4>
-      <div className="grid gap-3 md:grid-cols-3 max-w-xl font-quicksand">
+      <div className="font-qs grid max-w-xl gap-3 md:grid-cols-3">
         <InterestItem icon="fas fa-code" text="Programming" />
         <InterestItem icon="fas fa-book-open" text="Reading" />
         <InterestItem icon="fas fa-swatchbook" text="Learning" />

@@ -2,11 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+@layer base {
+  .font-qs {
+    font-family: "Quicksand", system-ui, sans-serif;
+  }
+  .font-pp {
+    font-family: "Poppins", system-ui, sans-serif;
+  }
 }
 
-.aos-init {
-  overflow: hidden !important;
+html {
+  scroll-behavior: smooth;
 }

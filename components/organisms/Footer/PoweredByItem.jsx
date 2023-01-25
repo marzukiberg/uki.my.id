@@ -1,11 +1,11 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React from "react";
 import { imgLoader } from "../../../utils/img-loader";
 
 const PoweredByItem = ({ logo, text }) => {
   return (
     <div className="text-center">
-      <div className="w-16 h-16 object-contain mb-3 block mx-auto rounded-md relative">
+      <div className="relative mx-auto mb-3 block h-16 w-16 rounded-md object-contain">
         <Image
           layout="fill"
           objectFit="contain"
@@ -15,7 +15,7 @@ const PoweredByItem = ({ logo, text }) => {
         />
       </div>
 
-      <p className="text-sm font-quicksand text-gray-700">{text}</p>
+      <p className="font-qs text-sm text-gray-700">{text}</p>
     </div>
   );
 };

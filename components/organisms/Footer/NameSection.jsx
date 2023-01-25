@@ -1,20 +1,20 @@
-import React from 'react';
+import React from "react";
 
 const NameSection = () => {
   return (
     <div className="container space-y-3 text-center md:text-left">
-      <h2 className="text-white font-quicksand font-semibold text-2xl md:text-4xl">
+      <h2 className="font-qs text-2xl font-semibold text-white md:text-4xl">
         Marzuki
       </h2>
-      <div className="text-lg space-x-3 text-white font-quicksand">
-        <span>Frontend Web Developer</span> <span>|</span>{' '}
+      <div className="font-qs space-x-3 text-lg text-white">
+        <span>Frontend Web Developer</span> <span>|</span>{" "}
         <span>React Native Developer</span>
       </div>
       <div
-        className="grid place-items-center text-white gap-6 md:gap-24 md:grid-cols-2"
+        className="flex flex-wrap items-center justify-center gap-3 text-white md:flex-nowrap md:justify-between"
         data-aos="fade-up"
       >
-        <a href="#" className="space-x-2 block font-poppins order-last">
+        <a href="#" className="font-poppins order-last block space-x-2">
           <i className="fa fa-envelope" aria-hidden="true"></i>
           <span>marzukiberg@gmail.com</span>
         </a>

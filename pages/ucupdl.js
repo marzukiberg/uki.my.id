@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { imgLoader } from "../utils/img-loader";
 const UcupDL = () => {
   return (
@@ -7,11 +7,11 @@ const UcupDL = () => {
       <Head>
         <title>UcupDL - Pengunduh YouTube sederhana</title>
       </Head>
-      <div className="container mx-auto max-w-xl space-y-6 p-6 text-center font-quicksand border rounded shadow-lg m-6">
+      <div className="font-qs container m-6 mx-auto max-w-xl space-y-6 rounded border p-6 text-center shadow-lg">
         <h1 className="text-center text-2xl">
           UcupDL - Pengunduh YouTube sederhana
         </h1>
-        <div className="w-64 h-64 object-container mx-auto relative">
+        <div className="object-container relative mx-auto h-64 w-64">
           <Image
             layout="fill"
             src="/img/logos/ucupdl.png"
@@ -22,8 +22,8 @@ const UcupDL = () => {
         </div>
 
         <div
-          className="border-2 
-      p-3 m-3 "
+          className="m-3 
+      border-2 p-3 "
         >
           <ul className="space-y-3 text-left">
             <li>Nama : UcupDL - Pengunduh YouTube sederhana</li>
@@ -35,7 +35,7 @@ const UcupDL = () => {
               Pengembang :{" "}
               <a
                 href="https://github.com/marzukiberg/"
-                className="text-red-500 font-bold"
+                className="font-bold text-red-500"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -46,7 +46,7 @@ const UcupDL = () => {
               Github Repo :{" "}
               <a
                 href="https://github.com/marzukiberg/UcupDL"
-                className="text-red-500 font-bold"
+                className="font-bold text-red-500"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -55,7 +55,7 @@ const UcupDL = () => {
             </li>
             <li>
               Screenshots :
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
                 <Image
                   width={100}
                   height={200}
@@ -97,7 +97,7 @@ const UcupDL = () => {
             <hr />
             <li>
               Download :
-              <div className="my-3 gap-3 grid md:grid-cols-2 place-items-center">
+              <div className="my-3 grid place-items-center gap-3 md:grid-cols-2">
                 <a
                   className="mx-auto bg-green-500 px-4 py-2 text-center text-white"
                   href="/apks/ucupdl/app-armeabi-v7a-release.apk"
