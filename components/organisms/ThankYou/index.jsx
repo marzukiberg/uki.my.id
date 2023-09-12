@@ -11,10 +11,10 @@ const ThankYou = () => {
         <div className="flex flex-wrap items-center gap-6 md:flex-nowrap">
           <Image
             loading="lazy"
-            src="/img/profile.jpeg"
+            src="/img/umai.jpeg"
             alt="Profile Picture"
-            width={300}
-            height={300}
+            width={250}
+            height={250}
             className="m-3 mx-auto h-[80%] w-[80%] rounded-full md:w-[40%]"
           />
           <div className="container space-y-6 text-center md:text-left">

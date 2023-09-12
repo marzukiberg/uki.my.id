@@ -18,7 +18,7 @@ const EmailMeSection = () => {
           />
         </div>
         <a
-          href={`mailto:marzukiberg@gmail.com?subject=Would like to hiring&body=${messageRef.current.value}`}
+          href={`mailto:umairahrizkya@gmail.com?subject=Would like to hiring&body=${messageRef.current.value}`}
           target={"_blank"}
           className="font-qs rounded-md bg-blue-500  px-6 py-3 text-white duration-300 hover:bg-blue-800 hover:shadow-xl focus:ring"
           rel="noreferrer"

@@ -1,47 +1,32 @@
-import React from 'react';
-import Blobs from './Blobs';
-import TechStackItem from './TechStackItem';
+import React from "react";
+import Blobs from "./Blobs";
+import TechStackItem from "./TechStackItem";
 
 const dataTechStacks = [
   {
-    img: 'html5.png',
-    text: 'HTML5',
+    img: "https://img.icons8.com/color/48/python--v1.png",
+    imgAttributtionURL: "https://icons8.com/icon/13441/python",
+    text: "Python",
   },
   {
-    img: 'css3.png',
-    text: 'CSS3',
+    img: "html5.png",
+    text: "HTML",
   },
   {
-    img: 'javascript.png',
-    text: 'JavaScript',
+    img: "css3.png",
+    text: "CSS3",
   },
   {
-    img: 'nodejs.png',
-    text: 'NodeJS',
+    img: "javascript.png",
+    text: "JavaScript",
   },
   {
-    img: 'reactjs.png',
-    text: 'ReactJS',
+    img: "php.png",
+    text: "PHP",
   },
   {
-    img: 'nextjs.png',
-    text: 'NextJS',
-  },
-  {
-    img: 'tailwindcss.svg',
-    text: 'TailwindCSS',
-  },
-  {
-    img: 'php.png',
-    text: 'PHP',
-  },
-  {
-    img: 'mysql.png',
-    text: 'MySQL',
-  },
-  {
-    img: 'git.png',
-    text: 'Git',
+    img: "mysql.png",
+    text: "MySQL",
   },
 ];
 const TechStack = () => {
@@ -52,7 +37,7 @@ const TechStack = () => {
       <div className="container mx-auto max-w-7xl p-8 lg:p-16">
         <div className="space-y-6 text-center">
           <h2
-            className="text-2xl md:text-4xl font-semibold font-poppins"
+            className="font-poppins text-2xl font-semibold md:text-4xl"
             data-aos="fade-in"
           >
             Tech Stack
@@ -64,6 +49,7 @@ const TechStack = () => {
                 key={index.toString()}
                 img={item.img}
                 text={item.text}
+                imgAttributtionURL={item.imgAttributtionURL}
               />
             ))}
           </div>

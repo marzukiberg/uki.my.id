@@ -4,11 +4,12 @@ const NameSection = () => {
   return (
     <div className="container space-y-3 text-center md:text-left">
       <h2 className="font-qs text-2xl font-semibold text-white md:text-4xl">
-        Marzuki
+        Umairah Rizkya Gurning
       </h2>
       <div className="font-qs space-x-3 text-lg text-white">
-        <span>Frontend Web Developer</span> <span>|</span>{" "}
-        <span>React Native Developer</span>
+        <span>Data Scientist</span> <span>|</span> <span>Data Mining</span>{" "}
+        <span>|</span>
+        <span>Researcher</span>
       </div>
       <div
         className="flex flex-wrap items-center justify-center gap-3 text-white md:flex-nowrap md:justify-between"
@@ -16,7 +17,7 @@ const NameSection = () => {
       >
         <a href="#" className="font-poppins order-last block space-x-2">
           <i className="fa fa-envelope" aria-hidden="true"></i>
-          <span>marzukiberg@gmail.com</span>
+          <span>umairahrizkyagurning@gmail.com</span>
         </a>
 
         <div className="space-x-3 text-2xl">
