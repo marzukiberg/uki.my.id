@@ -1,3 +1,4 @@
+// for my special girl Umairah Rizkya Gurning <3
 import Aos from "aos";
 import Head from "next/head";
 import Script from "next/script";
