@@ -22,7 +22,7 @@ const MobileSidebar = ({ open, onClose }) => {
         className={"z-1 h-full w-3/4 bg-white drop-shadow-xl"}
       >
         <h4 className="font-qs border-b p-6 text-center text-3xl font-bold">
-          Marzuki
+          Umairah Rizkya
         </h4>
         <NavLink title="Home" link="/#" onClick={handleClose} />
         <NavLink title="About" link="/#about" onClick={handleClose} />
@@ -77,7 +77,7 @@ const Navbar = () => {
         <div className="space-x-6">
           <a
             href="#"
-            className={`font-qs inline-block rounded-lg border border-blue-400 bg-white px-4 py-2 text-blue-400 transition-all duration-300 hover:shadow-lg focus:ring ${styles["nav-button"]}`}
+            className={`font-qs inline-block rounded-lg border border-blue-400 bg-white px-4 py-2 text-blue-400 transition-all duration-300 hover:text-white hover:shadow-lg focus:ring ${styles["nav-button"]}`}
           >
             Contact
           </a>

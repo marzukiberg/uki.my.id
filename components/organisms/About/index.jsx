@@ -15,14 +15,28 @@ const About = () => {
           About Me
         </h2>
         <p className="font-qs leading-8 text-white" data-aos="fade-up">
-          Saya adalah seorang yang memiliki ketertarikan di dunia Teknologi
-          Informasi, salah satunya dunia pengembangan software. Dalam waktu 1
-          tahun saya sudah menguasai beberapa framework dalam pengembangan
-          software mulai dari native hingga framework seperti ReactJS, NextJS,
-          React Native, Codeigniter dan Laravel. Saya juga sudah menyelesaikan
-          lebih dari 10 project permintaan Client Lokal. Namun bagi saya itu
-          belum cukup, saya akan terus belajar hal baru karena bagi saya Ilmu
-          merupakan Investasi yang sangat menguntungkan di kemudian hari.
+          Saya adalah seorang yang memiliki ketertarikan di dunia Riset
+          Teknologi Informasi dan Machine Learning. Ketertarikan Saya pada dunia
+          riset membawa saya bergabung di salah satu komunitas Riset di kampus
+          dan saat ini Saya telah banyak mengerjakan riset-riset yang berkaitan
+          dengan Teknologi Informasi dan Machine Learning.
+        </p>
+        <p className="font-qs leading-8 text-white" data-aos="fade-up">
+          Berpartisipasi aktif dalam komunitas riset kampus telah memberi saya
+          kesempatan untuk bertemu dengan berbagai profesional dan ahli di
+          bidangnya, memperluas wawasan saya dan mengasah kemampuan analitis.
+          Setiap riset yang saya kerjakan bukan hanya sekedar mengejar hasil,
+          melainkan bagaimana saya dapat mengimplementasikan solusi berbasis
+          teknologi dalam kehidupan sehari-hari untuk memudahkan dan
+          meningkatkan efisiensi.
+        </p>
+        <p className="font-qs leading-8 text-white" data-aos="fade-up">
+          Tantangan dalam mengerjakan proyek riset di bidang Teknologi Informasi
+          dan Machine Learning sering kali kompleks, namun dengan semangat
+          kolaborasi yang kuat di komunitas, kami selalu menemukan cara untuk
+          mencapai solusi inovatif. Melalui pengalaman ini, saya belajar
+          pentingnya kerja tim, adaptabilitas, dan tentunya, keberanian untuk
+          terus mencoba dan belajar dari kesalahan.
         </p>
         <Socials />
 

@@ -23,7 +23,14 @@ const App = () => {
   return (
     <div className="overflow-x-hidden">
       <Head>
-        <title>Marzuki | Frontend Engineer</title>
+        <title>
+          Umairah Rizkya Gurning | Data Scientist | Data Mining | Researcher
+        </title>
+        {/* seo */}
+        <meta
+          name="title"
+          content="Umairah Rizkya Gurning | Data Scientist | Data Mining | Researcher"
+        />
       </Head>
       <Navbar />
       <Hero />
