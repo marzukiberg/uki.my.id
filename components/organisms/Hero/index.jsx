@@ -1,19 +1,30 @@
-import React from 'react';
-import BackgroundImages from './BackgroundImages';
-import Blobs from './Blobs';
-import NameSection from './NameSection';
+import React, { useEffect, useRef, useState } from "react";
+import BackgroundImages from "./BackgroundImages";
+import Blobs from "./Blobs";
+import NameSection from "./NameSection";
 
 const Hero = () => {
-  return (
-    <section className="relative flex h-screen items-center">
-      <Blobs />
-      <div className="container mx-auto max-w-7xl px-8">
-        <div className="text-center space-y-4" data-aos="zoom-in">
-          <NameSection />
-        </div>
+  const nameSectionRef = useRef(null);
+  const [nameSectionHeight, setNameSectionHeight] = useState(0);
 
-        <div className="hidden md:block absolute bottom-0 left-1/2 w-[90%] transform -translate-x-1/2 z-[-1]">
-          <BackgroundImages />
+  useEffect(() => {
+    if (nameSectionRef.current) {
+      setNameSectionHeight(nameSectionRef.current.offsetHeight);
+    }
+  }, []);
+
+  return (
+    <section className="relative flex h-[calc(100vh-64px)] items-center overflow-hidden">
+      <Blobs />
+      <div className="container relative mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-8">
+        <div
+          className="relative z-20 my-20 space-y-4 text-center md:my-0"
+          data-aos="zoom-in"
+        >
+          <NameSection ref={nameSectionRef} />
+        </div>
+        <div className="absolute inset-0 z-10">
+          <BackgroundImages nameSectionHeight={nameSectionHeight} />
         </div>
       </div>
     </section>

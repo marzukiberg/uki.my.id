@@ -1,9 +1,14 @@
 .nav-button {
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  transform: translateY(-1px);
 }
 
 .nav-button::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -24,7 +29,7 @@
 
 .nav-button:first-child:hover {
   background: transparent !important;
-  color: white;
+  color: white !important;
 }
 .nav-button:last-child:hover {
   background: transparent !important;

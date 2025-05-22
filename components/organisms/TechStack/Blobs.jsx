@@ -1,10 +1,9 @@
 import Image from "next/legacy/image";
-import React from "react";
 import { imgLoader } from "../../../utils/img-loader";
 
 const Blobs = () => {
   return (
-    <div className="absolute left-0 bottom-0 h-full transform translate-y-24 z-[-1] w-[400px] h-full">
+    <div className="absolute bottom-0 left-0 z-[-1] h-full w-[200px] translate-y-16 transform sm:w-[250px] sm:translate-y-20 md:w-[300px] md:translate-y-24 lg:w-[400px] lg:translate-y-32">
       <Image
         layout="fill"
         src="/img/blob5.png"

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Navbar.module.css";
 import NavLink from "./NavLink";
 
@@ -36,60 +36,55 @@ const MobileSidebar = ({ open, onClose }) => {
 const Navbar = () => {
   const navbarRef = useRef();
   const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    if (window !== undefined) {
-      // detectScrolling();
-    }
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const detectScrolling = () => {
-    window.onscroll = (e) => {
-      const doc = document.documentElement;
-      const top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-
-      if (top > 100) {
-        navbarRef.current.classList.add("bg-white", "shadow-lg", "h-16");
-      } else {
-        navbarRef.current.classList.remove("bg-white", "shadow-lg", "h-16");
-      }
-    };
-  };
   const toggleNav = () => setOpen(!open);
 
   return (
     <>
-      <header className="sticky top-0 left-0 z-[9999] flex justify-between bg-white p-6">
-        <div className="hidden gap-12 md:flex">
+      <header
+        className={`fixed left-0 right-0 top-0 z-[9999] flex h-16 items-center justify-between px-6 transition-all duration-300
+          ${isScrolled ? "bg-white shadow-md" : "bg-transparent"}`}
+      >
+        <div className="hidden gap-8 md:flex">
           <NavLink title="Home" link="/#" />
           <NavLink title="About" link="/#about" />
           <NavLink title="Skills" link="/#skills" />
           <NavLink title="Portfolio" link="/#portfolio" />
         </div>
-        <div className="">
+        <div className="md:hidden">
           <button
-            className="h-11 w-11 rounded-md border border-blue-400 text-blue-400 md:hidden"
+            className="h-11 w-11 rounded-lg border border-blue-400 text-blue-400 transition-all hover:bg-blue-400 hover:text-white"
             onClick={toggleNav}
           >
             <i className="fa fa-bars" aria-hidden="true"></i>
           </button>
         </div>
-        <div className="space-x-6">
+        <div className="flex items-center space-x-4">
           <a
-            href="#"
-            className={`font-qs inline-block rounded-lg border border-blue-400 bg-white px-4 py-2 text-blue-400 transition-all duration-300 hover:shadow-lg focus:ring ${styles["nav-button"]}`}
+            href="mailto:marzukiberg@gmail.com"
+            className={`font-qs inline-flex items-center rounded-lg border-2 border-blue-400 bg-transparent px-5 py-2 text-blue-400 transition-all hover:bg-blue-400 hover:text-white focus:ring ${styles["nav-button"]}`}
           >
             Contact
           </a>
           <a
             href="#"
-            className={`font-qs inline-block rounded-lg bg-blue-400 px-4 py-2 text-white transition-all duration-300 hover:shadow-lg focus:ring`}
+            className={`font-qs inline-flex items-center rounded-lg bg-blue-500 px-5 py-2 text-white transition-all hover:bg-blue-600 focus:ring`}
           >
             Hire Me
           </a>
         </div>
       </header>
-
+      <div className="h-16" /> {/* Spacer to prevent content jump */}
       <MobileSidebar open={open} onClose={toggleNav} />
       {/* <nav
       className="fixed left-0 top-0 w-full z-[9999] duration-300 flex items-center h-20"

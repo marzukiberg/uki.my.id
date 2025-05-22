@@ -15,14 +15,16 @@ const About = () => {
           About Me
         </h2>
         <p className="font-qs leading-8 text-white" data-aos="fade-up">
-          Saya adalah seorang yang memiliki ketertarikan di dunia Teknologi
-          Informasi, salah satunya dunia pengembangan software. Dalam waktu 1
-          tahun saya sudah menguasai beberapa framework dalam pengembangan
-          software mulai dari native hingga framework seperti ReactJS, NextJS,
-          React Native, Codeigniter dan Laravel. Saya juga sudah menyelesaikan
-          lebih dari 10 project permintaan Client Lokal. Namun bagi saya itu
-          belum cukup, saya akan terus belajar hal baru karena bagi saya Ilmu
-          merupakan Investasi yang sangat menguntungkan di kemudian hari.
+          Saya adalah seorang profesional dengan pengalaman 3 tahun di bidang
+          pengembangan software yang memiliki ketertarikan mendalam di dunia
+          Teknologi Informasi. Selama perjalanan karir saya, saya telah
+          menguasai berbagai framework pengembangan software dari native hingga
+          modern framework seperti ReactJS, NextJS, React Native, Codeigniter
+          dan Laravel. Dengan track record menyelesaikan lebih dari 10 project
+          client dan berbagai project profesional, saya tetap berkomitmen untuk
+          terus berkembang dan mempelajari teknologi-teknologi baru. Bagi saya,
+          pengembangan diri dan penguasaan teknologi terkini merupakan investasi
+          yang sangat berharga untuk masa depan.
         </p>
         <Socials />
 

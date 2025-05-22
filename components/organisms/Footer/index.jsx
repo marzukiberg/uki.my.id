@@ -18,14 +18,14 @@ const Footer = () => {
 
       <div className="grid gap-0 md:grid-cols-2">
         <div
-          className="mx-3 rounded-xl bg-white p-6 text-center md:m-0 md:rounded-none md:rounded-tr-xl"
+          className="mx-3 overflow-hidden rounded-xl bg-white p-6 text-center md:m-0 md:rounded-none md:rounded-tr-xl"
           data-aos="fade-up"
         >
           <div className="mx-auto max-w-xl space-y-3">
             <h4 className="font-qs text-lg font-bold">
               This website was powered by
             </h4>
-            <div className="flex justify-center space-x-6">
+            <div className="flex flex-wrap justify-center gap-6">
               <PoweredByItem logo="reactjs.png" text="ReactJS" />
               <PoweredByItem logo="tailwindcss.svg" text="TailwindCSS" />
               <PoweredByItem logo="vite.svg" text="Vite" />

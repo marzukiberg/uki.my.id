@@ -1,4 +1,4 @@
-import Aos from "aos";
+// import Aos from "aos";
 import Head from "next/head";
 import Script from "next/script";
 import React, { useEffect } from "react";
@@ -14,14 +14,14 @@ import {
 } from "/components/organisms";
 
 const App = () => {
-  useEffect(() => {
-    Aos.init({
-      easing: "ease",
-      duration: 700,
-    });
-  }, []);
+  // useEffect(() => {
+  //   Aos.init({
+  //     easing: "ease",
+  //     duration: 700,
+  //   });
+  // }, []);
   return (
-    <div className="overflow-x-hidden">
+    <div>
       <Head>
         <title>Marzuki | Frontend Engineer</title>
       </Head>
