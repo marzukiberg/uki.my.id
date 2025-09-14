@@ -76,19 +76,27 @@ const PortfolioCard = ({
           <Image
             src={imgSrc}
             alt={title}
+            fill
             className="absolute inset-0 z-[-1] m-0 h-full w-full object-cover blur"
             loading="lazy"
-            width={100}
-            height={100}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src =
+                "https://placehold.co/400x300?text=Image+Not+Found";
+            }}
           />
           <div className="relative h-full">
             <Image
               src={imgSrc}
               alt={title}
+              fill
               className="m-0 h-full w-full object-contain"
               loading="lazy"
-              width={1000}
-              height={1000}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  "https://placehold.co/400x300?text=Image+Not+Found";
+              }}
             />
             {/* Overlay with zoom button */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">

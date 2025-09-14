@@ -52,36 +52,40 @@ const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed left-0 right-0 top-0 z-[9999] flex h-16 items-center justify-between px-6 transition-all duration-300
+        className={`fixed left-0 right-0 top-0 z-[9999] flex h-16 items-center justify-between transition-all duration-300
           ${isScrolled ? "bg-white shadow-md" : "bg-transparent"}`}
       >
-        <div className="hidden gap-8 md:flex">
-          <NavLink title="Home" link="/#" />
-          <NavLink title="About" link="/#about" />
-          <NavLink title="Skills" link="/#skills" />
-          <NavLink title="Portfolio" link="/#portfolio" />
-        </div>
-        <div className="md:hidden">
-          <button
-            className="h-11 w-11 rounded-lg border border-blue-400 text-blue-400 transition-all hover:bg-blue-400 hover:text-white"
-            onClick={toggleNav}
-          >
-            <i className="fa fa-bars" aria-hidden="true"></i>
-          </button>
-        </div>
-        <div className="flex items-center space-x-4">
-          <a
-            href="mailto:marzukiberg@gmail.com"
-            className={`font-qs inline-flex items-center rounded-lg border-2 border-blue-400 bg-transparent px-5 py-2 text-blue-400 transition-all hover:bg-blue-400 hover:text-white focus:ring ${styles["nav-button"]}`}
-          >
-            Contact
-          </a>
-          <a
-            href="#"
-            className={`font-qs inline-flex items-center rounded-lg bg-blue-500 px-5 py-2 text-white transition-all hover:bg-blue-600 focus:ring`}
-          >
-            Hire Me
-          </a>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            <div className="hidden gap-8 md:flex">
+              <NavLink title="Home" link="/#" />
+              <NavLink title="About" link="/#about" />
+              <NavLink title="Skills" link="/#skills" />
+              <NavLink title="Portfolio" link="/#portfolio" />
+            </div>
+            <div className="md:hidden">
+              <button
+                className="h-11 w-11 rounded-lg border border-blue-400 text-blue-400 transition-all hover:bg-blue-400 hover:text-white"
+                onClick={toggleNav}
+              >
+                <i className="fa fa-bars" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div className="flex items-center space-x-4">
+              <a
+                href="mailto:marzukiberg@gmail.com"
+                className={`font-qs inline-flex items-center rounded-lg border-2 border-blue-400 bg-transparent px-5 py-2 text-blue-400 transition-all hover:bg-blue-400 hover:text-white focus:ring ${styles["nav-button"]}`}
+              >
+                Contact
+              </a>
+              <a
+                href="#"
+                className={`font-qs inline-flex items-center rounded-lg bg-blue-500 px-5 py-2 text-white transition-all hover:bg-blue-600 focus:ring`}
+              >
+                Hire Me
+              </a>
+            </div>
+          </div>
         </div>
       </header>
       <div className="h-16" /> {/* Spacer to prevent content jump */}

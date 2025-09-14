@@ -1,7 +1,6 @@
 // import Aos from "aos";
 import Head from "next/head";
 import Script from "next/script";
-import React, { useEffect } from "react";
 import {
   About,
   Footer,
@@ -21,19 +20,20 @@ const App = () => {
   //   });
   // }, []);
   return (
-    <div>
+    <div className="flex min-h-screen flex-col">
       <Head>
         <title>Marzuki | Frontend Engineer</title>
       </Head>
-      <Navbar />
-      <Hero />
-      <About />
-      <TechStack />
-      <Tools />
-      <Portfolio />
-      <ThankYou />
+      <main className="flex-grow">
+        <Navbar />
+        <Hero />
+        <About />
+        <TechStack />
+        <Tools />
+        <Portfolio />
+        <ThankYou />
+      </main>
       <Footer />
-
       <Script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" />
       {/* <Router>
       <Routes>

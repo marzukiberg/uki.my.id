@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import TypingText from "../../atoms/TypingText";
 
 const NameSection = forwardRef((props, ref) => {
   return (
@@ -8,11 +9,20 @@ const NameSection = forwardRef((props, ref) => {
     >
       <p className="font-poppins text-3xl">Hello, I am</p>
       <h2 className="font-poppins text-6xl font-semibold tracking-widest md:text-6xl">
-        Marz<span className="text-blue-400">uki</span>
+        <TypingText
+          text="Marzuki"
+          speed={150}
+          coloredText="uki"
+          className="font-poppins"
+        />
       </h2>
       <p className="font-poppins space-x-3 text-lg text-gray-500">
-        <span>Frontend Web Developer</span> <span>|</span>{" "}
-        <span>React Native Developer</span>
+        <TypingText
+          text="Frontend Web Developer | React Native Developer"
+          speed={50}
+          className="font-poppins"
+          delay={200 * "Marzuki".length}
+        />
       </p>
     </div>
   );

@@ -1,11 +1,10 @@
 import Image from "next/legacy/image";
-import React from "react";
 import { imgLoader } from "../../../utils/img-loader";
 
 const Tools = () => {
   return (
-    <section id="tools" className="relative">
-      <div className="absolute w-64 h-64 left-[10%] -bottom-24 transform rotate-45 opacity-20">
+    <section id="tools" className="relative py-16 sm:py-24">
+      <div className="absolute -bottom-24 left-[10%] hidden h-64 w-64 rotate-45 transform opacity-20 sm:block">
         <Image
           layout="fill"
           objectFit="contain"
@@ -15,15 +14,15 @@ const Tools = () => {
         />
       </div>
 
-      <div className="container mx-auto max-w-7xl p-8 lg:p-16">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2
-          className="text-2xl md:text-4xl font-semibold font-poppins mb-6 text-center"
+          className="font-poppins mb-6 text-center text-2xl font-semibold sm:text-3xl md:text-4xl"
           data-aos="fade-in"
         >
           Tools
         </h2>
-        <div className="flex flex-wrap gap-12 justify-center">
-          <div className="w-16 h-16 relative">
+        <div className="flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-12">
+          <div className="relative h-12 w-12 sm:h-16 sm:w-16">
             <Image
               layout="fill"
               objectFit="contain"
@@ -34,7 +33,7 @@ const Tools = () => {
             />
           </div>
 
-          <div className="w-32 relative">
+          <div className="relative h-12 w-24 sm:h-16 sm:w-32">
             <Image
               layout="fill"
               objectFit="contain"
@@ -45,7 +44,7 @@ const Tools = () => {
             />
           </div>
 
-          <div className="w-16 h-16 relative">
+          <div className="relative h-12 w-12 sm:h-16 sm:w-16">
             <Image
               layout="fill"
               objectFit="contain"

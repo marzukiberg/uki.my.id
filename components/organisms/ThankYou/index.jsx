@@ -3,29 +3,35 @@ import React from "react";
 
 const ThankYou = () => {
   return (
-    <section id="thankyou">
-      <div className="container relative mx-auto max-w-5xl p-8 lg:p-16">
-        <div className="absolute right-0 bottom-0 z-[-1] h-full w-[640px] transform">
-          <Image src="/img/blob6.png" alt="Blob6" width={1000} height={1000} />
+    <section id="thankyou" className="py-16 sm:py-24">
+      <div className="container relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="absolute bottom-0 right-0 z-[-1] h-1/2 w-full max-w-md transform overflow-hidden sm:h-full sm:max-w-[640px] sm:translate-x-1/2">
+          <Image
+            src="/img/blob6.png"
+            alt="Blob6"
+            fill
+            className="h-auto w-full object-cover"
+            priority
+          />
         </div>
-        <div className="flex flex-wrap items-center gap-6 md:flex-nowrap">
+        <div className="flex flex-col items-center gap-8 md:flex-row md:items-center">
           <Image
             loading="lazy"
             src="/img/profile.jpeg"
             alt="Profile Picture"
-            width={300}
-            height={300}
-            className="m-3 mx-auto h-[80%] w-[80%] rounded-full md:w-[40%]"
+            width={250}
+            height={250}
+            className="m-3 h-48 w-48 rounded-full object-cover md:m-0 md:h-64 md:w-64"
           />
-          <div className="container space-y-6 text-center md:text-left">
+          <div className="space-y-6 text-center md:text-left">
             <h2
-              className="font-poppins mb-6 text-2xl font-semibold md:text-4xl"
+              className="font-poppins mb-4 text-2xl font-semibold sm:text-3xl md:text-4xl"
               // data-aos="slide-left"
             >
               Thank you for visit!
             </h2>
             <p
-              className="font-qs leading-8"
+              className="font-qs max-w-2xl leading-relaxed text-gray-700"
               // data-aos="fade-up"
             >
               Please feel free to contact me if you need any further information
@@ -35,7 +41,7 @@ const ThankYou = () => {
             </p>
             <a
               href="#"
-              className="font-poppins inline-block space-x-3 rounded-md bg-blue-400 px-6 py-3 text-white duration-300 hover:shadow-xl focus:ring"
+              className="font-poppins inline-block rounded-md bg-blue-400 px-6 py-3 text-white duration-300 hover:shadow-xl focus:ring sm:space-x-3"
               // data-aos="fade-up"
             >
               <span>Hire Me</span>

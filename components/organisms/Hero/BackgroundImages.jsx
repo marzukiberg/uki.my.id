@@ -74,10 +74,10 @@ const BackgroundImages = ({ nameSectionHeight }) => {
   const logosRef = useRef([]);
 
   useEffect(() => {
-    if (windowWidth === 0 || isMobile) return;
+    if (windowWidth === 0) return; // Removed isMobile condition
 
     logosRef.current.forEach((logo, index) => {
-      // Only apply animations for desktop
+      // Apply animations for both desktop and mobile
       gsap.to(logo, {
         x: `random(-20, 20)`,
         y: `random(-20, 20)`,
@@ -87,64 +87,89 @@ const BackgroundImages = ({ nameSectionHeight }) => {
         ease: "sine.inOut",
       });
     });
-  }, [windowWidth, isMobile]);
+  }, [windowWidth, isMobile]); // Added isMobile to dependency array
 
   return (
-    <>
-      <div className="relative h-full w-full">
-        {!isMobile && (
-          <>
-            {/* Desktop layout only */}
-            {logos.slice(0, 6).map((logo, index) => (
-              <div
-                key={`left-${index}`}
-                ref={(el) => (logosRef.current[index] = el)}
-                className="absolute h-[80px] w-[80px] md:h-[100px] md:w-[100px]"
-                style={calculatePosition(
-                  index,
-                  "left",
-                  windowWidth,
-                  windowHeight,
-                  isMobile,
-                  nameSectionHeight
-                )}
-              >
-                <Image
-                  layout="fill"
-                  objectFit="contain"
-                  loader={imgLoader}
-                  src={logo}
-                  alt={`Logo ${index + 1}`}
-                />
-              </div>
-            ))}
-            {logos.slice(6, 12).map((logo, index) => (
-              <div
-                key={`right-${index}`}
-                ref={(el) => (logosRef.current[index + 6] = el)}
-                className="absolute h-[80px] w-[80px] md:h-[100px] md:w-[100px]"
-                style={calculatePosition(
-                  index,
-                  "right",
-                  windowWidth,
-                  windowHeight,
-                  isMobile,
-                  nameSectionHeight
-                )}
-              >
-                <Image
-                  layout="fill"
-                  objectFit="contain"
-                  loader={imgLoader}
-                  src={logo}
-                  alt={`Logo ${index + 7}`}
-                />
-              </div>
-            ))}
-          </>
-        )}
-      </div>
+    <div className="relative h-full w-full">
+      {/* Mobile layout - logos around the text */}
+      {isMobile && (
+        <>
+          {logos.slice(0, 6).map((logo, index) => (
+            <div
+              key={`mobile-${index}`}
+              ref={(el) => (logosRef.current[index] = el)}
+              className="absolute z-0 h-8 w-8" // Smaller size for mobile
+              style={{
+                left: `${10 + Math.random() * 80}%`, // Random horizontal position
+                top: `${10 + Math.random() * 60}%`, // Random vertical position (avoiding very bottom)
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <Image
+                layout="fill"
+                objectFit="contain"
+                loader={imgLoader}
+                src={logo}
+                alt={`Logo ${index + 1}`}
+              />
+            </div>
+          ))}
+        </>
+      )}
 
+      {/* Desktop layout */}
+      {!isMobile && (
+        <>
+          {logos.slice(0, 6).map((logo, index) => (
+            <div
+              key={`left-${index}`}
+              ref={(el) => (logosRef.current[index] = el)}
+              className="absolute h-[80px] w-[80px] md:h-[100px] md:w-[100px]"
+              style={calculatePosition(
+                index,
+                "left",
+                windowWidth,
+                windowHeight,
+                isMobile,
+                nameSectionHeight
+              )}
+            >
+              <Image
+                layout="fill"
+                objectFit="contain"
+                loader={imgLoader}
+                src={logo}
+                alt={`Logo ${index + 1}`}
+              />
+            </div>
+          ))}
+          {logos.slice(6, 12).map((logo, index) => (
+            <div
+              key={`right-${index}`}
+              ref={(el) => (logosRef.current[index + 6] = el)}
+              className="absolute h-[80px] w-[80px] md:h-[100px] md:w-[100px]"
+              style={calculatePosition(
+                index,
+                "right",
+                windowWidth,
+                windowHeight,
+                isMobile,
+                nameSectionHeight
+              )}
+            >
+              <Image
+                layout="fill"
+                objectFit="contain"
+                loader={imgLoader}
+                src={logo}
+                alt={`Logo ${index + 7}`}
+              />
+            </div>
+          ))}
+        </>
+      )}
+
+      {/* Profile picture - hidden on mobile, shown on desktop */}
       {!isMobile && (
         <div className="absolute bottom-0 left-1/2 z-10 h-[250px] w-[250px] translate-x-[-50%] transform">
           <Image
@@ -156,7 +181,7 @@ const BackgroundImages = ({ nameSectionHeight }) => {
           />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

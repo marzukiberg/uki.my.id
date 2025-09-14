@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import FadeIn from "../../atoms/FadeIn";
 import BackgroundImages from "./BackgroundImages";
 import Blobs from "./Blobs";
 import NameSection from "./NameSection";
@@ -14,14 +15,13 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative flex h-[calc(100vh-64px)] items-center overflow-hidden">
+    <section className="relative flex h-[calc(100vh-64px)] min-h-[400px] items-center overflow-hidden">
       <Blobs />
-      <div className="container relative mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-8">
-        <div
-          className="relative z-20 my-20 space-y-4 text-center md:my-0"
-          data-aos="zoom-in"
-        >
-          <NameSection ref={nameSectionRef} />
+      <div className="container relative mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-4 sm:px-6 md:px-8">
+        <div className="relative z-20 space-y-4 text-center">
+          <FadeIn>
+            <NameSection ref={nameSectionRef} />
+          </FadeIn>
         </div>
         <div className="absolute inset-0 z-10">
           <BackgroundImages nameSectionHeight={nameSectionHeight} />
