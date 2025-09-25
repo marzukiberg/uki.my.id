@@ -1,17 +1,11 @@
-import { v2 as cloudinary } from "cloudinary";
-
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET, // Use environment variable for security
-});
+import fs from "fs";
+import path from "path";
+import { v4 as uuidv4 } from "uuid";
+import formidable from "formidable";
 
 export const config = {
   api: {
-    bodyParser: {
-      sizeLimit: "10mb", // Set desired limit
-    },
+    bodyParser: false, // Disable body parser for file uploads
   },
 };
 
@@ -21,21 +15,57 @@ export default async function handler(req, res) {
   }
 
   try {
-    const fileStr = req.body.file; // Base64 encoded string
-    const uploadResponse = await cloudinary.uploader.upload(fileStr, {
-      upload_preset: "your_upload_preset_name", // Replace with your upload preset
-      folder: "portfolio", // Optional: specify a folder
+    // Configure formidable for file upload
+    const form = formidable({
+      uploadDir: path.join(process.cwd(), "public", "img", "logos"),
+      keepExtensions: true,
+      maxFileSize: 10 * 1024 * 1024, // 10MB limit
+      filename: (name, ext) => `${uuidv4()}${ext}`,
+    });
+
+    // Create uploads directory if it doesn't exist
+    const uploadsDir = path.join(process.cwd(), "public", "uploads");
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    // Parse the form
+    const [fields, files] = await form.parse(req);
+
+    // Get the uploaded file
+    const file = files.file?.[0];
+    if (!file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    // Generate public path
+    const relativePath = path.relative(
+      path.join(process.cwd(), "public"),
+      file.filepath
+    );
+    const publicPath = `/${relativePath.replace(/\\/g, "/")}`;
+
+    console.log("Upload successful:", {
+      path: publicPath,
+      filename: path.basename(file.filepath),
+      originalName: file.originalFilename,
+      size: file.size,
     });
 
     res.status(200).json({
-      public_id: uploadResponse.public_id,
-      url: uploadResponse.secure_url,
-      message: "Image uploaded successfully",
+      success: true,
+      path: publicPath,
+      filename: path.basename(file.filepath),
+      originalName: file.originalFilename,
+      size: file.size,
+      message: "File uploaded successfully",
     });
   } catch (error) {
-    console.error("Error uploading to Cloudinary:", error);
-    res
-      .status(500)
-      .json({ message: "Error uploading image", error: error.message });
+    console.error("Error uploading file:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error uploading file",
+      error: error.message,
+    });
   }
 }

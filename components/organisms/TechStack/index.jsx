@@ -1,50 +1,8 @@
-import React from "react";
 import FadeInUp from "../../atoms/FadeInUp";
 import Blobs from "./Blobs";
 import TechStackItem from "./TechStackItem";
+import dataTechStacks from "../../../data/techstack.json";
 
-const dataTechStacks = [
-  {
-    img: "html5.png",
-    text: "HTML5",
-  },
-  {
-    img: "css3.png",
-    text: "CSS3",
-  },
-  {
-    img: "javascript.png",
-    text: "JavaScript",
-  },
-  {
-    img: "nodejs.png",
-    text: "NodeJS",
-  },
-  {
-    img: "reactjs.png",
-    text: "ReactJS",
-  },
-  {
-    img: "nextjs.png",
-    text: "NextJS",
-  },
-  {
-    img: "tailwindcss.svg",
-    text: "TailwindCSS",
-  },
-  {
-    img: "php.png",
-    text: "PHP",
-  },
-  {
-    img: "mysql.png",
-    text: "MySQL",
-  },
-  {
-    img: "git.png",
-    text: "Git",
-  },
-];
 const TechStack = () => {
   return (
     <section className="relative py-16 sm:py-24" id="skills">

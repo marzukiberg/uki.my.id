@@ -1,7 +1,8 @@
 import Image from "next/image";
 import PropTypes from "prop-types";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react"; // Import useState
 import gsap from "gsap";
+import { getPortfolioImageUrl } from "../../../utils/imageUtils"; // Import helper
 
 const PortfolioCard = ({
   title,
@@ -14,11 +15,15 @@ const PortfolioCard = ({
   const modalRef = useRef(null);
   const imgContainerRef = useRef(null);
   const timeline = useRef(null);
-  const imgSrc = img.startsWith("http")
-    ? img
-    : localImage
-    ? `/img/portfolios/${img}`
-    : `https://res.cloudinary.com/uki14/image/upload${img}`;
+  const placeholderImage = `https://placehold.co/400x300?text=Image+Not+Found`; // Define placeholder
+  const [currentImageSrc, setCurrentImageSrc] = useState(
+    getPortfolioImageUrl({ img, localImage })
+  ); // Use state for image src
+
+  // Handle image loading errors
+  const handleError = () => {
+    setCurrentImageSrc(placeholderImage);
+  };
 
   useEffect(() => {
     // Set initial states
@@ -74,29 +79,21 @@ const PortfolioCard = ({
         <div className="absolute -bottom-full -left-full z-[-1] h-64 w-64 rounded-full bg-blue-300 duration-300 group-hover:-bottom-32 group-hover:-left-32"></div>
         <div className="card-img relative h-64">
           <Image
-            src={imgSrc}
+            src={currentImageSrc || placeholderImage} // Use state for src, fallback to placeholder
             alt={title}
             fill
             className="absolute inset-0 z-[-1] m-0 h-full w-full object-cover blur"
             loading="lazy"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src =
-                "https://placehold.co/400x300?text=Image+Not+Found";
-            }}
+            onError={handleError} // Use the state-updating handler
           />
           <div className="relative h-full">
             <Image
-              src={imgSrc}
+              src={currentImageSrc || placeholderImage} // Use state for src, fallback to placeholder
               alt={title}
               fill
               className="m-0 h-full w-full object-contain"
               loading="lazy"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src =
-                  "https://placehold.co/400x300?text=Image+Not+Found";
-              }}
+              onError={handleError} // Use the state-updating handler
             />
             {/* Overlay with zoom button */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -150,7 +147,7 @@ const PortfolioCard = ({
                     : "bg-blue-400 hover:bg-blue-600 focus:bg-blue-600 focus:ring"
                 } duration-300`}
               >
-                <span className="font-qs">Demo</span>
+                <span className="font-qs">Visit</span>
                 <i className="fas fa-external-link-alt"></i>
               </a>
             </div>
@@ -172,11 +169,12 @@ const PortfolioCard = ({
         </button>
         <div ref={imgContainerRef} className="relative h-[90vh] w-[90vw]">
           <Image
-            src={imgSrc}
+            src={currentImageSrc || placeholderImage} // Use state for src, fallback to placeholder
             alt={title}
             className="object-contain"
             fill
             priority
+            onError={handleError} // Use the state-updating handler
           />
         </div>
       </div>

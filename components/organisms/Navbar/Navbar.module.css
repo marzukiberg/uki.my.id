@@ -1,6 +1,6 @@
 .nav-button {
   position: relative;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .nav-button:hover {
@@ -16,13 +16,15 @@
   height: 100%;
   transform: scaleX(0);
   transform-origin: left;
-  transition: 300ms;
+  transition: transform 0.2s ease;
   border-radius: 6px;
   z-index: -1;
 }
+
 .nav-button:first-child::before {
   background-color: rgb(80, 153, 244);
 }
+
 .nav-button:last-child::before {
   background-color: white;
 }
@@ -31,6 +33,7 @@
   background: transparent !important;
   color: white !important;
 }
+
 .nav-button:last-child:hover {
   background: transparent !important;
   color: rgb(80, 153, 244);

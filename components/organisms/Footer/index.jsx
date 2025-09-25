@@ -25,6 +25,7 @@ const Footer = () => {
               This website was powered by
             </h4>
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+              <PoweredByItem logo="nextjs.png" text="Next.js" />
               <PoweredByItem logo="reactjs.png" text="ReactJS" />
               <PoweredByItem logo="tailwindcss.svg" text="TailwindCSS" />
               <PoweredByItem logo="vite.svg" text="Vite" />

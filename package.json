@@ -10,12 +10,15 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.13",
     "aos": "^2.3.4",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.7.0",
     "clsx": "^2.1.1",
+    "cookie": "^1.0.2",
     "extracted-loader": "^1.0.7",
     "file-loader": "^6.2.0",
+    "formidable": "^3.5.4",
     "formik": "^2.4.6",
     "gsap": "^3.13.0",
     "ignore-loader": "^0.1.2",
@@ -28,19 +31,24 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.3.8",
     "react-select": "^5.10.2",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "url-loader": "^4.1.1",
+    "uuid": "^13.0.0",
     "yup": "^1.7.0"
   },
   "devDependencies": {
+    "@types/node": "^24.4.0",
+    "@types/react": "^19.1.13",
     "autoprefixer": "^10.4.13",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.4",
     "postcss": "^8.4.21",
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.4",
+    "typescript": "^5.9.2"
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }

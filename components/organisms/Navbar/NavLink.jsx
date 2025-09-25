@@ -7,7 +7,7 @@ const NavLink = ({ title, link, onClick }) => {
     <a
       onClick={onClick}
       href={link}
-      className={`font-qs relative block px-6 py-3 text-gray-600 transition-colors hover:text-blue-500 md:inline-block md:px-0 md:py-1 ${styles["navlink"]}`}
+      className={`font-qs relative block px-6 py-3 text-gray-600 transition-colors duration-200 hover:text-blue-500 focus:text-blue-500 focus:outline-none md:inline-block md:px-0 md:py-1 ${styles["navlink"]}`}
     >
       {title}
       <div className={`${styles["navlink-underline"]} hidden md:block`}></div>

@@ -6,7 +6,7 @@ import Socials from "./Socials";
 
 const About = () => {
   return (
-    <section id="about" className="py-12 sm:py-16">
+    <section id="about" className="pb-12 sm:pb-16">
       <div className="relative ml-0 mr-auto max-w-4xl space-y-6 rounded-r-md bg-blue-400 p-6 sm:p-8 md:w-4/5 md:px-12 md:py-16 lg:px-28 lg:py-24">
         <BackgroundAndBlobs />
         <FadeIn>

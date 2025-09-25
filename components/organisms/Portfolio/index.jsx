@@ -1,7 +1,11 @@
 import PortfolioCard from "./PortfolioCard";
 import portfolioData from "../../../data/portfolio.json";
+import { getPortfolioImageUrl } from "../../../utils/imageUtils"; // Import helper
 
 const Portfolio = () => {
+  // Filter out projects with invalid or empty image URLs
+  const validProjects = portfolioData.projects.filter(project => getPortfolioImageUrl(project));
+
   return (
     <section id="portfolio">
       <div className="container mx-auto max-w-7xl p-8 lg:p-16">
@@ -13,7 +17,7 @@ const Portfolio = () => {
         </h2>
 
         <div className="grid gap-6 md:grid-cols-3">
-          {portfolioData.projects.map((project, index) => (
+          {validProjects.map((project, index) => (
             <PortfolioCard key={index} {...project} />
           ))}
         </div>
