@@ -1,6 +1,9 @@
 // import Aos from "aos";
 import Head from "next/head";
 import Script from "next/script";
+import V2Index from "./v2";
+
+/*
 import {
   About,
   Footer,
@@ -11,63 +14,38 @@ import {
   ThankYou,
   Tools,
 } from "/components/organisms";
+*/
 
 const App = () => {
+  /*
   // useEffect(() => {
   //   Aos.init({
   //     easing: "ease",
   //     duration: 700,
   //   });
   // }, []);
-  return (
-    <div className="flex min-h-screen flex-col">
-      <Head>
-        <title>Marzuki | Frontend Engineer</title>
-      </Head>
-      <main className="flex-grow">
-        <Navbar />
-        <Hero />
-        <About />
-        <TechStack />
-        <Tools />
-        <Portfolio />
-        <ThankYou />
-      </main>
-      <Footer />
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" />
-      {/* <Router>
-      <Routes>
-        <Route path="/" exact element={<Home />} />
-        <Route path="/sifdevs-creative/:web" element={<WebTemplates />} />
-        <Route path="/sifdevs-creative" element={<SifdevsCreative />} />
-        <Route
-          path="/UcupDL"
-          element={
-            <>
-              <Helmet>
-                <title>
-                  UcupDL - Pengunduh YouTube sederhana | uki.thedev.id
-                </title>
-              </Helmet>
-              <UcupDL />
-            </>
-          }
-        />
-        <Route
-          path="/hadits-harian"
-          element={
-            <>
-              <Helmet>
-                <title>Dapatkan Notifikasi Hadits Harian | uki.thedev.id</title>
-              </Helmet>
-              <HaditsHarian />
-            </>
-          }
-        />
-      </Routes>
-    </Router> */}
-    </div>
-  );
+  */
+  /*
+  // return (
+  //   <div className="flex min-h-screen flex-col">
+  //     <Head>
+  //       <title>Marzuki | Frontend Engineer</title>
+  //     </Head>
+  //     <main className="flex-grow">
+  //       <Navbar />
+  //       <Hero />
+  //       <About />
+  //       <TechStack />
+  //       <Tools />
+  //       <Portfolio />
+  //       <ThankYou />
+  //     </main>
+  //     <Footer />
+  //     <Script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" />
+  //   </div>
+  // );
+  */
+  return <V2Index />;
 };
 
 export default App;

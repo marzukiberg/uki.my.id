@@ -71,21 +71,13 @@ const PortfolioCard = ({
     <>
       <div
         className={
-          "card group relative overflow-hidden rounded-lg bg-white drop-shadow-lg"
+          "card group relative overflow-hidden rounded-lg bg-white drop-shadow-lg border-2 border-blue-200 hover:shadow-xl hover:scale-105 transition-all duration-300"
         }
         data-aos="fade-up"
       >
         {/* blob effects */}
         <div className="absolute -bottom-full -left-full z-[-1] h-64 w-64 rounded-full bg-blue-300 duration-300 group-hover:-bottom-32 group-hover:-left-32"></div>
-        <div className="card-img relative h-64">
-          <Image
-            src={currentImageSrc || placeholderImage} // Use state for src, fallback to placeholder
-            alt={title}
-            fill
-            className="absolute inset-0 z-[-1] m-0 h-full w-full object-cover blur"
-            loading="lazy"
-            onError={handleError} // Use the state-updating handler
-          />
+        <div className="card-img relative h-64 bg-gradient-to-br from-blue-100 to-purple-100">
           <div className="relative h-full">
             <Image
               src={currentImageSrc || placeholderImage} // Use state for src, fallback to placeholder
@@ -100,9 +92,9 @@ const PortfolioCard = ({
               <div className="absolute inset-0 bg-black opacity-30"></div>
               <button
                 onClick={handleZoom}
-                className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white text-gray-800 transition-transform hover:scale-110"
+                className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white text-gray-800"
               >
-                <i className="fas fa-search-plus text-xl"></i>
+                <i className="fas fa-search-plus text-lg"></i>
               </button>
             </div>
           </div>
@@ -141,11 +133,10 @@ const PortfolioCard = ({
               <a
                 href={link}
                 target={link === "/#" ? null : `_blank`}
-                className={`inline-flex items-center space-x-3 rounded-lg p-3 text-white ${
-                  link === "/#"
-                    ? "cursor-default bg-gray-300"
-                    : "bg-blue-400 hover:bg-blue-600 focus:bg-blue-600 focus:ring"
-                } duration-300`}
+                className={`inline-flex items-center space-x-3 rounded-lg p-3 text-white ${link === "/#"
+                  ? "cursor-default bg-gray-300"
+                  : "bg-blue-400 hover:bg-blue-600 focus:bg-blue-600 focus:ring"
+                  } duration-300`}
               >
                 <span className="font-qs">Visit</span>
                 <i className="fas fa-external-link-alt"></i>

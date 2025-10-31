@@ -7,16 +7,16 @@ export default function Document() {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Quicksand:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Quicksand:wght@400;700&family=Roboto:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
         <meta
           name="description"
-          content="Marzuki - Frontend Engineer from Indonesia, self experienced as a frontend engineer with more than 10 projects."
+          content="Portfolio of Ukay, a Frontend and Fullstack Developer from Indonesia. Offering web development services, website creation, programming solutions, and more than 10 completed projects."
         />
         <meta
           name="keywords"
-          content="web developer, frontend developer, frontend programmer, frontend master, jasa pembuatan website, web programming service"
+          content="web developer, frontend developer, fullstack developer, frontend programmer, fullstack programmer, jasa pembuatan website, web programming service, portfolio developer"
         />
         <link
           rel="stylesheet"
