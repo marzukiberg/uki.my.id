@@ -9,11 +9,63 @@ import AppsMenuButton from './ui/apps-menu-button';
 const SearchHeader = ({ activeTab, setActiveTab, tabs }) => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState(router.query.q || "I'm a Frontend Developer");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const tools = [
+    { name: 'Tools', link: '/tools' },
+    { name: 'TikTok Downloader', link: '/tools/tiktok-downloader' },
+    { name: 'YouTube Downloader', link: '/tools/youtube-downloader' },
+  ];
 
   const handleSearch = (e) => {
     e.preventDefault();
     router.push(`/about?q=${searchQuery}`);
   };
+
+  const isActiveTab = (tab) => {
+    if (tab === 'Tools') return router.pathname.startsWith('/tools');
+    const href = tab.href || (tab === 'Semua' ? '/about' : '/portfolio');
+    return router.pathname === href || router.asPath.startsWith(href) || activeTab === (tab.label || tab);
+  };
+
+  const getTabDisplayName = (tab) => {
+    if (tab === 'Tools') {
+      return activeTab.startsWith('TikTok Downloader') || activeTab.startsWith('YouTube Downloader') ? activeTab : tab;
+    }
+    return tab.label || tab;
+  };
+
+  const SearchForm = ({ className = "" }) => (
+    <form onSubmit={handleSearch} className={`relative ${className}`}>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full rounded-full bg-gray-100 px-6 py-3 pr-32 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Search..."
+      />
+      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-3">
+        <button type="button" className="p-2 hover:bg-gray-200 rounded-full">
+          <Icons.Mic size={20} className="text-gray-600" />
+        </button>
+        <button type="button" className="p-2 hover:bg-gray-200 rounded-full">
+          <Icons.Camera size={20} className="text-gray-600" />
+        </button>
+        <button type="submit" className="p-2 hover:bg-gray-200 rounded-full">
+          <Icons.Search size={20} className="text-gray-600" />
+        </button>
+      </div>
+    </form>
+  );
+
+  const HeaderActions = () => (
+    <div className="flex items-center space-x-4">
+      <AppsMenuButton />
+      <button onClick={() => router.push('/about')} className="p-1 rounded-full hover:bg-gray-100">
+        <Image src="/img/profile.jpeg" alt="Profile" width={32} height={32} className="rounded-full object-cover" />
+      </button>
+    </div>
+  );
 
   return (
     <header className="w-full">
@@ -23,34 +75,11 @@ const SearchHeader = ({ activeTab, setActiveTab, tabs }) => {
           <Link href="/">
             <Brand className="text-2xl font-bold cursor-pointer" />
           </Link>
-          <div className="flex items-center space-x-4">
-            <AppsMenuButton />
-            <button onClick={() => router.push('/about')} className="p-1 rounded-full hover:bg-gray-100">
-              <Image src="/img/profile.jpeg" alt="Profile" width={32} height={32} className="rounded-full object-cover" />
-            </button>
-          </div>
+          <HeaderActions />
         </div>
-        <form onSubmit={handleSearch} className="relative w-full">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-full bg-gray-100 px-6 py-3 pr-32 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Search..."
-          />
-          <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-3">
-            <button type="button" className="p-2 hover:bg-gray-200 rounded-full">
-              <Icons.Mic size={20} className="text-gray-600" />
-            </button>
-            <button type="button" className="p-2 hover:bg-gray-200 rounded-full">
-              <Icons.Camera size={20} className="text-gray-600" />
-            </button>
-            <button type="submit" className="p-2 hover:bg-gray-200 rounded-full">
-              <Icons.Search size={20} className="text-gray-600" />
-            </button>
-          </div>
-        </form>
+        <SearchForm />
       </div>
+
       {/* Desktop Layout */}
       <div className="hidden md:block">
         <div className="flex items-center justify-between p-4">
@@ -58,45 +87,61 @@ const SearchHeader = ({ activeTab, setActiveTab, tabs }) => {
             <Link href="/">
               <Brand className="text-2xl font-bold cursor-pointer" />
             </Link>
-            <form onSubmit={handleSearch} className="relative min-w-[50vw]">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-full bg-gray-100 px-6 py-3 pr-32 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Search..."
-              />
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-3">
-                <button type="button" className="p-2 hover:bg-gray-200 rounded-full">
-                  <Icons.Mic size={20} className="text-gray-600" />
-                </button>
-                <button type="button" className="p-2 hover:bg-gray-200 rounded-full">
-                  <Icons.Camera size={20} className="text-gray-600" />
-                </button>
-                <button type="submit" className="p-2 hover:bg-gray-200 rounded-full">
-                  <Icons.Search size={20} className="text-gray-600" />
-                </button>
-              </div>
-            </form>
+            <SearchForm className="min-w-[50vw]" />
           </div>
-          <div className="flex items-center space-x-4">
-            <AppsMenuButton />
-            <button onClick={() => router.push('/about')} className="p-1 rounded-full hover:bg-gray-100">
-              <Image src="/img/profile.jpeg" alt="Profile" width={32} height={32} className="rounded-full object-cover" />
-            </button>
-          </div>
+          <HeaderActions />
         </div>
       </div>
-      {/* Tabs (link-based) */}
+
+      {/* Navigation Tabs */}
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex space-x-8 border-b border-gray-200">
-          {tabs.map((t) => {
-            const href = t.href || (t === 'Semua' ? '/about' : '/portfolio');
-            const label = t.label || t;
-            const isActive = router.pathname === href || router.asPath.startsWith(href);
+          {tabs.map((tab) => {
+            const tabName = tab.label || tab;
+            const isActive = isActiveTab(tab);
+
+            if (tabName === 'Tools') {
+              return (
+                <div key={tabName} className="relative">
+                  <button
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-1 ${
+                      isActive ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    <span>{getTabDisplayName(tabName)}</span>
+                    <Icons.ChevronDown size={14} />
+                  </button>
+                  {dropdownOpen && (
+                    <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 min-w-[200px]">
+                      {tools.slice(1).map((tool) => (
+                        <button
+                          key={tool.name}
+                          onClick={() => {
+                            setActiveTab(tool.name);
+                            router.push(tool.link);
+                            setDropdownOpen(false);
+                          }}
+                          className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                        >
+                          {tool.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
             return (
-              <Link key={label} href={href} className={`py-2 px-1 border-b-2 font-medium text-sm ${isActive ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>
-                {label}
+              <Link
+                key={tabName}
+                href={tab.href || (tab === 'Semua' ? '/about' : '/portfolio')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  isActive ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                {tabName}
               </Link>
             );
           })}

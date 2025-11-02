@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Head from "next/head";
 import { Button } from "@/components/ui/button";
 
@@ -14,13 +14,13 @@ const Modal = ({
 }) => {
   const [isClosing, setIsClosing] = useState(false);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsClosing(true);
     setTimeout(() => {
       onClose();
       setIsClosing(false);
     }, 300); // Match the duration of the fadeOut animation
-  };
+  }, [onClose]);
 
   const handleCancel = () => {
     if (onCancel) {
@@ -46,7 +46,7 @@ const Modal = ({
       document.body.style.overflow = ""; // Re-enable background scrolling
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isOpen, onClose]); // Added handleClose to dependency array, but it's stable
+  }, [isOpen, onClose, handleClose]);
 
   if (!isOpen && !isClosing) return null;
 
@@ -57,18 +57,16 @@ const Modal = ({
           dangerouslySetInnerHTML={{
             __html: `
               .modal-overlay {
-                animation: ${
-                  isClosing
-                    ? "fadeOut 0.3s ease-out forwards"
-                    : "fadeIn 0.3s ease-out"
-                };
+                animation: ${isClosing
+                ? "fadeOut 0.3s ease-out forwards"
+                : "fadeIn 0.3s ease-out"
+              };
               }
               .modal-content {
-                animation: ${
-                  isClosing
-                    ? "slideOut 0.3s ease-out forwards"
-                    : "slideIn 0.3s ease-out"
-                };
+                animation: ${isClosing
+                ? "slideOut 0.3s ease-out forwards"
+                : "slideIn 0.3s ease-out"
+              };
               }
               @keyframes fadeIn {
                 from { opacity: 0; }

@@ -1,20 +1,21 @@
 import Link from "next/link";
 import * as Icons from "lucide-react";
 import Brand from "../Brand";
+import { Button } from "./Button";
 
 const SearchSection = ({ searchQuery, setSearchQuery, handleSearch, handleFeelingLucky }) => {
     return (
         <div id="search" className="flex flex-col items-center justify-center min-h-screen px-4">
-            <div className="w-full max-w-md text-center">
+            <div className="w-full text-center">
                 {/* Logo or Title */}
-                <div id="logo" className="mb-6 md:mb-8 text-center">
+                <div id="logo" className="mb-4 md:mb-6 text-center">
                     <Link href="/">
                         <Brand className="text-4xl md:text-6xl font-bold flex justify-center cursor-pointer" />
                     </Link>
                 </div>
 
                 {/* Search Input */}
-                <form onSubmit={handleSearch} className="mb-4 relative">
+                <form onSubmit={handleSearch} className="mb-4 relative max-w-md mx-auto">
                     <input
                         type="text"
                         value={searchQuery}
@@ -37,18 +38,43 @@ const SearchSection = ({ searchQuery, setSearchQuery, handleSearch, handleFeelin
 
                 {/* Buttons */}
                 <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
-                    <button
-                        onClick={handleSearch}
-                        className="rounded-full bg-blue-600 px-8 py-3 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
+                    <Button onClick={handleSearch}>
                         Search
-                    </button>
-                    <button
-                        onClick={handleFeelingLucky}
-                        className="rounded-full border border-gray-300 bg-transparent px-8 py-3 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                    >
+                    </Button>
+                    <Button variant="secondary" onClick={handleFeelingLucky}>
                         I&apos;m feeling lucky
-                    </button>
+                    </Button>
+                </div>
+
+                {/* Quick Links */}
+                <div className="mt-4 text-center">
+                    <p className="text-gray-600 mb-2 text-sm">Quick Search:</p>
+                    <div className="flex flex-wrap justify-center gap-1">
+                        <a
+                            href="https://pdfmu.my.id/pdf-cv-review"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-full bg-gray-100 px-6 py-2 text-gray-700 text-sm font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                        >
+                            Review your CV using AI
+                        </a>
+                        <a
+                            href="https://chattoai.ukay.dev/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-full bg-gray-100 px-6 py-2 text-gray-700 text-sm font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                        >
+                            Chat to AI to get insight
+                        </a>
+                        <a
+                            href="https://remover.ukay.app/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-full bg-gray-100 px-6 py-2 text-gray-700 text-sm font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                        >
+                            Remove background from photos
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 const LibrarySelector = ({ isOpen, onClose, onSelectImage }) => {
   const [images, setImages] = useState([]);
@@ -65,10 +66,13 @@ const LibrarySelector = ({ isOpen, onClose, onSelectImage }) => {
                   className="group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-gray-100 hover:ring-2 hover:ring-blue-500"
                   onClick={() => handleImageSelect(image.path)}
                 >
-                  <img
+                  <Image
                     src={image.path}
                     alt={image.name}
+                    width={200}
+                    height={200}
                     className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 transition-all group-hover:bg-opacity-20" />
                   <div className="absolute bottom-2 left-2 right-2">

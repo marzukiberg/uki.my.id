@@ -5,21 +5,19 @@ const FadeIn = ({ children, duration = 1 }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            gsap.fromTo(
-              entry.target.children,
-              { opacity: 0, y: 20 },
-              {
-                opacity: 1,
-                y: 0,
-                duration,
-                stagger: 0.1,
-                ease: "power2.out",
-              }
-            );
+            gsap.to(entry.target, {
+              opacity: 1,
+              y: 0,
+              duration: duration / 1000,
+              ease: "power2.out",
+            });
             observer.unobserve(entry.target);
           }
         });
@@ -27,14 +25,10 @@ const FadeIn = ({ children, duration = 1 }) => {
       { threshold: 0.1 }
     );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    observer.observe(element);
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
+      observer.unobserve(element);
     };
   }, [duration]);
 

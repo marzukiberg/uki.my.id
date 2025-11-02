@@ -42,6 +42,7 @@ pnpm lint     # ESLint check
 ### UI Components
 - **Framework**: shadcn/ui with Radix UI primitives
 - **Styling**: Tailwind CSS with CSS custom properties
+- **Icons**: Always use Lucide React icons instead of manual SVG elements
 - **Path Aliases**: `@/components/*` and `@/lib/*` configured in `tsconfig.json`
 
 ### Component Organization

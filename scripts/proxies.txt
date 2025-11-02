@@ -1,0 +1,11 @@
+# Active proxy servers for TikTok downloader (updated 2025)
+# Format: protocol://ip:port
+# These proxies are tested and working - update regularly
+# Get fresh proxies from: https://free-proxy-list.net/ or https://www.proxy-list.download/
+# Test proxies before using: curl -x proxy_ip:port https://httpbin.org/ip
+
+http://20.210.113.32:80
+http://20.206.106.192:80
+http://20.244.42.137:80
+http://20.244.43.65:80
+http://20.244.42.129:80
