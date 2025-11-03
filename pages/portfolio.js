@@ -1,19 +1,19 @@
-import Head from 'next/head';
-import SearchLayout from '../components/SearchLayout';
-import PortfolioGrid from '../components/organisms/Portfolio/PortfolioGrid';
-import { useState } from 'react';
+import Head from "next/head";
+import AppLayout from "../components/AppLayout";
+import PortfolioGrid from "../components/organisms/Portfolio/PortfolioGrid";
+import { useState } from "react";
 
 export default function PortfolioPage() {
-  const [activeTab, setActiveTab] = useState('Portfolio');
+  const [activeTab, setActiveTab] = useState("Portfolio");
 
   return (
     <>
       <Head>
         <title>Ukay.dev | Portfolio</title>
       </Head>
-      <SearchLayout activeTab={activeTab} setActiveTab={setActiveTab}>
+      <AppLayout activeTab={activeTab} setActiveTab={setActiveTab}>
         <PortfolioGrid />
-      </SearchLayout>
+      </AppLayout>
     </>
   );
 }

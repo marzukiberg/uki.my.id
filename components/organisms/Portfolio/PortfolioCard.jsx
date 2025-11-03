@@ -71,7 +71,7 @@ const PortfolioCard = ({
     <>
       <div
         className={
-          "card group relative overflow-hidden rounded-lg bg-white drop-shadow-lg border-2 border-blue-200 hover:shadow-xl hover:scale-105 transition-all duration-300"
+          "card group relative overflow-hidden rounded-lg border-2 border-blue-200 bg-white drop-shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
         }
         data-aos="fade-up"
       >
@@ -133,10 +133,11 @@ const PortfolioCard = ({
               <a
                 href={link}
                 target={link === "/#" ? null : `_blank`}
-                className={`inline-flex items-center space-x-3 rounded-lg p-3 text-white ${link === "/#"
-                  ? "cursor-default bg-gray-300"
-                  : "bg-blue-400 hover:bg-blue-600 focus:bg-blue-600 focus:ring"
-                  } duration-300`}
+                className={`inline-flex items-center space-x-3 rounded-lg p-3 text-white ${
+                  link === "/#"
+                    ? "cursor-default bg-gray-300"
+                    : "bg-blue-400 hover:bg-blue-600 focus:bg-blue-600 focus:ring"
+                } duration-300`}
               >
                 <span className="font-qs">Visit</span>
                 <i className="fas fa-external-link-alt"></i>

@@ -6,10 +6,10 @@ const BackgroundAndBlobs = () => {
   return (
     <>
       <div
-        className="absolute bg-blue-400 bg-opacity-25 w-full h-full rounded-r-md left-0 top-4 md:left-4 z-[-1]"
+        className="absolute left-0 top-4 z-[-1] h-full w-full rounded-r-md bg-blue-400 bg-opacity-25 md:left-4"
         data-aos="fade-in"
       ></div>
-      <div className="absolute left-0 -top-6 w-48 h-full">
+      <div className="absolute -top-6 left-0 h-full w-48">
         <Image
           layout="fill"
           objectFit="cover"
@@ -18,7 +18,7 @@ const BackgroundAndBlobs = () => {
           alt="Blob"
         />
       </div>
-      <div className="absolute right-0 bottom-0 w-96 h-full">
+      <div className="absolute bottom-0 right-0 h-full w-96">
         <Image
           layout="fill"
           objectFit="contain"

@@ -25,6 +25,14 @@
       "link": "https://pdfmu.my.id"
     },
     {
+      "title": "Simakin Idaman",
+      "text": "website sistem informasi pemantauan kinerja kota dumai",
+      "img": "https://res.cloudinary.com/uki14/image/upload/v1762153835/uki.my.id/portfolio/Screenshot_2025-11-03_at_14.10.26_sghhk6.png",
+      "icon": "BarChart3",
+      "stacks": ["nextjs.png", "tailwindcss.svg"],
+      "link": "https://simakinidaman.dumaikota.go.id/"
+    },
+    {
       "title": "Studio8.AI",
       "text": "Create stunning AI-generated images using state-of-the-art models",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1731835917/frontendonesia/projects/studio8/poovkwgxcfjuucu89u4n.png",

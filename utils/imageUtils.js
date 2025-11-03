@@ -3,7 +3,7 @@ const getPortfolioImageUrl = (item) => {
 
   if (item.localImage) {
     return `/img/${item.img}`;
-  } else if (item.img.startsWith('/')) {
+  } else if (item.img.startsWith("/")) {
     // Assume it's a relative Cloudinary path
     return `https://res.cloudinary.com/uki14/image/upload${item.img}`;
   }

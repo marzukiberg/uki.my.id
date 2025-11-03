@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write \"pages/**/*.{js,jsx,ts,tsx}\" \"components/**/*.{js,jsx,ts,tsx}\" \"lib/**/*.{js,jsx,ts,tsx}\" \"utils/**/*.{js,jsx,ts,tsx}\" \"hooks/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -34,11 +35,12 @@
     "react-dropzone": "^14.3.8",
     "react-select": "^5.10.2",
     "sonner": "^2.0.7",
+    "swiper": "^12.0.3",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "tiny-slider": "^2.9.4",
     "url-loader": "^4.1.1",
     "uuid": "^13.0.0",
+    "yet-another-react-lightbox": "^3.25.0",
     "yup": "^1.7.0"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Head from "next/head";
 
 const TikTokDownloaderV2Page = () => {
   return null;

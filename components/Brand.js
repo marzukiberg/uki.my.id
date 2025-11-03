@@ -1,6 +1,8 @@
 import React from "react";
 
-const Brand = ({ className = "text-2xl font-bold flex justify-center md:justify-start" }) => {
+const Brand = ({
+  className = "text-2xl font-bold flex justify-center md:justify-start",
+}) => {
   return (
     <h1 className={className}>
       <span className="text-blue-500">U</span>

@@ -23,7 +23,7 @@ const WebTemplates = () => {
       <iframe
         ref={iFrame}
         frameBorder="0"
-        className="w-screen h-screen"
+        className="h-screen w-screen"
       ></iframe>
     </div>
   );

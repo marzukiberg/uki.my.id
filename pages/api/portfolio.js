@@ -58,12 +58,10 @@ export default function handler(req, res) {
         })
         .then((success) => {
           if (success) {
-            res
-              .status(201)
-              .json({
-                message: "Portfolio item added successfully",
-                item: newItem,
-              });
+            res.status(201).json({
+              message: "Portfolio item added successfully",
+              item: newItem,
+            });
           } else {
             res.status(500).json({ message: "Error adding portfolio item" });
           }
@@ -93,12 +91,10 @@ export default function handler(req, res) {
         })
         .then((success) => {
           if (success) {
-            res
-              .status(200)
-              .json({
-                message: "Portfolio item updated successfully",
-                item: { id, ...updatedItem },
-              });
+            res.status(200).json({
+              message: "Portfolio item updated successfully",
+              item: { id, ...updatedItem },
+            });
           } else {
             res.status(500).json({ message: "Error updating portfolio item" });
           }

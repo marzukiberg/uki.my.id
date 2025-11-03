@@ -19,14 +19,14 @@ const Popover = ({ children, content }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const renderContent = () => {
-    if (typeof content === 'function') {
+    if (typeof content === "function") {
       return content(setTooltip);
     }
     return content;
@@ -34,19 +34,25 @@ const Popover = ({ children, content }) => {
 
   return (
     <div className="relative" ref={popoverRef}>
-      <div onClick={() => setIsVisible(!isVisible)}>
-        {children}
-      </div>
+      <div onClick={() => setIsVisible(!isVisible)}>{children}</div>
       {isVisible && (
-        <div className="absolute right-0 mt-2 w-max bg-white border border-gray-200 rounded-lg shadow-lg z-10 transition-opacity duration-200 ease-in-out opacity-100">
-          <div className="p-6">
-            {renderContent()}
-          </div>
+        <div className="absolute right-0 z-10 mt-2 w-max rounded-lg border border-gray-200 bg-white opacity-100 shadow-lg transition-opacity duration-200 ease-in-out">
+          <div className="p-6">{renderContent()}</div>
         </div>
       )}
       {tooltip && (
-        <div className="absolute z-20 p-2 bg-white border border-gray-200 rounded-lg shadow-lg" style={{ top: tooltip.y, left: tooltip.x }}>
-          <Image src={tooltip.img} alt={tooltip.title} width={150} height={100} className="rounded" unoptimized />
+        <div
+          className="absolute z-20 rounded-lg border border-gray-200 bg-white p-2 shadow-lg"
+          style={{ top: tooltip.y, left: tooltip.x }}
+        >
+          <Image
+            src={tooltip.img}
+            alt={tooltip.title}
+            width={150}
+            height={100}
+            className="rounded"
+            unoptimized
+          />
         </div>
       )}
     </div>
@@ -66,18 +72,21 @@ const SearchPage = () => {
   const tabs = ["Tentang", "Portfolio", "Kontak"];
 
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: 'Roboto, sans-serif' }}>
+    <div
+      className="min-h-screen bg-white"
+      style={{ fontFamily: "Roboto, sans-serif" }}
+    >
       <Head>
         <title>Ukay.dev | Frontend Developer | Fullstack Developer</title>
       </Head>
 
       {/* Header */}
       <header className="border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <div className="flex items-center space-x-4">
             <h1 className="text-2xl font-bold text-blue-500">Ukay.dev</h1>
           </div>
-          <div className="flex-1 max-w-2xl mx-8 relative">
+          <div className="relative mx-8 max-w-2xl flex-1">
             <input
               type="text"
               value={searchQuery}
@@ -88,7 +97,7 @@ const SearchPage = () => {
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 rounded-full"
+                className="absolute right-3 top-1/2 -translate-y-1/2 transform rounded-full p-1 hover:bg-gray-200"
               >
                 <Icons.X size={18} className="text-gray-500" />
               </button>
@@ -97,27 +106,58 @@ const SearchPage = () => {
           <Popover
             content={(setTooltip) => (
               <div className="grid grid-cols-3 gap-4">
-                {portfolioData.projects.filter(p => p.title).slice(0, 9).map((project, index) => (
-                  <a
-                    key={index}
-                    href={project.link && project.link !== "/#" ? project.link : "#"}
-                    target={project.link && project.link !== "/#" ? "_blank" : undefined}
-                    rel="noopener noreferrer"
-                    className={`block p-4 text-center text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors max-w-24 ${!project.link || project.link === "/#" ? "cursor-default pointer-events-none" : ""}`}
-                    onMouseEnter={(e) => setTooltip({ img: project.img, title: project.title, x: e.clientX + 10, y: e.clientY + 10 })}
-                    onMouseLeave={() => setTooltip(null)}
-                  >
-                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-200 rounded-lg flex items-center justify-center">
-                      {React.createElement(Icons[project.icon] || Icons.Circle, { size: 24, className: "text-gray-700" })}
-                    </div>
-                    <div className="text-xs leading-tight break-words">{project.title}</div>
-                  </a>
-                ))}
+                {portfolioData.projects
+                  .filter((p) => p.title)
+                  .slice(0, 9)
+                  .map((project, index) => (
+                    <a
+                      key={index}
+                      href={
+                        project.link && project.link !== "/#"
+                          ? project.link
+                          : "#"
+                      }
+                      target={
+                        project.link && project.link !== "/#"
+                          ? "_blank"
+                          : undefined
+                      }
+                      rel="noopener noreferrer"
+                      className={`block max-w-24 rounded-lg p-4 text-center text-sm text-gray-700 transition-colors hover:bg-gray-100 ${
+                        !project.link || project.link === "/#"
+                          ? "pointer-events-none cursor-default"
+                          : ""
+                      }`}
+                      onMouseEnter={(e) =>
+                        setTooltip({
+                          img: project.img,
+                          title: project.title,
+                          x: e.clientX + 10,
+                          y: e.clientY + 10,
+                        })
+                      }
+                      onMouseLeave={() => setTooltip(null)}
+                    >
+                      <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-200">
+                        {React.createElement(
+                          Icons[project.icon] || Icons.Circle,
+                          { size: 24, className: "text-gray-700" }
+                        )}
+                      </div>
+                      <div className="break-words text-xs leading-tight">
+                        {project.title}
+                      </div>
+                    </a>
+                  ))}
               </div>
             )}
           >
-            <button className="p-2 rounded-full hover:bg-gray-100">
-              <svg className="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+            <button className="rounded-full p-2 hover:bg-gray-100">
+              <svg
+                className="h-6 w-6 text-gray-700"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <circle cx="6" cy="6" r="1.5" />
                 <circle cx="12" cy="6" r="1.5" />
                 <circle cx="18" cy="6" r="1.5" />
@@ -133,13 +173,13 @@ const SearchPage = () => {
         </div>
 
         {/* Tabs */}
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="mx-auto max-w-6xl px-4">
           <div className="flex space-x-8 border-b border-gray-200">
             {tabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`border-b-2 px-1 py-2 text-sm font-medium ${
                   activeTab === tab
                     ? "border-blue-500 text-blue-500"
                     : "border-transparent text-gray-500 hover:text-gray-700"
@@ -153,7 +193,7 @@ const SearchPage = () => {
       </header>
 
       {/* Content */}
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <main className="mx-auto max-w-6xl px-4 py-8">
         {activeTab === "Tentang" && <About />}
         {activeTab === "Portfolio" && <div>Portfolio Content</div>}
         {activeTab === "Kontak" && <div>Contact Content</div>}

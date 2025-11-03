@@ -68,20 +68,17 @@ const FieldBuilder = ({
     const [isSubmitting, setIsSubmitting] = React.useState(false);
 
     // Manual validation function for non-Formik mode
-    const validateField = React.useCallback(
-      async (name, value) => {
-        if (!validationSchema || withFormik) return;
+    const validateField = React.useCallback(async (name, value) => {
+      if (!validationSchema || withFormik) return;
 
-        try {
-          const fieldSchema = Yup.reach(validationSchema, name);
-          await fieldSchema.validate(value);
-          setLocalErrors((prev) => ({ ...prev, [name]: undefined }));
-        } catch (error) {
-          setLocalErrors((prev) => ({ ...prev, [name]: error.message }));
-        }
-      },
-      []
-    );
+      try {
+        const fieldSchema = Yup.reach(validationSchema, name);
+        await fieldSchema.validate(value);
+        setLocalErrors((prev) => ({ ...prev, [name]: undefined }));
+      } catch (error) {
+        setLocalErrors((prev) => ({ ...prev, [name]: error.message }));
+      }
+    }, []);
 
     // Manual form validation for save
     const validateForm = React.useCallback(async () => {
@@ -176,19 +173,20 @@ const FieldBuilder = ({
                 placeholder={field.placeholder}
                 {...(withFormik
                   ? {
-                    value: values[field.name] || "",
-                    onBlur: () =>
-                      setTouched({ ...touched, [field.name]: true }),
-                  }
+                      value: values[field.name] || "",
+                      onBlur: () =>
+                        setTouched({ ...touched, [field.name]: true }),
+                    }
                   : {
-                    defaultValue:
-                      currentFormData[field.name] || field.defaultValue || "",
-                  })}
+                      defaultValue:
+                        currentFormData[field.name] || field.defaultValue || "",
+                    })}
                 onChange={currentHandleChange}
-                className={`rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500 ${currentErrors[field.name] && currentTouched[field.name]
+                className={`rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500 ${
+                  currentErrors[field.name] && currentTouched[field.name]
                     ? "border-red-500"
                     : "border-gray-300"
-                  }`}
+                }`}
               />
             )}
             {field.type === "dropzone" && (

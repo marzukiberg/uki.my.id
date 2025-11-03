@@ -1,6 +1,6 @@
-import { spawn } from 'child_process';
-import path from 'path';
-import got from 'got';
+import { spawn } from "child_process";
+import path from "path";
+import got from "got";
 
 const RATE_LIMIT_WINDOW = 60000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 5;
@@ -12,7 +12,9 @@ function checkRateLimit(ip) {
   const userRequests = rateLimitStore.get(ip) || [];
 
   // Filter out old requests
-  const recentRequests = userRequests.filter(time => now - time < RATE_LIMIT_WINDOW);
+  const recentRequests = userRequests.filter(
+    (time) => now - time < RATE_LIMIT_WINDOW
+  );
 
   if (recentRequests.length >= RATE_LIMIT_MAX_REQUESTS) {
     return false;
@@ -30,14 +32,17 @@ async function callTikwmAPI(url, maxRetries = 3) {
       console.log(`Tikwm API attempt ${attempt}/${maxRetries} for: ${url}`);
 
       if (attempt > 1) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
-      const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`;
+      const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(
+        url
+      )}&hd=1`;
       const response = await got.get(apiUrl, {
         timeout: { request: 10000 },
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         },
       });
 
@@ -46,16 +51,18 @@ async function callTikwmAPI(url, maxRetries = 3) {
       if (data.code === 0 && data.data) {
         return { success: true, data: data.data };
       } else {
-        throw new Error(data.msg || 'API returned error');
+        throw new Error(data.msg || "API returned error");
       }
     } catch (error) {
       console.error(`Tikwm API attempt ${attempt} failed:`, error.message);
 
       if (attempt === maxRetries) {
-        throw new Error(`Failed after ${maxRetries} attempts: ${error.message}`);
+        throw new Error(
+          `Failed after ${maxRetries} attempts: ${error.message}`
+        );
       }
 
-      await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
+      await new Promise((resolve) => setTimeout(resolve, 2000 * attempt));
     }
   }
 }
@@ -63,78 +70,87 @@ async function callTikwmAPI(url, maxRetries = 3) {
 // Get media info using Python script
 async function getPythonMediaInfo(url) {
   return new Promise((resolve, reject) => {
-    const scriptPath = path.join(process.cwd(), 'scripts', 'download_tiktok.py');
+    const scriptPath = path.join(
+      process.cwd(),
+      "scripts",
+      "download_tiktok.py"
+    );
 
-    const pythonProcess = spawn('python3', [scriptPath, url, 'info'], {
-      cwd: path.join(process.cwd(), 'scripts'),
+    const pythonProcess = spawn("python3", [scriptPath, url, "info"], {
+      cwd: path.join(process.cwd(), "scripts"),
       env: {
         ...process.env,
-        PATH: `${path.join(process.cwd(), 'scripts', 'venv', 'bin')}:${process.env.PATH}`,
-        VIRTUAL_ENV: path.join(process.cwd(), 'scripts', 'venv'),
+        PATH: `${path.join(process.cwd(), "scripts", "venv", "bin")}:${
+          process.env.PATH
+        }`,
+        VIRTUAL_ENV: path.join(process.cwd(), "scripts", "venv"),
       },
     });
 
-    let stdout = '';
-    let stderr = '';
+    let stdout = "";
+    let stderr = "";
 
-    pythonProcess.stdout.on('data', (data) => {
+    pythonProcess.stdout.on("data", (data) => {
       stdout += data.toString();
     });
 
-    pythonProcess.stderr.on('data', (data) => {
+    pythonProcess.stderr.on("data", (data) => {
       stderr += data.toString();
     });
 
-    pythonProcess.on('close', (code) => {
+    pythonProcess.on("close", (code) => {
       if (code === 0) {
         try {
           const info = JSON.parse(stdout.trim());
           resolve(info);
         } catch (parseError) {
-          console.error('Failed to parse Python output:', parseError);
-          reject(new Error('Failed to parse video info'));
+          console.error("Failed to parse Python output:", parseError);
+          reject(new Error("Failed to parse video info"));
         }
       } else {
-        console.error('Python script error:', stderr);
-        reject(new Error(stderr || 'Failed to get video info'));
+        console.error("Python script error:", stderr);
+        reject(new Error(stderr || "Failed to get video info"));
       }
     });
 
-    pythonProcess.on('error', (error) => {
-      console.error('Failed to start Python process:', error);
-      reject(new Error('Failed to execute info script'));
+    pythonProcess.on("error", (error) => {
+      console.error("Failed to start Python process:", error);
+      reject(new Error("Failed to execute info script"));
     });
   });
 }
 
 export default async function handler(req, res) {
   // Get client IP for rate limiting
-  const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
+  const clientIP =
+    req.headers["x-forwarded-for"] || req.connection.remoteAddress || "unknown";
 
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST']);
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  if (req.method !== "POST") {
+    res.setHeader("Allow", ["POST"]);
+    return res
+      .status(405)
+      .json({ success: false, message: "Method not allowed" });
   }
 
   const { url } = req.body;
 
   if (!url) {
-    return res.status(400).json({ success: false, message: 'URL is required' });
+    return res.status(400).json({ success: false, message: "URL is required" });
   }
 
   // Rate limiting check
   if (!checkRateLimit(clientIP)) {
     return res.status(429).json({
       success: false,
-      message: 'Too many requests. Please wait a minute before trying again.'
+      message: "Too many requests. Please wait a minute before trying again.",
     });
   }
 
   try {
-    console.log('Server-side processing URL:', url);
+    console.log("Server-side processing URL:", url);
 
     // Check if it's a photo URL
-    const isPhoto = url.includes('/photo/');
+    const isPhoto = url.includes("/photo/");
 
     if (isPhoto) {
       // Use tikwm.com API for photos
@@ -145,41 +161,41 @@ export default async function handler(req, res) {
         const images = data.images.map((imageUrl, index) => ({
           url: imageUrl,
           index: index + 1,
-          size: null // Size will be determined during download
+          size: null, // Size will be determined during download
         }));
 
         return res.status(200).json({
           success: true,
           isPhoto: true,
           images: images,
-          title: data.title || 'TikTok Photo',
-          author: data.author?.nickname || 'Unknown',
-          originalUrl: url
+          title: data.title || "TikTok Photo",
+          author: data.author?.nickname || "Unknown",
+          originalUrl: url,
         });
       } else {
-        throw new Error('No images found in response');
+        throw new Error("No images found in response");
       }
     } else {
       // Use Python script for videos to get size info
       const info = await getPythonMediaInfo(url);
-      
+
       return res.status(200).json({
         success: true,
         isPhoto: false,
-        title: info.title || 'TikTok Video',
-        author: info.author || 'Unknown',
+        title: info.title || "TikTok Video",
+        author: info.author || "Unknown",
         bestSize: info.best_size || null,
         worstSize: info.worst_size || null,
         regularUrl: url, // Store original URL
         hdUrl: url,
-        originalUrl: url
+        originalUrl: url,
       });
     }
   } catch (error) {
-    console.error('Server-side error:', error);
+    console.error("Server-side error:", error);
     return res.status(500).json({
       success: false,
-      message: error.message || 'Failed to process URL'
+      message: error.message || "Failed to process URL",
     });
   }
 }
@@ -187,7 +203,7 @@ export default async function handler(req, res) {
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '10mb',
+      sizeLimit: "10mb",
     },
   },
 };

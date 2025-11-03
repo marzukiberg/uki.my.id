@@ -1,12 +1,10 @@
-"use client"
+"use client";
 
-import { Toaster as Sonner } from "sonner"
+import { Toaster as Sonner } from "sonner";
 
-const Toaster = ({
-  ...props
-}) => {
+const Toaster = ({ ...props }) => {
   return (
-    (<Sonner
+    <Sonner
       theme="light"
       className="toaster group"
       toastOptions={{
@@ -20,8 +18,9 @@ const Toaster = ({
             "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
         },
       }}
-      {...props} />)
+      {...props}
+    />
   );
-}
+};
 
-export { Toaster }
+export { Toaster };

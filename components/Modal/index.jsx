@@ -1,7 +1,17 @@
-import React from 'react';
-import styles from './Modal.module.css';
+import React from "react";
+import styles from "./Modal.module.css";
 
-const Modal = ({ isOpen, onClose, title, subtitle, children, onSave, onCancel, saveButtonText = 'Save', cancelButtonText = 'Cancel' }) => {
+const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  subtitle,
+  children,
+  onSave,
+  onCancel,
+  saveButtonText = "Save",
+  cancelButtonText = "Cancel",
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -16,9 +26,7 @@ const Modal = ({ isOpen, onClose, title, subtitle, children, onSave, onCancel, s
             <ion-icon name="close-outline"></ion-icon>
           </button>
         </div>
-        <div className={styles.modalBody}>
-          {children}
-        </div>
+        <div className={styles.modalBody}>{children}</div>
         {(onSave || onCancel) && (
           <div className={styles.modalFooter}>
             {onCancel && (

@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const PageToolbar = ({ children }) => {
-  return <div className="flex justify-between items-center">{children}</div>;
+  return <div className="flex items-center justify-between">{children}</div>;
 };
 
 export default PageToolbar;

@@ -5,7 +5,7 @@ import { imgLoader } from "../../../utils/img-loader";
 const Blobs = () => {
   return (
     <>
-      <div className="absolute left-0 top-0 z-[-1] w-96 h-96">
+      <div className="absolute left-0 top-0 z-[-1] h-96 w-96">
         <Image
           layout="fill"
           objectFit="cover"
@@ -14,7 +14,7 @@ const Blobs = () => {
           alt="Blob"
         />
       </div>
-      <div className="absolute right-0 bottom-0 z-[-1] w-64 h-full">
+      <div className="absolute bottom-0 right-0 z-[-1] h-full w-64">
         <Image
           layout="fill"
           objectFit="cover"

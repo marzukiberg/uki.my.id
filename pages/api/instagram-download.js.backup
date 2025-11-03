@@ -1,0 +1,434 @@
+import { spawn } from "child_process";
+import path from "path";
+
+// Improved rate limiting with sliding window
+const rateLimitStore = new Map();
+
+// Rate limit configurations
+const RATE_LIMITS = {
+  info: {
+    windowMs: 60 * 1000, // 1 minute
+    maxRequests: 15, // 15 info requests per minute
+    message: "Too many info requests",
+  },
+  download: {
+    windowMs: 60 * 1000, // 1 minute
+    maxRequests: 8, // 8 downloads per minute
+    message: "Too many download requests",
+  },
+};
+
+// Periodic cleanup to prevent memory leaks (more frequent cleanup)
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, data] of rateLimitStore.entries()) {
+    // Remove entries older than the longest window
+    const maxWindow = Math.max(
+      ...Object.values(RATE_LIMITS).map((limit) => limit.windowMs)
+    );
+    if (now - data.lastRequest > maxWindow * 2) {
+      rateLimitStore.delete(key);
+    }
+  }
+}, 30 * 1000); // Clean up every 30 seconds
+
+function checkRateLimit(ip, type = "download") {
+  const now = Date.now();
+  const limit = RATE_LIMITS[type];
+  const key = `${ip}:${type}`;
+
+  // Get or create user data
+  let userData = rateLimitStore.get(key);
+  if (!userData) {
+    userData = {
+      requests: [],
+      lastRequest: now,
+    };
+    rateLimitStore.set(key, userData);
+  }
+
+  // Clean up old requests outside the window
+  userData.requests = userData.requests.filter(
+    (timestamp) => now - timestamp < limit.windowMs
+  );
+
+  // Check if limit exceeded
+  if (userData.requests.length >= limit.maxRequests) {
+    // Calculate when the oldest request will expire
+    const oldestRequest = Math.min(...userData.requests);
+    const resetTime = oldestRequest + limit.windowMs;
+    const waitTimeSeconds = Math.ceil((resetTime - now) / 1000);
+
+    return {
+      allowed: false,
+      resetTime,
+      waitTimeSeconds,
+      message: limit.message,
+    };
+  }
+
+  // Add current request
+  userData.requests.push(now);
+  userData.lastRequest = now;
+
+  return { allowed: true };
+}
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
+
+  // Get client IP for rate limiting
+  const clientIP =
+    req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    req.headers["x-real-ip"] ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    "unknown";
+
+  // Determine request type for rate limiting
+  const requestType = req.body.getInfo ? "info" : "download";
+
+  // Check rate limit
+  const rateLimitResult = checkRateLimit(clientIP, requestType);
+  if (!rateLimitResult.allowed) {
+    console.log(
+      `Rate limit exceeded for IP: ${clientIP}, type: ${requestType}`
+    );
+    return res.status(429).json({
+      success: false,
+      message: rateLimitResult.message,
+      retryAfter: rateLimitResult.waitTimeSeconds,
+      details: `Please wait ${rateLimitResult.waitTimeSeconds} seconds before trying again.`,
+    });
+  }
+
+  const { url, quality = "best", getInfo = false } = req.body;
+
+  if (!url) {
+    return res.status(400).json({ message: "Instagram URL is required" });
+  }
+
+  // Basic URL validation
+  try {
+    const urlObj = new URL(url);
+    if (!urlObj.hostname.includes("instagram.com")) {
+      return res.status(400).json({ message: "Invalid Instagram URL" });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid URL format" });
+  }
+
+  // If getInfo is true, return video information instead of downloading
+  if (getInfo) {
+    return getMediaInfo(url, res);
+  }
+
+  // Validate quality parameter for download
+  if (!["best", "worst"].includes(quality)) {
+    return res
+      .status(400)
+      .json({ message: 'Invalid quality parameter. Use "best" or "worst"' });
+  }
+
+  // Otherwise, proceed with download
+  return downloadMedia(url, quality, res);
+}
+
+async function getMediaInfo(url, res) {
+  try {
+    console.log("Getting media info for:", url);
+
+    // Clean the URL by removing query parameters
+    const cleanUrl = url.split("?")[0];
+    console.log("Using clean URL:", cleanUrl);
+
+    // Try yt-dlp first
+    console.log("Trying yt-dlp first...");
+    const ytDlpResult = await tryYtDlpInfo(cleanUrl);
+
+    if (ytDlpResult.success) {
+      console.log("yt-dlp succeeded, returning result");
+      res.status(200).json(ytDlpResult.data);
+      return;
+    }
+
+    // If yt-dlp fails, try instaloader
+    console.log("yt-dlp failed, trying instaloader...");
+    const instaloaderResult = await tryInstaloaderInfo(cleanUrl);
+
+    if (instaloaderResult.success) {
+      console.log("instaloader succeeded, returning result");
+      res.status(200).json(instaloaderResult.data);
+      return;
+    }
+
+    // Both methods failed
+    res.status(500).json({
+      success: false,
+      message:
+        "Unable to download from Instagram. Both yt-dlp and instaloader failed. Instagram has restricted automated access.",
+      error: "All download methods failed",
+      suggestion:
+        "Try using a web-based Instagram downloader or ensure the post is public.",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+  async function downloadMedia(url, quality, res) {
+    try {
+      console.log("Downloading media:", url, "quality:", quality);
+
+      // Clean the URL by removing query parameters
+      const cleanUrl = url.split("?")[0];
+      console.log("Using clean URL:", cleanUrl);
+
+      // Try yt-dlp first for download
+      console.log("Trying yt-dlp download first...");
+      const ytDlpResult = await tryYtDlpDownload(cleanUrl, quality, res);
+
+      if (ytDlpResult.success) {
+        console.log("yt-dlp download succeeded");
+        return;
+      }
+
+      // If yt-dlp fails, try instaloader
+      console.log("yt-dlp download failed, trying instaloader...");
+      const instaloaderResult = await tryInstaloaderDownload(
+        cleanUrl,
+        quality,
+        res
+      );
+
+      if (instaloaderResult.success) {
+        console.log("instaloader download succeeded");
+        return;
+      }
+
+      // Both methods failed
+      if (!res.headersSent) {
+        res.status(500).json({
+          success: false,
+          message:
+            "Unable to download from Instagram. Both yt-dlp and instaloader failed.",
+          error: "All download methods failed",
+          suggestion: "Try using a web-based Instagram downloader.",
+        });
+      }
+    } catch (error) {
+      console.error("API error:", error);
+      if (!res.headersSent) {
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+          error: error.message,
+        });
+      }
+    }
+  }
+
+  // Helper function to try yt-dlp
+  async function tryYtDlpInfo(cleanUrl) {
+    return new Promise((resolve) => {
+      // Build arguments based on latest yt-dlp documentation
+      const args = [
+        "--no-warnings",
+        "--dump-json",
+        // Use Chrome-131 impersonation to bypass blocking
+        "--impersonate",
+        "Chrome-131:Macos-14",
+        // Instagram extractor arguments from documentation
+        "--extractor-args",
+        "instagram:app_id=936619743392459",
+        // Skip certificate verification for better compatibility
+        "--no-check-certificates",
+        // Continue on errors
+        "--ignore-errors",
+        cleanUrl,
+      ];
+
+      console.log("Running yt-dlp with args:", args.join(" "));
+
+      const ytDlpProcess = spawn("yt-dlp", args, {
+        cwd: path.join(process.cwd(), "scripts"),
+        env: {
+          ...process.env,
+          PATH: `${path.join(process.cwd(), "scripts", "venv", "bin")}:${
+            process.env.PATH
+          }`,
+          VIRTUAL_ENV: path.join(process.cwd(), "scripts", "venv"),
+        },
+      });
+
+      let stdout = "";
+      let stderr = "";
+
+      ytDlpProcess.stdout.on("data", (data) => {
+        stdout += data.toString();
+      });
+
+      ytDlpProcess.stderr.on("data", (data) => {
+        stderr += data.toString();
+      });
+
+      const timeout = setTimeout(() => {
+        ytDlpProcess.kill("SIGTERM");
+        resolve({ success: false, error: "Timeout" });
+      }, 15000); // 15 second timeout
+
+      ytDlpProcess.on("close", (code) => {
+        clearTimeout(timeout);
+        if (code === 0 && stdout && stdout.trim() !== "") {
+          try {
+            const mediaInfo = JSON.parse(stdout);
+            const isPhoto =
+              mediaInfo.ext === "jpg" ||
+              mediaInfo.ext === "jpeg" ||
+              mediaInfo.ext === "png";
+
+            if (isPhoto) {
+              resolve({
+                success: true,
+                data: {
+                  success: true,
+                  isPhoto: true,
+                  imageUrls: [mediaInfo.url],
+                  bestSize: mediaInfo.filesize || mediaInfo.filesize_approx,
+                  worstSize: mediaInfo.filesize || mediaInfo.filesize_approx,
+                },
+              });
+            } else {
+              const formats = mediaInfo.formats || [];
+              const videoFormats = formats.filter(
+                (fmt) =>
+                  fmt.vcodec &&
+                  fmt.vcodec !== "none" &&
+                  (fmt.filesize || fmt.filesize_approx)
+              );
+
+              let bestSize = null;
+              let worstSize = null;
+
+              if (videoFormats.length > 0) {
+                const sortedFormats = videoFormats.sort(
+                  (a, b) =>
+                    (b.filesize || b.filesize_approx || 0) -
+                    (a.filesize || a.filesize_approx || 0)
+                );
+                bestSize =
+                  sortedFormats[0].filesize || sortedFormats[0].filesize_approx;
+                worstSize =
+                  sortedFormats[sortedFormats.length - 1].filesize ||
+                  sortedFormats[sortedFormats.length - 1].filesize_approx;
+              }
+
+              resolve({
+                success: true,
+                data: {
+                  success: true,
+                  isPhoto: false,
+                  bestSize,
+                  worstSize,
+                },
+              });
+            }
+          } catch (parseError) {
+            resolve({ success: false, error: "Parse error" });
+          }
+        } else {
+          resolve({ success: false, error: stderr || "No output" });
+        }
+      });
+
+      ytDlpProcess.on("error", (error) => {
+        clearTimeout(timeout);
+        resolve({ success: false, error: error.message });
+      });
+    });
+  }
+
+  // Helper function to try instaloader
+  async function tryInstaloaderInfo(cleanUrl) {
+    return new Promise((resolve) => {
+      // Extract post ID from URL
+      const postIdMatch = cleanUrl.match(/\/p\/([^\/]+)/);
+      if (!postIdMatch) {
+        resolve({ success: false, error: "Invalid Instagram URL format" });
+        return;
+      }
+
+      const postId = postIdMatch[1];
+      console.log("Extracted post ID:", postId);
+
+      const instaloaderProcess = spawn(
+        "instaloader",
+        [
+          "--no-metadata-json",
+          "--no-compress-json",
+          "--dirname-pattern",
+          "/tmp/instaloader_{profile}",
+          "--filename-pattern",
+          "{shortcode}",
+          "--",
+          postId,
+        ],
+        {
+          cwd: path.join(process.cwd(), "scripts"),
+          env: {
+            ...process.env,
+            PATH: `${path.join(process.cwd(), "scripts", "venv", "bin")}:${
+              process.env.PATH
+            }`,
+            VIRTUAL_ENV: path.join(process.cwd(), "scripts", "venv"),
+          },
+        }
+      );
+
+      let stdout = "";
+      let stderr = "";
+
+      instaloaderProcess.stdout.on("data", (data) => {
+        stdout += data.toString();
+      });
+
+      instaloaderProcess.stderr.on("data", (data) => {
+        stderr += data.toString();
+      });
+
+      const timeout = setTimeout(() => {
+        instaloaderProcess.kill("SIGTERM");
+        resolve({ success: false, error: "Timeout" });
+      }, 20000); // 20 second timeout
+
+      instaloaderProcess.on("close", (code) => {
+        clearTimeout(timeout);
+        if (code === 0) {
+          // Instaloader succeeded - check what was downloaded
+          // For now, assume it's a photo if we get here
+          resolve({
+            success: true,
+            data: {
+              success: true,
+              isPhoto: true, // Instaloader typically works well with photos
+              imageUrls: [], // We'll handle the actual download later
+              bestSize: null,
+              worstSize: null,
+            },
+          });
+        } else {
+          resolve({ success: false, error: stderr || "Instaloader failed" });
+        }
+      });
+
+      instaloaderProcess.on("error", (error) => {
+        clearTimeout(timeout);
+        resolve({ success: false, error: error.message });
+      });
+    });
+  }
+}
