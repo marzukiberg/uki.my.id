@@ -1,1 +1,5 @@
 yt-dlp>=2024.0.0
+instaloader>=4.14.0
+requests>=2.25.0
+beautifulsoup4>=4.14.0
+lxml>=6.0.0
