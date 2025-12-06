@@ -36,6 +36,23 @@ pnpm start    # Production server
 pnpm lint     # ESLint check
 ```
 
+### Git Workflow
+
+```bash
+git status                    # Check current changes
+git add <files>              # Stage specific files
+git add .                    # Stage all changes
+git commit -m "message"      # Commit with descriptive message
+git push origin main         # Push to main branch
+```
+
+**Commit Message Guidelines:**
+
+- Use imperative mood: "Add feature" not "Added feature"
+- Keep first line under 50 characters
+- Add detailed description for complex changes
+- Reference issues: "Fix #123: resolve timeout issue"
+
 ### File Uploads
 
 - **Library**: `formidable` for multipart form handling
@@ -138,6 +155,7 @@ const handlers = createPortfolioHandlers({
 ## Deployment Notes
 
 ### Target Server
+
 - **Server**: stb-local (ARM64-based server)
 - **Containerization**: Docker with Node.js 18 Alpine image
 - **Port**: 3000 (proxied by cloudflared)
@@ -146,12 +164,14 @@ const handlers = createPortfolioHandlers({
 ### PM2 Deployment Process
 
 #### 1. Prerequisites
+
 - SSH access to stb-server
 - PM2 installed on server
 - Node.js and pnpm installed
 - Cloudflared tunnel configured
 
 #### 2. Build and Deploy Steps
+
 ```bash
 # 1. Build locally
 pnpm build
@@ -169,16 +189,20 @@ ssh stb-server "cd /mnt/sdcard/stb/docker/ukay.dev && \
 ```
 
 #### 3. Environment Variables
+
 - `AUTH_SECRET_KEY`: Required for dashboard authentication
 - `NODE_ENV`: Set to 'production' for production builds
 
 #### 4. PM2 Configuration
+
 - **Process Name**: ukay.dev
 - **Start Command**: `pm2 start npm --name 'ukay.dev' -- start`
 - **Auto-restart**: Enabled via `pm2 save`
 
 #### 5. Cloudflared Configuration
+
 Ensure `/etc/cloudflared/config.yml` includes:
+
 ```yaml
 ingress:
   - hostname: ukay.dev
@@ -186,12 +210,14 @@ ingress:
 ```
 
 #### 6. Troubleshooting
+
 - **Port conflicts**: Check if other services are using port 3000
 - **PM2 issues**: Use `pm2 logs ukay.dev` to check logs
 - **Permission issues**: Ensure proper file permissions
 - **Build failures**: Check Node.js and pnpm versions
 
 ### Legacy Deployment (Docker)
+
 - **Previous method**: Docker containerization
 - **Location**: `/mnt/sdcard/stb/docker/ukay.dev/`
 - **Status**: Deprecated, replaced by PM2
