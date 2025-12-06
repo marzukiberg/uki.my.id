@@ -12,13 +12,14 @@ const ScribdDownloaderPage = () => {
     const [url, setUrl] = useState("");
     const [result, setResult] = useState(null);
     const [error, setError] = useState("");
+    const [secret, setSecret] = useState("");
 
     const downloadMutation = useMutation({
-        mutationFn: async (downloadUrl) => {
+        mutationFn: async ({ url: downloadUrl, secret: providedSecret }) => {
             const response = await fetch("/api/scribd-download", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url: downloadUrl }),
+                body: JSON.stringify({ url: downloadUrl, secret: providedSecret }),
             });
 
             if (!response.ok) {
@@ -76,7 +77,7 @@ const ScribdDownloaderPage = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         if (!url.trim()) return;
-        downloadMutation.mutate(url);
+        downloadMutation.mutate({ url, secret });
     };
 
     return (
@@ -107,6 +108,9 @@ const ScribdDownloaderPage = () => {
                         loading={downloadMutation.isPending}
                         onSubmit={handleFormSubmit}
                         placeholder="https://www.scribd.com/document/..."
+                        showSecret={true}
+                        secret={secret}
+                        setSecret={setSecret}
                     />
 
                     <div id="preview-area">
@@ -116,7 +120,7 @@ const ScribdDownloaderPage = () => {
                             downloadProgress={{ bytes: 0, total: 0, percent: 0 }}
                             platform="scribd"
                             url={url}
-                            onDownload={() => downloadMutation.mutate(url)}
+                            onDownload={() => downloadMutation.mutate({ url, secret })}
                         />
 
                         <ErrorDisplay error={error} />

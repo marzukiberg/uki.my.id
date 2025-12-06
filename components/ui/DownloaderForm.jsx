@@ -19,9 +19,25 @@ const DownloaderForm = ({
   onSubmit,
   placeholder = "Enter URL...",
   className = "",
+  showSecret = false,
+  secret,
+  setSecret,
 }) => {
   return (
     <form onSubmit={onSubmit} className={`space-y-6 ${className}`}>
+      {showSecret && (
+        <div className="mx-auto max-w-md">
+          <BaseInput
+            type="password"
+            value={secret}
+            onChange={(e) => setSecret?.(e.target.value)}
+            placeholder="Enter secret key"
+            className="w-full"
+            required={false}
+          />
+        </div>
+      )}
+
       <div className="mx-auto flex max-w-md items-center space-x-4">
         <BaseInput
           type="url"
