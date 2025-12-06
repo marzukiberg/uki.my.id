@@ -16,15 +16,34 @@ class PuppeteerSg {
    */
   async launch() {
     const isCI = process.env.CI === 'true'; // Detect if running in CI
-    const args = [];
-    if (isCI) {
-      args.push('--no-sandbox', '--disable-setuid-sandbox');
-    }
-    this.browser = await puppeteer.launch({
+    const args = ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'];
+
+    const launchOptions = {
       headless: "new",
       defaultViewport: null,
       args
-    });
+    };
+
+    // Try to use snap-installed Chromium if available
+    const chromiumPaths = [
+      '/snap/bin/chromium',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/chromium',
+    ];
+
+    for (const path of chromiumPaths) {
+      try {
+        const fs = await import('fs');
+        if (fs.existsSync(path)) {
+          launchOptions.executablePath = path;
+          break;
+        }
+      } catch (e) {
+        // Continue to next path
+      }
+    }
+
+    this.browser = await puppeteer.launch(launchOptions);
   }
 
   /**
