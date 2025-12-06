@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer'
+import { chromium } from 'playwright'
 
 class PuppeteerSg {
   constructor() {
@@ -12,38 +12,23 @@ class PuppeteerSg {
   }
 
   /**
-   * Launch a browser
+   * Launch a browser (using Playwright instead of Puppeteer for better ARM64 support)
    */
   async launch() {
-    const isCI = process.env.CI === 'true'; // Detect if running in CI
-    const args = ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'];
-
-    const launchOptions = {
-      headless: "new",
-      defaultViewport: null,
-      args
-    };
-
-    // Try to use snap-installed Chromium if available
-    const chromiumPaths = [
-      '/snap/bin/chromium',
-      '/usr/bin/chromium-browser',
-      '/usr/bin/chromium',
+    const args = [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--disable-software-rasterizer',
+      '--single-process' // Better for low-memory ARM devices
     ];
 
-    for (const path of chromiumPaths) {
-      try {
-        const fs = await import('fs');
-        if (fs.existsSync(path)) {
-          launchOptions.executablePath = path;
-          break;
-        }
-      } catch (e) {
-        // Continue to next path
-      }
-    }
-
-    this.browser = await puppeteer.launch(launchOptions);
+    this.browser = await chromium.launch({
+      headless: true,
+      args,
+      timeout: 90000 // Increase launch timeout to 90s for slow ARM
+    });
   }
 
   /**
@@ -56,8 +41,29 @@ class PuppeteerSg {
       await this.launch()
     }
     let page = await this.browser.newPage()
+
+    // Block unnecessary resources to speed up loading on slow ARM
+    await page.route('**/*', (route) => {
+      const resourceType = route.request().resourceType();
+      const url = route.request().url();
+
+      // Block ads, analytics, fonts, and media to speed up loading
+      if (resourceType === 'font' || resourceType === 'media') {
+        return route.abort();
+      } else if (url.includes('google-analytics.com') ||
+        url.includes('googletagmanager.com') ||
+        url.includes('doubleclick.net') ||
+        url.includes('facebook.com') ||
+        url.includes('analytics')) {
+        return route.abort();
+      } else {
+        return route.continue();
+      }
+    });
+
     await page.goto(url, {
-      waitUntil: "load",
+      waitUntil: "domcontentloaded", // Faster than "load", enough for Scribd
+      timeout: 90000 // 90s timeout for slow ARM server
     })
     return page
   }
