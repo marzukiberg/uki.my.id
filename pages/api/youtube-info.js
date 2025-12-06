@@ -123,6 +123,16 @@ export default async function handler(req, res) {
   try {
     console.log("Getting YouTube video info for:", url);
 
+    // Track if response has been sent to prevent multiple sends
+    let responseSent = false;
+
+    const sendResponse = (statusCode, data) => {
+      if (!responseSent) {
+        responseSent = true;
+        res.status(statusCode).json(data);
+      }
+    };
+
     // Use yt-dlp to get video information in JSON format
     const ytDlpPath = path.join(
       process.cwd(),
@@ -177,7 +187,7 @@ export default async function handler(req, res) {
               tbr: format.tbr,
             }));
 
-            res.status(200).json({
+            sendResponse(200, {
               success: true,
               title: videoInfo.title,
               duration: videoInfo.duration,
@@ -190,7 +200,7 @@ export default async function handler(req, res) {
             resolve();
           } catch (parseError) {
             console.error("Error parsing video info JSON:", parseError);
-            res.status(500).json({
+            sendResponse(500, {
               success: false,
               message: "Failed to parse video information",
               error: parseError.message,
@@ -199,7 +209,7 @@ export default async function handler(req, res) {
           }
         } else {
           console.error("yt-dlp error:", stderr);
-          res.status(500).json({
+          sendResponse(500, {
             success: false,
             message: "Failed to get video info",
             error: stderr || "Unknown error",
@@ -210,7 +220,7 @@ export default async function handler(req, res) {
 
       ytDlpProcess.on("error", (error) => {
         console.error("Error executing yt-dlp:", error);
-        res.status(500).json({
+        sendResponse(500, {
           success: false,
           message: "Failed to execute yt-dlp",
           error: error.message,
@@ -220,10 +230,12 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error("Internal server error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: error.message,
-    });
+    if (!res.headersSent) {
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
   }
 }

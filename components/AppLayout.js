@@ -7,6 +7,7 @@ import { SITE_CONFIG } from "../lib/constants";
 const AppLayout = ({ children, activeTab, setActiveTab, meta = {} }) => {
   const tabs = [
     { label: "Semua", href: "/about" },
+    { label: "Works", href: "/works" },
     { label: "Portfolio", href: "/portfolio" },
     { label: "Tools", href: "/tools" },
   ];

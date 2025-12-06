@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  uki-dev:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./public/uploads:/app/public/uploads
+      - ./public/img/logos:/app/public/img/logos
+      - ./data:/app/data
+    environment:
+      - NODE_ENV=production
+      - AUTH_SECRET_KEY=${AUTH_SECRET_KEY}
+    restart: unless-stopped

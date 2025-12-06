@@ -66,6 +66,22 @@ const SearchSection = ({
 
         {/* Quick Links */}
         <div className="mt-4 text-center">
+          <p className="mb-2 text-sm text-gray-600">Quick Links:</p>
+          <div className="flex flex-wrap justify-center gap-1">
+            <a
+              href="/CV Marzuki - Frontend Developer.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-blue-500 px-6 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors"
+            >
+              <Icons.Download size={16} />
+              Download my CV
+            </a>
+          </div>
+        </div>
+
+        {/* Quick Search */}
+        <div className="mt-4 text-center">
           <p className="mb-2 text-sm text-gray-600">Quick Search:</p>
           <div className="flex flex-wrap justify-center gap-1">
             <a

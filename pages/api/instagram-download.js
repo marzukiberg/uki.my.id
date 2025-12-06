@@ -223,7 +223,7 @@ async function downloadMedia(url, quality, res) {
  */
 async function getInstaloaderInfo(shortcode) {
   return new Promise((resolve) => {
-    const tempDir = `/tmp/instaloader_${shortcode}_${Date.now()}`;
+    const tempDir = path.join(process.cwd(), 'tmp', `instaloader_${shortcode}_${Date.now()}`);
 
     const args = [
       "-m",
@@ -246,9 +246,8 @@ async function getInstaloaderInfo(shortcode) {
       cwd: path.join(process.cwd(), "scripts"),
       env: {
         ...process.env,
-        PATH: `${path.join(process.cwd(), "scripts", "venv", "bin")}:${
-          process.env.PATH
-        }`,
+        PATH: `${path.join(process.cwd(), "scripts", "venv", "bin")}:${process.env.PATH
+          }`,
         VIRTUAL_ENV: path.join(process.cwd(), "scripts", "venv"),
         PYTHONPATH: path.join(process.cwd(), "scripts", "venv", "lib"),
       },
@@ -353,7 +352,7 @@ async function getInstaloaderInfo(shortcode) {
  */
 async function downloadWithInstaloader(shortcode, res) {
   return new Promise(async (resolve) => {
-    const tempDir = `/tmp/instaloader_${shortcode}_${Date.now()}`;
+    const tempDir = path.join(process.cwd(), 'tmp', `instaloader_${shortcode}_${Date.now()}`);
 
     const args = [
       "-m",
@@ -376,9 +375,8 @@ async function downloadWithInstaloader(shortcode, res) {
       cwd: path.join(process.cwd(), "scripts"),
       env: {
         ...process.env,
-        PATH: `${path.join(process.cwd(), "scripts", "venv", "bin")}:${
-          process.env.PATH
-        }`,
+        PATH: `${path.join(process.cwd(), "scripts", "venv", "bin")}:${process.env.PATH
+          }`,
         VIRTUAL_ENV: path.join(process.cwd(), "scripts", "venv"),
         PYTHONPATH: path.join(process.cwd(), "scripts", "venv", "lib"),
       },

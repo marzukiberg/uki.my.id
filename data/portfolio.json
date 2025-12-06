@@ -1,8 +1,16 @@
 {
   "projects": [
     {
+      "title": "BacaManga.ukay.dev",
+      "text": "Read thousands of manga for free with complete collection and latest updates",
+      "img": "https://res.cloudinary.com/uki14/image/upload/v1762924112/uki.my.id/portfolio/Screenshot_2025-11-12_at_12.08.22_i11daj.png",
+      "icon": "BookOpen",
+      "stacks": ["nextjs.png", "tailwindcss.svg", "reactjs.png"],
+      "link": "https://bacamanga.ukay.dev"
+    },
+    {
       "title": "ChattoAI",
-      "text": "Website chat dengan AI menggunakan key OpenRouter",
+      "text": "Website chat with AI using OpenRouter key",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1758804139/uki.my.id/portfolio/Screenshot_2025-09-25_at_19.41.35_rxgwuc.png",
       "icon": "MessageCircle",
       "stacks": ["reactjs.png", "nodejs.png", "tailwindcss.svg"],
@@ -42,7 +50,7 @@
     },
     {
       "title": "Absensiku",
-      "text": "Aplikasi Absensi Sekolah SD berbasis web dengan QR Code",
+      "text": "Elementary School Attendance Application based on web with QR Code",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1761896562/uki.my.id/portfolio/Screenshot_2025-10-31_at_14.42.33_xud3kp.png",
       "icon": "CheckSquare",
       "stacks": ["reactjs.png", "firebase.png", "bootstrap-5.png"],
@@ -50,7 +58,7 @@
     },
     {
       "title": "Hadits Harian",
-      "text": "Terima Notfikiasi Hadits Random Harian Langsung dari Web",
+      "text": "Receive Daily Random Hadith Notifications Directly from Web",
       "img": "hadits-harian/hadits-harian-v2.png",
       "localImage": true,
       "icon": "BookOpen",

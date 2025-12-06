@@ -1,0 +1,14 @@
+/* Small custom styles to complement Tailwind */
+body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+input::placeholder { color: #c7d2fe; }
+header, footer { color: #374151; }
+.shadow-lg { box-shadow: 0 10px 30px rgba(99,102,241,0.08); }
+.shadow-sm { box-shadow: 0 6px 18px rgba(15,23,42,0.04); }
+.rounded-2xl { border-radius: 1rem; }
+
+/* make hero input slightly elevated */
+form input { background: white; }
+
+@media (max-width: 640px) {
+  h1 { font-size: 1.8rem; }
+}

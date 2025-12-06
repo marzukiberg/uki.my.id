@@ -137,9 +137,64 @@ const handlers = createPortfolioHandlers({
 
 ## Deployment Notes
 
-- **Platform**: Vercel (inferred from Next.js setup)
-- **Static Assets**: Served from `public/` directory
-- **API Routes**: Serverless functions on Vercel
+### Target Server
+- **Server**: stb-local (ARM64-based server)
+- **Containerization**: Docker with Node.js 18 Alpine image
+- **Port**: 3000 (proxied by cloudflared)
+- **Domain**: ukay.dev (via cloudflared tunnel)
+
+### PM2 Deployment Process
+
+#### 1. Prerequisites
+- SSH access to stb-server
+- PM2 installed on server
+- Node.js and pnpm installed
+- Cloudflared tunnel configured
+
+#### 2. Build and Deploy Steps
+```bash
+# 1. Build locally
+pnpm build
+
+# 2. Create archive of build artifacts
+tar -cJf build-artifacts.tar.xz .next public package.json next.config.js
+
+# 3. Copy to server
+scp build-artifacts.tar.xz stb-server:/mnt/sdcard/stb/docker/ukay.dev/
+
+# 4. Extract and restart on server
+ssh stb-server "cd /mnt/sdcard/stb/docker/ukay.dev && \
+    tar -xJf build-artifacts.tar.xz && \
+    pm2 restart ukay.dev"
+```
+
+#### 3. Environment Variables
+- `AUTH_SECRET_KEY`: Required for dashboard authentication
+- `NODE_ENV`: Set to 'production' for production builds
+
+#### 4. PM2 Configuration
+- **Process Name**: ukay.dev
+- **Start Command**: `pm2 start npm --name 'ukay.dev' -- start`
+- **Auto-restart**: Enabled via `pm2 save`
+
+#### 5. Cloudflared Configuration
+Ensure `/etc/cloudflared/config.yml` includes:
+```yaml
+ingress:
+  - hostname: ukay.dev
+    service: http://localhost:3000
+```
+
+#### 6. Troubleshooting
+- **Port conflicts**: Check if other services are using port 3000
+- **PM2 issues**: Use `pm2 logs ukay.dev` to check logs
+- **Permission issues**: Ensure proper file permissions
+- **Build failures**: Check Node.js and pnpm versions
+
+### Legacy Deployment (Docker)
+- **Previous method**: Docker containerization
+- **Location**: `/mnt/sdcard/stb/docker/ukay.dev/`
+- **Status**: Deprecated, replaced by PM2
 
 ## File Structure Reference
 
@@ -147,5 +202,8 @@ const handlers = createPortfolioHandlers({
 - `components/v2/`: Active UI components
 - `data/`: JSON data files
 - `pages/api/`: API route handlers
-- `public/img/`: Uploaded images and assets</content>
+- `public/img/`: Uploaded images and assets
+- `scripts/`: Python utilities (TikTok, Instagram downloaders)
+- `Dockerfile`: Docker build configuration
+- `docker-compose.yml`: Docker Compose configuration</content>
   <parameter name="filePath">/Users/mac/backup/Github/uki.my.id/.github/copilot-instructions.md

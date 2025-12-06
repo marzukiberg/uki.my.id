@@ -8,8 +8,8 @@ set -e  # Exit on any error
 
 # Configuration
 APP_NAME="ukay.dev"
-SERVER_HOST="stb-local"
-SERVER_PATH="/mnt/sdcard/stb/node_apps/ukay.dev/app"
+SERVER_HOST="stb-server"
+SERVER_PATH="/mnt/sdcard/stb/docker/ukay.dev"
 BUILD_DIR=".next"
 PUBLIC_DIR="public"
 PACKAGE_FILE="package.json"

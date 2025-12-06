@@ -18,6 +18,8 @@ const SearchHeader = ({ activeTab, setActiveTab, tabs }) => {
     { name: "TikTok Downloader", link: "/tools/tiktok-downloader" },
     { name: "YouTube Downloader", link: "/tools/youtube-downloader" },
     { name: "Instagram Downloader", link: "/tools/instagram-downloader" },
+    { name: "Scribd Downloader", link: "/tools/scribd-downloader" },
+    { name: "Academia Download", link: "/tools/academia-downloader" },
   ];
 
   const handleSearch = (e) => {
@@ -39,7 +41,9 @@ const SearchHeader = ({ activeTab, setActiveTab, tabs }) => {
     if (tab === "Tools") {
       return activeTab.startsWith("TikTok Downloader") ||
         activeTab.startsWith("YouTube Downloader") ||
-        activeTab.startsWith("Instagram Downloader")
+        activeTab.startsWith("Instagram Downloader") ||
+        activeTab.startsWith("Scribd Downloader") ||
+        activeTab.startsWith("Academia Download")
         ? activeTab
         : tab;
     }
@@ -125,11 +129,10 @@ const SearchHeader = ({ activeTab, setActiveTab, tabs }) => {
                 <div key={tabName} className="relative">
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className={`flex items-center space-x-1 border-b-2 px-1 py-2 text-sm font-medium ${
-                      isActive
+                    className={`flex items-center space-x-1 border-b-2 px-1 py-2 text-sm font-medium ${isActive
                         ? "border-blue-500 text-blue-500"
                         : "border-transparent text-gray-500 hover:text-gray-700"
-                    }`}
+                      }`}
                   >
                     <span>{getTabDisplayName(tabName)}</span>
                     <Icons.ChevronDown size={14} />
@@ -159,11 +162,10 @@ const SearchHeader = ({ activeTab, setActiveTab, tabs }) => {
               <Link
                 key={tabName}
                 href={tab.href || (tab === "Semua" ? "/about" : "/portfolio")}
-                className={`border-b-2 px-1 py-2 text-sm font-medium ${
-                  isActive
+                className={`border-b-2 px-1 py-2 text-sm font-medium ${isActive
                     ? "border-blue-500 text-blue-500"
                     : "border-transparent text-gray-500 hover:text-gray-700"
-                }`}
+                  }`}
               >
                 {tabName}
               </Link>

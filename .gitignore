@@ -41,3 +41,4 @@ venv/
 
 # temp video downloads
 /public/temp/
+*.pdf
