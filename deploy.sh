@@ -28,7 +28,8 @@ tar -cJf "$ARCHIVE_NAME" \
     "$BUILD_DIR" \
     "$PUBLIC_DIR" \
     "$PACKAGE_FILE" \
-    "$NEXT_CONFIG_FILE"
+    "$NEXT_CONFIG_FILE" \
+    "scripts"
 
 echo "✅ Archive created: $ARCHIVE_NAME"
 

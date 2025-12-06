@@ -7,6 +7,16 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Method not allowed' });
     }
+    // SECURITY: simple validation - require either a valid session cookie or a secret key
+    const AUTH_SECRET_KEY = process.env.AUTH_SECRET_KEY;
+    const providedSecret = req.body?.secret || req.headers['x-secret'];
+    const authHeader = req.headers['authorization'];
+    const cookieAuth = req.cookies?.auth;
+    if (AUTH_SECRET_KEY) {
+        if (cookieAuth !== 'true' && providedSecret !== AUTH_SECRET_KEY && !(authHeader && authHeader.startsWith('Bearer ') && authHeader.split(' ')[1] === AUTH_SECRET_KEY)) {
+            return res.status(401).json({ message: 'Unauthorized: invalid session or secret' });
+        }
+    }
 
     const { url } = req.body;
 
