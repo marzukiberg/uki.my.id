@@ -22,6 +22,7 @@ const DownloaderForm = ({
   showSecret = false,
   secret,
   setSecret,
+  type = "url",
 }) => {
   return (
     <form onSubmit={onSubmit} className={`space-y-6 ${className}`}>
@@ -40,7 +41,7 @@ const DownloaderForm = ({
 
       <div className="mx-auto flex max-w-md items-center space-x-4">
         <BaseInput
-          type="url"
+          type={type}
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder={placeholder}

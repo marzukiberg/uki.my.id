@@ -42,3 +42,4 @@ venv/
 # temp video downloads
 /public/temp/
 *.pdf
+ukay.dev-deploy.tar.xz

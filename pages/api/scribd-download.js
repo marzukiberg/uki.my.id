@@ -40,9 +40,15 @@ export default async function handler(req, res) {
         const scriptPath = path.join(process.cwd(), 'scripts', 'scribd-dl', 'run.js');
 
         // Spawn the Node.js process
+        // Use 'node' command with explicit PATH to ensure it finds the correct binary
         const child = spawn('node', [scriptPath, url, `--output=${tempDir}`], {
             cwd: path.dirname(scriptPath),
-            stdio: ['pipe', 'pipe', 'pipe']
+            stdio: ['pipe', 'pipe', 'pipe'],
+            env: {
+                ...process.env,
+                PATH: `${process.env.PATH || ''}:/usr/local/bin:/usr/bin`,
+                NODE_PATH: path.join(process.cwd(), 'node_modules')
+            }
         }); let stdout = '';
         let stderr = '';
 
