@@ -196,7 +196,6 @@ async function deployToServer(host, remotePath) {
             
             # Stop PM2 service
             pm2 delete ukay.dev 2>/dev/null || true
-            pm2 save
             
             # Install dependencies (non-interactive)
             CI=true pnpm install --prod --no-frozen-lockfile --silent

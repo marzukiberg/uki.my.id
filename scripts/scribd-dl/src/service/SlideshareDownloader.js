@@ -8,6 +8,7 @@ import { Image } from "../object/Image.js"
 import sharp from "sharp";
 import axios from "axios";
 import fs from "fs"
+import path from 'path'
 import sanitize from "sanitize-filename";
 
 
@@ -24,15 +25,15 @@ class SlideshareDownloader {
 
     async execute(url, outputPath) {
         if (url.match(slideshareRegex.SLIDESHOW)) {
-            await this.slideshow(url, slideshareRegex.SLIDESHOW.exec(url)[1])
+            await this.slideshow(url, slideshareRegex.SLIDESHOW.exec(url)[1], outputPath)
         } else if (url.match(slideshareRegex.PPT)) {
-            await this.slideshow(url, slideshareRegex.PPT.exec(url)[1])
+            await this.slideshow(url, slideshareRegex.PPT.exec(url)[1], outputPath)
         } else {
             throw new Error(`Unsupported URL: ${url}`)
         }
     }
 
-    async slideshow(url, id) {
+    async slideshow(url, id, outputPath) {
         // prepare temp dir
         const dir = `${output}/${id}`
         await directoryIo.create(dir)
@@ -70,7 +71,9 @@ class SlideshareDownloader {
         bar.stop();
 
         // generate pdf
-        await pdfGenerator.generate(images, `${outputPath || output}/${sanitize(filename == "title" ? title : id)}.pdf`)
+        let pdfPath = `${outputPath || output}/${sanitize(filename == "title" ? title : id)}.pdf`
+        await directoryIo.create(path.dirname(pdfPath))
+        await pdfGenerator.generate(images, pdfPath)
 
         // remove temp dir
         directoryIo.remove(`${dir}`)

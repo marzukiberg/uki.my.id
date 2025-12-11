@@ -26,6 +26,13 @@ echo "🚀 Deploying..."
 ssh "$SERVER_HOST" << ENDSSH
     cd $SERVER_PATH
     
+    # Check and install Chromium if needed (ARM64 support)
+    if ! command -v chromium-browser &> /dev/null && ! command -v chromium &> /dev/null; then
+        echo "📥 Installing Chromium for ARM64..."
+        sudo apt-get update
+        sudo apt-get install -y chromium-browser
+    fi
+    
     # Stop PM2 service
     pm2 delete ukay.dev 2>/dev/null || true
     pm2 save

@@ -3,10 +3,24 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 
+// Disable Next.js API timeout for long-running downloads
+export const config = {
+    api: {
+        bodyParser: {
+            sizeLimit: '10mb',
+        },
+        responseLimit: false,
+    },
+};
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Method not allowed' });
     }
+
+    // Prevent Next.js timeout warning
+    let responseSent = false;
+
     // SECURITY: simple validation - require either a valid session cookie or a secret key
     const AUTH_SECRET_KEY = process.env.AUTH_SECRET_KEY;
     const providedSecret = req.body?.secret || req.headers['x-secret'];
@@ -18,18 +32,28 @@ export default async function handler(req, res) {
         }
     }
 
-    const { url } = req.body;
+    const { url, mode } = req.body;
 
     if (!url) {
         return res.status(400).json({ message: 'URL is required' });
     }
 
-    // Extract ID from Scribd URL
-    const match = url.match(/scribd\.com\/document\/(\d+)/);
-    if (!match) {
-        return res.status(400).json({ message: 'Invalid Scribd URL' });
+    // Validate URL is from supported platforms
+    const supportedDomains = ['scribd.com', 'slideshare.net', 'everand.com'];
+    const isSupported = supportedDomains.some(domain => url.includes(domain));
+
+    if (!isSupported) {
+        return res.status(400).json({
+            message: 'Unsupported URL. Please provide a Scribd, SlideShare, or Everand link.'
+        });
     }
-    const id = match[1];
+
+    // Validate mode parameter (optional, defaults to 'default')
+    const validModes = ['default', 'image'];
+    const downloadMode = mode && validModes.includes(mode) ? mode : 'default';
+
+    // Generate unique ID from URL for temp directory
+    const id = url.replace(/[^a-zA-Z0-9]/g, '-').substring(0, 50) + '-' + Date.now();
 
     try {
         // Create temp directory
@@ -39,9 +63,16 @@ export default async function handler(req, res) {
         // Path to the script
         const scriptPath = path.join(process.cwd(), 'scripts', 'scribd-dl', 'run.js');
 
+        // Build arguments: add /i flag if mode is 'image'
+        const scriptArgs = [];
+        if (downloadMode === 'image') {
+            scriptArgs.push('/i');
+        }
+        scriptArgs.push(url, `--output=${tempDir}`);
+
         // Spawn the Node.js process
         // Use 'node' command with explicit PATH to ensure it finds the correct binary
-        const child = spawn('node', [scriptPath, url, `--output=${tempDir}`], {
+        const child = spawn('node', [scriptPath, ...scriptArgs], {
             cwd: path.dirname(scriptPath),
             stdio: ['pipe', 'pipe', 'pipe'],
             env: {
@@ -61,6 +92,8 @@ export default async function handler(req, res) {
         });
 
         child.on('close', async (code) => {
+            if (responseSent) return;
+
             console.log('Scribd script exit code:', code);
             console.log('stdout:', stdout);
             console.log('stderr:', stderr);
@@ -69,6 +102,7 @@ export default async function handler(req, res) {
                 console.error('Scribd download failed:', stderr);
                 // Cleanup temp dir
                 await fs.promises.rm(tempDir, { recursive: true, force: true });
+                responseSent = true;
                 return res.status(500).json({ message: 'Failed to download document', error: stderr });
             }
 
@@ -81,6 +115,7 @@ export default async function handler(req, res) {
 
                 if (!pdfFile) {
                     await fs.promises.rm(tempDir, { recursive: true, force: true });
+                    responseSent = true;
                     return res.status(500).json({ message: 'PDF file not found' });
                 }
 
@@ -94,32 +129,52 @@ export default async function handler(req, res) {
 
                 // Stream the file
                 const fileStream = fs.createReadStream(pdfPath);
-                fileStream.pipe(res);
-
-                fileStream.on('end', async () => {
-                    // Cleanup temp dir after sending
-                    await fs.promises.rm(tempDir, { recursive: true, force: true });
-                });
 
                 fileStream.on('error', async (error) => {
+                    if (responseSent) return;
                     console.error('Error streaming file:', error);
-                    await fs.promises.rm(tempDir, { recursive: true, force: true });
-                    res.status(500).json({ message: 'Error streaming file' });
+                    await fs.promises.rm(tempDir, { recursive: true, force: true }).catch(() => { });
+                    responseSent = true;
+                    if (!res.headersSent) {
+                        res.status(500).json({ message: 'Error streaming file' });
+                    }
                 });
 
+                fileStream.on('end', async () => {
+                    responseSent = true;
+                    // Cleanup temp dir after sending
+                    await fs.promises.rm(tempDir, { recursive: true, force: true }).catch(() => { });
+                });
+
+                fileStream.pipe(res);
+
             } catch (error) {
+                if (responseSent) return;
                 console.error('Error reading PDF file:', error);
-                await fs.promises.rm(tempDir, { recursive: true, force: true });
-                res.status(500).json({ message: 'Error reading downloaded file', error: error.message });
+                await fs.promises.rm(tempDir, { recursive: true, force: true }).catch(() => { });
+                responseSent = true;
+                if (!res.headersSent) {
+                    res.status(500).json({ message: 'Error reading downloaded file', error: error.message });
+                }
             }
-        }); child.on('error', async (error) => {
+        });
+
+        child.on('error', async (error) => {
+            if (responseSent) return;
             console.error('Error spawning Scribd download process:', error);
-            await fs.promises.rm(tempDir, { recursive: true, force: true });
-            res.status(500).json({ message: 'Internal server error', error: error.message });
+            await fs.promises.rm(tempDir, { recursive: true, force: true }).catch(() => { });
+            responseSent = true;
+            if (!res.headersSent) {
+                res.status(500).json({ message: 'Internal server error', error: error.message });
+            }
         });
 
     } catch (error) {
+        if (responseSent) return;
         console.error('Error in Scribd download API:', error);
-        res.status(500).json({ message: 'Internal server error', error: error.message });
+        responseSent = true;
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Internal server error', error: error.message });
+        }
     }
 }

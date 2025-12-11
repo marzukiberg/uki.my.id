@@ -1,4 +1,4 @@
-import { chromium } from 'playwright'
+import puppeteer from 'puppeteer'
 
 class PuppeteerSg {
   constructor() {
@@ -12,23 +12,26 @@ class PuppeteerSg {
   }
 
   /**
-   * Launch a browser (using Playwright instead of Puppeteer for better ARM64 support)
+   * Launch a browser using Puppeteer
    */
   async launch() {
     const args = [
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--disable-software-rasterizer',
-      '--single-process' // Better for low-memory ARM devices
+      '--disable-gpu'
     ];
 
-    this.browser = await chromium.launch({
+    const launchOptions = {
       headless: true,
       args,
-      timeout: 90000 // Increase launch timeout to 90s for slow ARM
-    });
+      timeout: 90000
+    };
+
+    // Let Puppeteer download its own ARM64 Chromium binary
+    // Don't use system chromium which may not exist or be incompatible
+
+    this.browser = await puppeteer.launch(launchOptions);
   }
 
   /**
@@ -42,28 +45,27 @@ class PuppeteerSg {
     }
     let page = await this.browser.newPage()
 
-    // Block unnecessary resources to speed up loading on slow ARM
-    await page.route('**/*', (route) => {
-      const resourceType = route.request().resourceType();
-      const url = route.request().url();
+    // Block only ads and analytics to speed up loading, but allow images
+    await page.setRequestInterception(true);
+    page.on('request', (request) => {
+      const url = request.url();
+      const resourceType = request.resourceType();
 
-      // Block ads, analytics, fonts, and media to speed up loading
-      if (resourceType === 'font' || resourceType === 'media') {
-        return route.abort();
-      } else if (url.includes('google-analytics.com') ||
+      // Block ads and analytics only - allow images!
+      if (url.includes('google-analytics.com') ||
         url.includes('googletagmanager.com') ||
         url.includes('doubleclick.net') ||
         url.includes('facebook.com') ||
         url.includes('analytics')) {
-        return route.abort();
+        request.abort();
       } else {
-        return route.continue();
+        request.continue();
       }
     });
 
     await page.goto(url, {
-      waitUntil: "domcontentloaded", // Faster than "load", enough for Scribd
-      timeout: 90000 // 90s timeout for slow ARM server
+      waitUntil: "networkidle2",
+      timeout: 90000
     })
     return page
   }

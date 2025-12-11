@@ -49,6 +49,13 @@ class ScribdDownloader {
             // navigate to scribd
             let page = await puppeteerSg.getPage(url)
 
+            // Set higher viewport for better quality
+            await page.setViewport({
+                width: 1920,
+                height: 1080,
+                deviceScaleFactor: 2  // Higher pixel density for better image quality
+            })
+
             // wait rendering
             await new Promise(resolve => setTimeout(resolve, 1000))
 
@@ -68,38 +75,111 @@ class ScribdDownloader {
             // load all pages
             await page.click('div.document_scroller');
             const container = await page.$('div.document_scroller');
-            const height = await container.evaluate(el => el.scrollHeight);
+            let height = await container.evaluate(el => el.scrollHeight);
             const clientHeight = await container.evaluate(el => el.clientHeight);
             let cur = await container.evaluate(el => el.scrollTop);
             const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
             bar.start(height, 0);
+
+            let stuckCount = 0;
+            let lastCur = cur;
+            const maxStuckAttempts = 5;
+
             while (cur + clientHeight < height) {
                 await page.keyboard.press('PageDown');
                 await new Promise(resolve => setTimeout(resolve, rendertime))
-                cur = await container.evaluate(el => el.scrollTop);
+
+                const newCur = await container.evaluate(el => el.scrollTop);
+                const newHeight = await container.evaluate(el => el.scrollHeight);
+
+                // Detect if scroll position is stuck
+                if (newCur === lastCur) {
+                    stuckCount++;
+                    if (stuckCount >= maxStuckAttempts) {
+                        console.log(`\nScroll stuck at ${newCur}, breaking out...`);
+                        break;
+                    }
+                } else {
+                    stuckCount = 0;
+                }
+
+                lastCur = newCur;
+                cur = newCur;
+                height = newHeight;
                 bar.update(cur + clientHeight);
             }
             bar.stop();
 
-            // remove margin to avoid extra blank page
+            // Wait for all images to load completely
+            await page.evaluate(() => {
+                return Promise.all(
+                    Array.from(document.images)
+                        .filter(img => !img.complete)
+                        .map(img => new Promise(resolve => {
+                            img.onload = img.onerror = resolve;
+                        }))
+                );
+            });
+
+            console.log('All images loaded, processing...');
+
+            // remove margin and page breaks to avoid extra blank pages
             let doc_pages = await page.$$("div.outer_page_container div[id^='outer_page_']")
             for (let i = 0; i < doc_pages.length; i++) {
-                await page.evaluate((i) => {
-                    document.getElementById(`outer_page_${(i + 1)}`).style.margin = 0
+                await page.evaluate((i) => { // eslint-disable-next-line
+                    const el = document.getElementById(`outer_page_${(i + 1)}`);
+                    el.style.margin = 0;
+                    el.style.padding = 0;
+                    el.style.pageBreakAfter = 'avoid';
+                    el.style.pageBreakBefore = 'avoid';
+                    el.style.pageBreakInside = 'avoid';
+                    el.style.breakAfter = 'avoid';
+                    el.style.breakBefore = 'avoid';
+                    el.style.breakInside = 'avoid';
                 }, i)
             }
+
+            // Add global CSS to prevent page breaks
+            await page.addStyleTag({
+                content: `
+                    @page { margin: 0; }
+                    * { 
+                        page-break-after: avoid !important;
+                        page-break-before: avoid !important;
+                        page-break-inside: avoid !important;
+                        break-after: avoid !important;
+                        break-before: avoid !important;
+                        break-inside: avoid !important;
+                    }
+                `
+            });
 
             // pdf setting
             let options = {
                 path: `${outputPath || output}/${sanitize(filename == "title" ? title : id)}.pdf`,
                 printBackground: true,
-                timeout: 0
+                timeout: 0,
+                preferCSSPageSize: true,  // Use CSS page size instead of fixed dimensions
+                // Higher scale for better quality
+                scale: 1.5
             }
+
+            // Get page dimensions but apply as CSS instead of PDF page size
             let first_page = await page.$("div.outer_page_container div[id^='outer_page_']")
             let style = await first_page.evaluate((el) => el.getAttribute("style"))
             if (style.includes("width:") && style.includes("height:")) {
-                options.height = parseInt(style.split("height:")[1].split("px")[0].trim())
-                options.width = parseInt(style.split("width:")[1].split("px")[0].trim())
+                const pageHeight = parseInt(style.split("height:")[1].split("px")[0].trim())
+                const pageWidth = parseInt(style.split("width:")[1].split("px")[0].trim())
+
+                // Apply dimensions via CSS @page rule instead of PDF options
+                await page.addStyleTag({
+                    content: `
+                        @page {
+                            size: ${pageWidth}px ${pageHeight}px;
+                            margin: 0;
+                        }
+                    `
+                });
             }
 
             // show doc only
@@ -179,7 +259,9 @@ class ScribdDownloader {
             bar.stop();
 
             // generate pdf
-            await pdfGenerator.generate(images, `${outputPath || output}/${sanitize(filename == "title" ? title : id)}.pdf`)
+            let pdfPath = `${outputPath || output}/${sanitize(filename == "title" ? title : id)}.pdf`
+            await directoryIo.create(path.dirname(pdfPath))
+            await pdfGenerator.generate(images, pdfPath)
 
             // remove temp dir
             directoryIo.remove(`${dir}`)
