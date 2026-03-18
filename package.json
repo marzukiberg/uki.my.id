@@ -54,7 +54,8 @@
     "url-loader": "^4.1.1",
     "uuid": "^13.0.0",
     "yet-another-react-lightbox": "^3.25.0",
-    "yup": "^1.7.0"
+    "yup": "^1.7.0",
+    "@adobe/pdfservices-node-sdk": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^24.4.0",
@@ -68,6 +69,11 @@
     "prettier-plugin-tailwindcss": "^0.2.2",
     "tailwindcss": "^3.2.4",
     "typescript": "^5.9.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "glob": ">=10.5.0"
+    }
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
