@@ -10,6 +10,7 @@
     "format": "prettier --write \"pages/**/*.{js,jsx,ts,tsx}\" \"components/**/*.{js,jsx,ts,tsx}\" \"lib/**/*.{js,jsx,ts,tsx}\" \"utils/**/*.{js,jsx,ts,tsx}\" \"hooks/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "@adobe/pdfservices-node-sdk": "^4.1.0",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.3",
@@ -44,7 +45,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.3.8",
+    "react-markdown": "^10.1.0",
     "react-select": "^5.10.2",
+    "remark-gfm": "^4.0.1",
     "sanitize-filename": "^1.6.3",
     "sharp": "^0.34.5",
     "sonner": "^2.0.7",
@@ -54,8 +57,7 @@
     "url-loader": "^4.1.1",
     "uuid": "^13.0.0",
     "yet-another-react-lightbox": "^3.25.0",
-    "yup": "^1.7.0",
-    "@adobe/pdfservices-node-sdk": "^4.1.0"
+    "yup": "^1.7.0"
   },
   "devDependencies": {
     "@types/node": "^24.4.0",
@@ -73,7 +75,13 @@
   "pnpm": {
     "overrides": {
       "glob": ">=10.5.0"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "fsevents",
+      "puppeteer",
+      "sharp",
+      "unrs-resolver"
+    ]
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }

@@ -44,3 +44,9 @@ venv/
 /public/temp/
 *.pdf
 ukay.dev-deploy.tar.xz
+tmp/
+.omo/
+.playwright-mcp/
+*.png
+!public/img/**
+

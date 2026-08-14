@@ -22,14 +22,37 @@ class PuppeteerSg {
       '--disable-gpu'
     ];
 
+    // Try to find Chrome/Chromium in common locations
+    const possiblePaths = [
+      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      '/Applications/Chromium.app/Contents/MacOS/Chromium',
+      '/usr/bin/chromium',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/google-chrome',
+      '/usr/bin/google-chrome-stable',
+      process.env.PUPPETEER_EXECUTABLE_PATH,
+      process.env.CHROME_PATH
+    ].filter(Boolean);
+
+    let executablePath = null;
+    const fs = await import('fs');
+    for (const path of possiblePaths) {
+      if (fs.existsSync(path)) {
+        executablePath = path;
+        break;
+      }
+    }
+
     const launchOptions = {
       headless: true,
       args,
       timeout: 90000
     };
 
-    // Let Puppeteer download its own ARM64 Chromium binary
-    // Don't use system chromium which may not exist or be incompatible
+    if (executablePath) {
+      launchOptions.executablePath = executablePath;
+      console.log('Using Chrome at:', executablePath);
+    }
 
     this.browser = await puppeteer.launch(launchOptions);
   }

@@ -18,7 +18,9 @@ const Button = React.forwardRef(
     const variants = {
       primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
       secondary:
-        "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-300",
+        "bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-300 border border-gray-200",
+      ghost:
+        "bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:ring-gray-300",
       light:
         "border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-300",
       download: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",

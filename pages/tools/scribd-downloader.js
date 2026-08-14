@@ -15,15 +15,16 @@ const ScribdDownloaderPage = () => {
     const [secret, setSecret] = useState("");
     const [downloadTime, setDownloadTime] = useState(0);
     const [startTime, setStartTime] = useState(null);
+    const [selectedFormat, setSelectedFormat] = useState("pdf"); // pdf, docx, or both
 
     // Mutation for downloading
     const downloadMutation = useMutation({
-        mutationFn: async ({ url: downloadUrl, secret: providedSecret }) => {
+        mutationFn: async ({ url: downloadUrl, secret: providedSecret, format }) => {
             setStartTime(Date.now()); // Start timing
             const response = await fetch("/api/scribd-download", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url: downloadUrl, secret: providedSecret }),
+                body: JSON.stringify({ url: downloadUrl, secret: providedSecret, format }),
             });
 
             if (!response.ok) {
@@ -35,13 +36,6 @@ const ScribdDownloaderPage = () => {
         },
         onSuccess: async (response) => {
             setStartTime(null); // Stop timing
-            // Set result first
-            setResult({
-                title: "Document",
-                description: "Document downloaded successfully",
-                isPreview: true,
-                downloaded: true,
-            });
 
             // Handle the file download
             const reader = response.body.getReader();
@@ -58,7 +52,9 @@ const ScribdDownloaderPage = () => {
 
             // Extract filename from Content-Disposition header or use default
             const contentDisposition = response.headers.get('content-disposition');
-            let filename = 'ukaydev_scribd_document.pdf';
+            const contentType = response.headers.get('content-type');
+            const isTextFile = contentType && contentType.includes('text/plain');
+            let filename = isTextFile ? 'ukaydev_scribd_document.txt' : 'ukaydev_scribd_document.pdf';
             if (contentDisposition) {
                 const filenameMatch = contentDisposition.match(/filename="?(.+)"?/i);
                 if (filenameMatch) {
@@ -99,7 +95,13 @@ const ScribdDownloaderPage = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         if (!url.trim()) return;
-        downloadMutation.mutate({ url, secret });
+        downloadMutation.mutate({ url, secret, format: selectedFormat });
+    };
+
+    const handleDownloadFormat = (format) => {
+        if (!url.trim()) return;
+        setSelectedFormat(format);
+        downloadMutation.mutate({ url, secret, format });
     };
 
     return (
@@ -136,11 +138,39 @@ const ScribdDownloaderPage = () => {
                         setSecret={setSecret}
                     />
 
+                    {/* Format Selection Buttons */}
+                    {url && !isDownloading && (
+                        <div className="mt-4 mb-4">
+                            <p className="mb-2 text-sm font-medium text-gray-700 text-center">Download Format:</p>
+                            <div className="flex flex-wrap gap-2 justify-center">
+                                <button
+                                    onClick={() => handleDownloadFormat('pdf')}
+                                    disabled={isDownloading}
+                                    className="inline-flex items-center rounded-full bg-red-100 px-6 py-3 text-red-800 font-medium hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
+                                >
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Download PDF
+                                </button>
+                                <button
+                                    onClick={() => handleDownloadFormat('docx')}
+                                    disabled={isDownloading}
+                                    className="inline-flex items-center rounded-full bg-blue-100 px-6 py-3 text-blue-800 font-medium hover:bg-blue-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
+                                >
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Download DOCX
+                                </button>
+                            </div>
+                            <p className="mt-2 text-xs text-gray-500 text-center">
+                                Note: DOCX is generated server-side using **Adobe Acrobat** — high quality conversion with proper formatting
+                            </p>
+                        </div>
+                    )}
+
                     {/* Downloading state placed below input and above supported platforms */}
                     {isDownloading && (
                         <div className="mt-3 flex items-center justify-center gap-2 text-sm text-gray-600">
                             <Clock className="h-4 w-4" />
-                            <span>Downloading... {downloadTime}s</span>
+                            <span>Downloading {selectedFormat.toUpperCase()}... {downloadTime}s</span>
                         </div>
                     )}
 
@@ -173,15 +203,6 @@ const ScribdDownloaderPage = () => {
                     </div>
 
                     <div id="preview-area">
-                        <DownloadButtons
-                            result={result}
-                            downloading={isDownloading}
-                            downloadProgress={{ bytes: 0, total: 0, percent: 0 }}
-                            platform="scribd"
-                            url={url}
-                            onDownload={() => downloadMutation.mutate({ url, secret })}
-                        />
-
                         <ErrorDisplay error={error} />
                     </div>
                 </div>

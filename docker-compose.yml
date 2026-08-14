@@ -1,10 +1,8 @@
-version: "3.8"
-
 services:
   uki-dev:
     build: .
     ports:
-      - "3000:3000"
+      - "5111:3001"
     volumes:
       - ./public/uploads:/app/public/uploads
       - ./public/img/logos:/app/public/img/logos

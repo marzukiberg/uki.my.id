@@ -1,48 +1,38 @@
 import React from "react";
 import portfolioData from "../../../data/portfolio.json";
-import Image from "next/image";
-import { getPortfolioImageUrl } from "../../../utils/imageUtils";
+import PortfolioSearchResultItem from "./PortfolioSearchResultItem";
 
-const Portfolio = () => {
+const Portfolio = ({ projects = null, hideHeader = false }) => {
+  const allProjects = projects || portfolioData.projects.filter((p) => p.title);
+  const validProjects = allProjects.filter((p) => p.title);
+  const activeProjects = validProjects.filter(
+    (p) => p.link && p.link !== "/#" && p.link.trim() !== ""
+  );
+
   return (
-    <section id="portfolio" className="pb-12 sm:pb-16">
-      <div className="max-w-4xl">
-        <p className="mb-4 text-sm text-gray-600">
-          About {portfolioData.projects.filter((p) => p.title).length} results
-        </p>
-        {portfolioData.projects
-          .filter((p) => p.title)
-          .map((project, index) => (
-            <div key={index} className="mb-8 flex gap-4">
-              <div className="relative h-16 w-24 flex-shrink-0 md:h-36 md:w-48">
-                <Image
-                  src={getPortfolioImageUrl(project)}
-                  alt={project.title}
-                  fill
-                  className="rounded object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <p className="text-sm text-gray-600">{project.link}</p>
-                  <h2 className="text-xl font-medium text-blue-800 hover:underline">
-                    {project.title}
-                  </h2>
-                </a>
-                <p className="text-gray-600">{project.text}</p>
-                <p className="text-sm text-gray-500">
-                  Tech Stack:{" "}
-                  {project.stacks
-                    .map((stack) => stack.replace(/\.(png|svg|jpg|jpeg)$/i, ""))
-                    .join(", ")}
-                </p>
-              </div>
-            </div>
-          ))}
+    <section id="portfolio" className="pt-8 pb-16">
+      {/* Google Result Section Title */}
+      {!hideHeader && (
+        <div className="mb-6 flex items-center justify-between border-b border-gray-200 pb-3">
+          <div>
+            <h2 className="text-xl font-normal text-[#202124]">
+              Portfolio &amp; Selected Works
+            </h2>
+            <p className="mt-0.5 text-xs text-[#70757a]">
+              Showing {validProjects.length} results ({activeProjects.length} active live projects)
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Google Organic Search Results List */}
+      <div className="max-w-3xl space-y-8">
+        {validProjects.map((project, index) => (
+          <PortfolioSearchResultItem
+            key={project.id || `${project.title}-${index}`}
+            project={project}
+          />
+        ))}
       </div>
     </section>
   );
