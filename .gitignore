@@ -47,6 +47,5 @@ ukay.dev-deploy.tar.xz
 tmp/
 .omo/
 .playwright-mcp/
-*.png
-!public/img/**
-
+# config credentials
+config/pdfservices-api-credentials.json

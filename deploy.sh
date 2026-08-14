@@ -5,7 +5,7 @@
 set -e
 
 # Configuration
-SERVER_HOST="stb-local"
+SERVER_HOST="stb"
 SERVER_PATH="/mnt/sdcard/stb/apps/ukay.dev"
 
 echo "🚀 Starting deployment..."
@@ -18,7 +18,7 @@ pnpm build
 echo "📤 Syncing files to server..."
 rsync -avz --exclude='node_modules' --exclude='.git' \
     .next public package.json next.config.js ecosystem.config.js \
-    pages components lib styles hooks utils middleware.js scripts \
+    pages components lib styles hooks utils data middleware.js scripts \
     "$SERVER_HOST:$SERVER_PATH/"
 
 # Deploy on server
