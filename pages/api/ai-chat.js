@@ -1,17 +1,80 @@
 import fs from "fs";
 import path from "path";
 
+// Simple in-memory rate limiter per IP (max 10 requests per minute)
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 10;
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const clientData = rateLimitMap.get(ip) || { count: 0, firstRequest: now };
+
+  if (now - clientData.firstRequest > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, firstRequest: now });
+    return false;
+  }
+
+  if (clientData.count >= MAX_REQUESTS_PER_WINDOW) {
+    return true;
+  }
+
+  clientData.count += 1;
+  rateLimitMap.set(ip, clientData);
+  return false;
+}
+
+// Clean up old entries periodically
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of rateLimitMap.entries()) {
+    if (now - data.firstRequest > RATE_LIMIT_WINDOW) {
+      rateLimitMap.delete(ip);
+    }
+  }
+}, 5 * 60 * 1000);
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed. Use POST." });
   }
 
+  // 1. IP Rate Limiting Guard
+  const clientIp =
+    req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    req.socket?.remoteAddress ||
+    "unknown";
+
+  if (isRateLimited(clientIp)) {
+    return res.status(429).json({
+      error: "Terlalu banyak permintaan. Silakan tunggu 1 menit sebelum mengirim pesan lagi.",
+    });
+  }
+
+  // 2. Body validation & Character length guard
   const { messages } = req.body;
-  if (!messages || !Array.isArray(messages)) {
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: "Messages array is required." });
   }
 
-  const apiUrl = process.env.LLM_API_URL || "http://100.121.65.10:20128/v1";
+  const latestMessage = messages[messages.length - 1];
+  if (!latestMessage || typeof latestMessage.content !== "string" || !latestMessage.content.trim()) {
+    return res.status(400).json({ error: "Invalid message content." });
+  }
+
+  // Cap message length to prevent prompt injection / token exhaustion attacks
+  if (latestMessage.content.length > 500) {
+    return res.status(400).json({
+      error: "Pesan terlalu panjang (maksimal 500 karakter).",
+    });
+  }
+
+  const apiUrl = process.env.LLM_API_URL;
+  if (!apiUrl) {
+    return res.status(500).json({
+      error: "LLM_API_URL is not configured on the server environment.",
+    });
+  }
   const apiKey = process.env.LLM_API_KEY;
   const model = process.env.LLM_MODEL || "dynamic";
 

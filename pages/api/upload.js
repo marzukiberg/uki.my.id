@@ -5,9 +5,46 @@ import formidable from "formidable";
 
 export const config = {
   api: {
-    bodyParser: false, // Disable body parser for file uploads
+    bodyParser: false,
   },
 };
+
+// Allowed MIME types and magic bytes for image uploads
+const ALLOWED_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+]);
+
+const MAGIC_BYTES = [
+  { bytes: [0xff, 0xd8, 0xff], mime: "image/jpeg" },
+  { bytes: [0x89, 0x50, 0x4e, 0x47], mime: "image/png" },
+  { bytes: [0x47, 0x49, 0x46, 0x38], mime: "image/gif" },
+];
+
+function validateMagicBytes(filepath) {
+  const buffer = Buffer.alloc(4);
+  const fd = fs.openSync(filepath, "r");
+  fs.readSync(fd, buffer, 0, 4, 0);
+  fs.closeSync(fd);
+
+  return MAGIC_BYTES.some(({ bytes, mime }) =>
+    bytes.every((b, i) => buffer[i] === b)
+  ) || null;
+}
+
+function getMimeFromMagicBytes(filepath) {
+  const buffer = Buffer.alloc(4);
+  const fd = fs.openSync(filepath, "r");
+  fs.readSync(fd, buffer, 0, 4, 0);
+  fs.closeSync(fd);
+
+  for (const { bytes, mime } of MAGIC_BYTES) {
+    if (bytes.every((b, i) => buffer[i] === b)) return mime;
+  }
+  return null;
+}
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -15,30 +52,34 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Configure formidable for file upload
     const form = formidable({
       uploadDir: path.join(process.cwd(), "public", "img", "logos"),
       keepExtensions: true,
-      maxFileSize: 10 * 1024 * 1024, // 10MB limit
+      maxFileSize: 10 * 1024 * 1024,
       filename: (name, ext) => `${uuidv4()}${ext}`,
     });
 
-    // Create uploads directory if it doesn't exist
     const uploadsDir = path.join(process.cwd(), "public", "uploads");
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
     }
 
-    // Parse the form
     const [fields, files] = await form.parse(req);
 
-    // Get the uploaded file
     const file = files.file?.[0];
     if (!file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    // Generate public path
+    const detectedMime = file.mimetype || getMimeFromMagicBytes(file.filepath);
+    if (!ALLOWED_TYPES.has(detectedMime)) {
+      await fs.promises.rm(file.filepath, { force: true });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed.",
+      });
+    }
+
     const relativePath = path.relative(
       path.join(process.cwd(), "public"),
       file.filepath
@@ -65,7 +106,6 @@ export default async function handler(req, res) {
     res.status(500).json({
       success: false,
       message: "Error uploading file",
-      error: error.message,
     });
   }
 }

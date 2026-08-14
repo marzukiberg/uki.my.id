@@ -38,9 +38,20 @@ export default async function handler(req, res) {
         return res.status(400).json({ message: 'URL is required' });
     }
 
-    // Validate URL is from supported platforms
+    // Parse URL to prevent SSRF bypass via domain tricks like scribd.com.evil.com
+    let parsedUrl;
+    try {
+        parsedUrl = new URL(url);
+    } catch {
+        return res.status(400).json({ message: 'Invalid URL format' });
+    }
+
+    // Validate URL is from supported platforms using proper hostname check
     const supportedDomains = ['scribd.com', 'slideshare.net', 'everand.com'];
-    const isSupported = supportedDomains.some(domain => url.includes(domain));
+    const hostname = parsedUrl.hostname.toLowerCase();
+    const isSupported = supportedDomains.some(
+        domain => hostname === domain || hostname.endsWith('.' + domain)
+    );
 
     if (!isSupported) {
         return res.status(400).json({
@@ -82,14 +93,12 @@ export default async function handler(req, res) {
         // For 'docx' format output or 'both', we download PDF (default mode)
         scriptArgs.push(url, `--output=${tempDir}`);
 
-        // Spawn the Node.js process
-        // Use 'node' command with explicit PATH to ensure it finds the correct binary
         const child = spawn('node', [scriptPath, ...scriptArgs], {
             cwd: path.dirname(scriptPath),
             stdio: ['pipe', 'pipe', 'pipe'],
             env: {
                 ...process.env,
-                PATH: `${process.env.PATH || ''}:/usr/local/bin:/usr/bin`,
+                PATH: '/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin',
                 NODE_PATH: path.join(process.cwd(), 'node_modules')
             }
         }); let stdout = '';
@@ -127,7 +136,7 @@ export default async function handler(req, res) {
                     stdio: ['pipe', 'pipe', 'pipe'],
                     env: {
                         ...process.env,
-                        PATH: `${process.env.PATH || ''}:/usr/local/bin:/usr/bin`,
+                        PATH: '/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin',
                         NODE_PATH: path.join(process.cwd(), 'node_modules')
                     }
                 });
