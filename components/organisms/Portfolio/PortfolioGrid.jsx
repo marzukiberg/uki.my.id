@@ -47,33 +47,23 @@ const PortfolioGrid = () => {
                   rel="noopener noreferrer"
                   id={`portfolio-item-${index}`}
                 >
-                  {failedImages.has(index) ? (
-                    <div className="flex h-11 w-11 items-center justify-center rounded bg-gray-100">
-                      <ImageOff className="h-6 w-6 text-gray-400" />
+                  {failedImages.has(index) || !getPortfolioImageUrl(project) ? (
+                    <div className="flex h-11 w-11 items-center justify-center rounded bg-gray-100 flex-shrink-0">
+                      <ImageOff className="h-5 w-5 text-gray-400" />
                     </div>
-                  ) : project.localImage ? (
-                    <Image
-                      src={getPortfolioImageUrl(project)}
-                      alt={project.title}
-                      width={44}
-                      height={44}
-                      className="h-11 w-11 object-cover"
-                      unoptimized
-                      onError={() => handleImageError(index)}
-                    />
                   ) : (
                     <Image
                       src={getPortfolioImageUrl(project)}
                       alt={project.title}
                       width={44}
                       height={44}
-                      className="h-11 w-11 object-cover"
+                      className="h-11 w-11 object-cover flex-shrink-0"
                       unoptimized
                       onError={() => handleImageError(index)}
                     />
                   )}
-                  <div className="flex-1 p-2">
-                    <h3 className="whitespace-nowrap text-xs font-medium text-gray-900">
+                  <div className="flex-1 p-2 min-w-0">
+                    <h3 className="truncate text-xs font-medium text-gray-900">
                       {project.title}
                     </h3>
                   </div>

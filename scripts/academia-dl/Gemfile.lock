@@ -14,7 +14,7 @@ GEM
       racc (~> 1.4)
     open_uri_redirections (0.2.1)
     public_suffix (4.0.6)
-    puma (8.0.2)
+    puma (7.1.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.4)

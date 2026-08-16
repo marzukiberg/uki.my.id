@@ -22,17 +22,17 @@ class EverandDownloader {
 
     async execute(url, outputPath) {
         if (url.match(everandRegex.PODCAST_SERIES)) {
-            await this.series(url,)
+            await this.series(url, outputPath)
         } else if (url.match(everandRegex.PODCAST_EPISODE)) {
-            await this.listen(`https://www.everand.com/listen/podcast/${everandRegex.PODCAST_EPISODE.exec(url)[1]}`)
+            await this.listen(`https://www.everand.com/listen/podcast/${everandRegex.PODCAST_EPISODE.exec(url)[1]}`, undefined, outputPath)
         } else if (url.match(everandRegex.PODCAST_LISTEN)) {
-            await this.listen(url)
+            await this.listen(url, undefined, outputPath)
         } else {
             throw new Error(`Unsupported URL: ${url}`)
         }
     }
 
-    async listen(url, isEpisode) {
+    async listen(url, isEpisode, outputPath) {
         if (typeof isEpisode === "undefined") {
             isEpisode = true
         }
@@ -52,7 +52,7 @@ class EverandDownloader {
 
         // prepare output dir
         let seriesId = everandRegex.PODCAST_SERIES.exec(seriesUrl)[1]
-        let dir = `${output}/${seriesId}`
+        let dir = outputPath || `${output}/${seriesId}`
         await directoryIo.create(dir)
 
         // download audio
@@ -74,7 +74,7 @@ class EverandDownloader {
         }
     }
 
-    async series(url) {
+    async series(url, outputPath) {
         const seriesId = everandRegex.PODCAST_SERIES.exec(url)[1]
 
         // navigate to everand
@@ -96,7 +96,7 @@ class EverandDownloader {
 
             let episodes = await page.evaluate(() => [...document.querySelectorAll('div.breakpoint_hide.below a[data-e2e="podcast-episode-player-button"]')].map(x => x.href))
             for (let j = 0; j < episodes.length; j++) {
-                await this.listen(episodes[j], false)
+                await this.listen(episodes[j], false, outputPath)
                 bar.update(((i - 1) * 10) + (j + 1))
             }
         }

@@ -211,12 +211,9 @@ const InstagramDownloaderPage = () => {
           <p className="mb-6 text-center text-gray-600">
             {TOOLS.instagramDownloader.description}
           </p>
-          <div className="mb-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4">
-            <p className="text-sm text-yellow-800">
-              <strong>Note:</strong> Instagram has implemented strict
-              restrictions on automated downloads. Some posts may not be
-              downloadable due to privacy settings or platform restrictions.
-              Please ensure the post is public and try again.
+          <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <p className="text-sm text-blue-800">
+              <strong>Note:</strong> This tool supports downloading public Instagram posts, including photos, videos, reels, and carousel albums. Ensure the post is publicly accessible for best results.
             </p>
           </div>
           <DownloaderForm
@@ -227,14 +224,14 @@ const InstagramDownloaderPage = () => {
             placeholder="https://www.instagram.com/p/ABC123... or /reel/ABC123..."
           />
 
-            <div id="preview-area">
-              <MediaPreview
-                loading={loading}
-                result={result}
-                onImageClick={openLightbox}
-                activeIndex={activeSlideIndex}
-                onIndexChange={setActiveSlideIndex}
-              />
+          <div id="preview-area">
+            <MediaPreview
+              loading={loading}
+              result={result}
+              onImageClick={openLightbox}
+              activeIndex={activeSlideIndex}
+              onIndexChange={setActiveSlideIndex}
+            />
 
             <DownloadButtons
               result={result}
@@ -259,9 +256,8 @@ const InstagramDownloaderPage = () => {
             index={lightboxIndex}
             slides={(result.media || result.images).map((mediaItem) => ({
               src: mediaItem.url,
-              alt: `Instagram Media ${
-                (result.media || result.images).indexOf(mediaItem) + 1
-              }`,
+              alt: `Instagram Media ${(result.media || result.images).indexOf(mediaItem) + 1
+                }`,
               type: mediaItem.type === "video" ? "video" : "image",
             }))}
             on={{

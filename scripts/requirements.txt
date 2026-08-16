@@ -3,3 +3,4 @@ instaloader>=4.14.0
 requests>=2.25.0
 beautifulsoup4>=4.14.0
 lxml>=6.0.0
+pdf2docx>=0.5.8

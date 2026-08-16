@@ -4,57 +4,114 @@ import { useState } from "react";
 import { ImageOff } from "lucide-react";
 import { getPortfolioImageUrl } from "../../utils/imageUtils";
 
-const ProjectCard = ({ project, showTechStacks = false, index }) => {
+const ProjectCard = ({ project, showTechStacks = false, index, isInactive = false }) => {
   const [imageError, setImageError] = useState(false);
+  const isClickable = Boolean(project.link && project.link !== "/#" && !isInactive);
 
-  return (
-    <Link
-      href={project.link && project.link !== "/#" ? project.link : ""}
-      className={`overflow-hidden rounded-lg bg-white shadow-sm ${
-        !project.link || project.link === "/#" ? "cursor-default" : ""
+  const cardContent = (
+    <div
+      className={`group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white transition-all duration-300 ${
+        isClickable
+          ? "hover:-translate-y-1 hover:shadow-xl cursor-pointer"
+          : "opacity-70 bg-gray-50/50 cursor-default"
       }`}
-      target={project.link && project.link !== "/#" ? "_blank" : undefined}
-      rel="noopener noreferrer"
       id={`portfolio-item-${index}`}
+      style={{
+        boxShadow: isClickable ? '0 1px 3px rgba(0,0,0,0.05)' : 'none',
+      }}
     >
-      {imageError ? (
-        <div className="flex h-32 w-full items-center justify-center rounded-lg bg-gray-100 md:h-48">
-          <ImageOff className="h-12 w-12 text-gray-400" />
-        </div>
-      ) : (
-        <Image
-          src={getPortfolioImageUrl(project)}
-          alt={project.title}
-          width={300}
-          height={200}
-          className="h-32 w-full rounded-lg object-cover transition-shadow hover:shadow-md md:h-48"
-          unoptimized
-          onError={() => setImageError(true)}
-        />
-      )}
-      <div className="p-3 md:p-4">
-        <h3 className="text-sm font-medium text-gray-900 hover:underline">
-          {project.title}
-        </h3>
-        <p className="mt-1 text-xs text-gray-500">{project.text}</p>
-        {showTechStacks && project.stacks && (
-          <div className="mt-2 flex space-x-2">
-            {project.stacks.map((stack) => (
-              <Image
-                key={stack}
-                src={`/img/logos/${stack}`}
-                alt={stack}
-                width={20}
-                height={20}
-                className="h-5 w-5"
-                unoptimized
-              />
-            ))}
+      {/* Image area - Google style: full width, rounded top */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
+        {imageError || !getPortfolioImageUrl(project) ? (
+          <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400">
+            <ImageOff className="h-10 w-10 stroke-[1.5]" />
+          </div>
+        ) : (
+          <Image
+            src={getPortfolioImageUrl(project)}
+            alt={project.title}
+            fill
+            className={`object-cover transition-transform duration-500 ${
+              isClickable ? "group-hover:scale-105" : "grayscale-[30%]"
+            }`}
+            unoptimized
+            onError={() => setImageError(true)}
+          />
+        )}
+
+        {/* Status Badge - Google style: minimal, top right */}
+        {isInactive ? (
+          <div className="absolute right-2.5 top-2.5 rounded-full bg-gray-900/80 px-2.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
+            Archived
+          </div>
+        ) : (
+          <div className="absolute right-2.5 top-2.5 rounded-full bg-white/90 px-2.5 py-0.5 text-[10px] font-medium text-emerald-600 backdrop-blur-sm shadow-sm flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Active
           </div>
         )}
       </div>
-    </Link>
+
+      {/* Content area - Google style: minimal padding, clean typography */}
+      <div className="flex flex-1 flex-col p-4">
+        <h3
+          className={`text-sm font-medium leading-snug md:text-[15px] ${
+            isClickable
+              ? "text-gray-900 group-hover:text-blue-600 transition-colors"
+              : "text-gray-600"
+          }`}
+        >
+          {project.title}
+        </h3>
+
+        <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-gray-500">
+          {project.text}
+        </p>
+
+        {/* Tech Stacks - Google style: subtle, small */}
+        <div className="mt-auto pt-3">
+          {showTechStacks && project.stacks && project.stacks.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5">
+              {project.stacks.slice(0, 4).map((stack) => (
+                <div
+                  key={stack}
+                  className="inline-flex items-center rounded bg-gray-50 px-1.5 py-0.5"
+                  title={stack.replace(/\.(png|svg|jpg|jpeg)$/i, "")}
+                >
+                  <Image
+                    src={`/img/logos/${stack}`}
+                    alt={stack}
+                    width={14}
+                    height={14}
+                    className="h-3.5 w-3.5 object-contain"
+                    unoptimized
+                  />
+                </div>
+              ))}
+              {project.stacks.length > 4 && (
+                <span className="text-[10px] text-gray-400">+{project.stacks.length - 4}</span>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
+
+  if (isClickable) {
+    return (
+      <a
+        href={project.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block h-full text-inherit no-underline"
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  return cardContent;
 };
 
 export default ProjectCard;

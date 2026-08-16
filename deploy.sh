@@ -7,7 +7,6 @@ set -e
 # Configuration
 SERVER_HOST="stb-local"
 SERVER_PATH="/mnt/sdcard/stb/apps/ukay.dev"
-ARCHIVE_NAME="ukay.dev-deploy.tar.xz"
 
 echo "🚀 Starting deployment..."
 
@@ -15,35 +14,28 @@ echo "🚀 Starting deployment..."
 echo "📦 Building..."
 pnpm build
 
-# Clean old archive if exists
-echo "🧹 Cleaning old archive..."
-rm -f "$ARCHIVE_NAME"
-
-# Create archive
-echo "📦 Creating archive..."
-tar --exclude='node_modules' --exclude='.git' -cJf "$ARCHIVE_NAME" \
+# Sync files to server using rsync
+echo "📤 Syncing files to server..."
+rsync -avz --exclude='node_modules' --exclude='.git' \
     .next public package.json next.config.js ecosystem.config.js \
-    pages components lib styles hooks utils middleware.js scripts
-
-# Transfer archive to server
-echo "📤 Transferring archive..."
-scp "$ARCHIVE_NAME" "$SERVER_HOST:$SERVER_PATH/"
+    pages components lib styles hooks utils middleware.js scripts \
+    "$SERVER_HOST:$SERVER_PATH/"
 
 # Deploy on server
 echo "🚀 Deploying..."
 ssh "$SERVER_HOST" << ENDSSH
     cd $SERVER_PATH
     
+    # Check and install Chromium if needed (ARM64 support)
+    if ! command -v chromium-browser &> /dev/null && ! command -v chromium &> /dev/null; then
+        echo "📥 Installing Chromium for ARM64..."
+        sudo apt-get update
+        sudo apt-get install -y chromium-browser
+    fi
+    
     # Stop PM2 service
     pm2 delete ukay.dev 2>/dev/null || true
     pm2 save
-    
-    # Clean directory except archive
-    find . -mindepth 1 ! -name '$ARCHIVE_NAME' -delete
-    
-    # Extract archive
-    tar -xJf $ARCHIVE_NAME
-    rm $ARCHIVE_NAME
     
     # Install dependencies
     pnpm install --prod
@@ -56,9 +48,6 @@ ssh "$SERVER_HOST" << ENDSSH
     echo "✅ Deployment complete!"
     pm2 logs ukay.dev --lines 10 --nostream
 ENDSSH
-
-# Clean local archive
-rm -f "$ARCHIVE_NAME"
 
 echo ""
 echo "🎉 Done! https://ukay.dev"

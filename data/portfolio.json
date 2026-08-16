@@ -1,40 +1,65 @@
 {
   "projects": [
     {
+      "title": "Dokumin.web.id",
+      "text": "Download dokumen premium dari Scribd, SlideShare, dan Academia dengan konversi file instan",
+      "description": "Akses instan ke dokumen berbayar dari berbagai platform dalam hitungan detik. Layanan mendukung Scribd, SlideShare, dan Academia dengan penukaran file yang cepat dan mudah. Biaya mulai dari Rp 2.000 per file dengan proses otomatis.",
+      "img": "/img/portfolio/dokumin.web.id.png",
+      "localImage": true,
+      "icon": "Download",
+      "stacks": ["nextjs.png", "tailwindcss.svg"],
+      "link": "https://dokumin.web.id"
+    },
+    {
+      "title": "Agent Loker",
+      "text": "AI conversational job search untuk lowongan kerja Indonesia dengan asisten Loki",
+      "description": "Chat search engine AI untuk menelusuri lowongan kerja Indonesia secara real-time. Asisten Loki memungkinkan pencarian menggunakan bahasa natural dengan filter berdasarkan lokasi, kategori, tipe kerja, dan level pengalaman. Deteksi lokasi otomatis untuk hasil yang lebih relevan.",
+      "img": "/img/portfolio/agent-loker.web.id.png",
+      "localImage": true,
+      "icon": "Briefcase",
+      "stacks": ["nextjs.png", "tailwindcss.svg"],
+      "link": "https://agent-loker.web.id"
+    },
+    {
       "title": "BacaManga.ukay.dev",
       "text": "Read thousands of manga for free with complete collection and latest updates",
+      "description": "Platform membaca manga gratis dengan koleksi lengkap dan update chapter terbaru. Antarmuka yang bersih dan responsif untuk pengalaman membaca yang nyaman di desktop maupun mobile.",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1762924112/uki.my.id/portfolio/Screenshot_2025-11-12_at_12.08.22_i11daj.png",
       "icon": "BookOpen",
       "stacks": ["nextjs.png", "tailwindcss.svg", "reactjs.png"],
-      "link": "https://bacamanga.ukay.dev"
+      "link": ""
     },
     {
       "title": "ChattoAI",
       "text": "Website chat with AI using OpenRouter key",
+      "description": "Aplikasi chat AI yang memungkinkan pengguna menggunakan API key OpenRouter untuk mengakses berbagai model AI. Interface modern dengan dukungan multi-model dan histori percakapan.",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1758804139/uki.my.id/portfolio/Screenshot_2025-09-25_at_19.41.35_rxgwuc.png",
       "icon": "MessageCircle",
       "stacks": ["reactjs.png", "nodejs.png", "tailwindcss.svg"],
-      "link": "https://chattoai.ukay.dev"
+      "link": ""
     },
     {
       "title": "Remover",
       "text": "AI-powered background remover for images",
+      "description": "Tool hapus background gambar berbasis AI. Upload gambar dan dapatkan hasilnya dalam hitungan detik dengan presisi tinggi. Siap digunakan untuk e-commerce, desain, atau kebutuhan branding.",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1761896467/uki.my.id/portfolio/Screenshot_2025-10-31_at_14.40.59_swhjrh.png",
       "icon": "Scissors",
       "stacks": ["nextjs.png", "tailwindcss.svg"],
-      "link": "https://remover.ukay.app"
+      "link": ""
     },
     {
       "title": "PDFmu",
       "text": "All-in-one PDF solution: merge, split, compress, and convert PDFs",
+      "description": "Solusi lengkap untuk semua kebutuhan PDF: merge, split, compress, convert, dan review CV. Tool gratis dan mudah digunakan tanpa perlu instalasi software tambahan.",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1747900962/frontendonesia/projects/pdfmu/p4rnpx89oekhlsjblqym.png",
       "icon": "FileText",
       "stacks": ["nextjs.png", "tailwindcss.svg"],
-      "link": "https://pdfmu.my.id"
+      "link": "https://pdfmu.web.id"
     },
     {
       "title": "Simakin Idaman",
       "text": "website sistem informasi pemantauan kinerja kota dumai",
+      "description": "Sistem informasi untuk pemantauan dan monitoring kinerja pemerintah Kota Dumai. Dashboard interaktif dengan visualisasi data untuk tracking target dan capaian pembangunan daerah.",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1762153835/uki.my.id/portfolio/Screenshot_2025-11-03_at_14.10.26_sghhk6.png",
       "icon": "BarChart3",
       "stacks": ["nextjs.png", "tailwindcss.svg"],
@@ -43,6 +68,7 @@
     {
       "title": "Studio8.AI",
       "text": "Create stunning AI-generated images using state-of-the-art models",
+      "description": "Platform pembuat gambar AI dengan model state-of-the-art. Generate gambar berkualitas tinggi dari teks deskripsi untuk kebutuhan kreatif, marketing, dan desain.",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1731835917/frontendonesia/projects/studio8/poovkwgxcfjuucu89u4n.png",
       "icon": "Palette",
       "stacks": ["reactjs.png", "tailwindcss.svg", "openai.png"],
@@ -51,6 +77,7 @@
     {
       "title": "Absensiku",
       "text": "Elementary School Attendance Application based on web with QR Code",
+      "description": "Aplikasi absensi sekolah dasar berbasis web dengan scan QR code. Memudahkan guru dalam mencatat kehadiran siswa dan orang tua untuk memantau kehadiran anak secara real-time.",
       "img": "https://res.cloudinary.com/uki14/image/upload/v1761896562/uki.my.id/portfolio/Screenshot_2025-10-31_at_14.42.33_xud3kp.png",
       "icon": "CheckSquare",
       "stacks": ["reactjs.png", "firebase.png", "bootstrap-5.png"],
@@ -59,7 +86,8 @@
     {
       "title": "Hadits Harian",
       "text": "Receive Daily Random Hadith Notifications Directly from Web",
-      "img": "hadits-harian/hadits-harian-v2.png",
+      "description": "Aplikasi web untuk menerima notifikasi hadits harian secara acak. Atur interval notifikasi sesuai keinginan dan dapatkan inspirasi dari hadits pilihan setiap hari langsung ke perangkat Anda.",
+      "img": "/img/portfolio/hadits-harian-v2.png",
       "localImage": true,
       "icon": "BookOpen",
       "stacks": ["reactjs.png", "tailwindcss.svg"],
@@ -68,6 +96,7 @@
     {
       "title": "Bagi Ilmu Landing Page",
       "text": "A Landing Page of Civil Servant Candidate Online Test",
+      "description": "Landing page untuk platform ujian online Seleksi Kompetensi Dasar (SKD) Calon Pegawai Negeri Sipil. Menyediakan informasi dan pendaftaran untuk para pejuang ASN.",
       "img": "/c_scale,w_400/v1630251588/uki.my.id/portfolio/bagi-ilmu.png",
       "icon": "GraduationCap",
       "stacks": ["html5.png", "css3.png", "javascript.png", "bootstrap-5.png"],
@@ -76,6 +105,7 @@
     {
       "title": "Kompetisi SKD Landing Page",
       "text": "A Civil Servant Candidate Online Test provided by Olymps",
+      "description": "Event kompetisi SKD nasional oleh Olymps untuk mengukur kemampuan peserta dalam seleksi CPFNS dan Sekolah Kedinasan. Kompetisi bergengsi bagi para pejuang ASN.",
       "img": "/c_scale,w_400/v1630252740/uki.my.id/portfolio/kompetisi-skd.png",
       "icon": "Trophy",
       "stacks": ["html5.png", "css3.png", "javascript.png", "tailwindcss.svg"],
@@ -84,6 +114,7 @@
     {
       "title": "Amazon Web Clone",
       "text": "A Cloned Version of Amazon Web Store",
+      "description": "Clone tampilan dan fungsionalitas Amazon dengan React dan Redux. Proyek latihan untuk memahami state management dan e-commerce UI patterns.",
       "img": "/c_scale,w_400/v1602297082/uki.my.id/portfolio/amazon-clone_fslfos.png",
       "icon": "ShoppingCart",
       "stacks": ["reactjs.png", "redux.svg"],
@@ -92,6 +123,7 @@
     {
       "title": "Agent Prudential Landing Page",
       "text": "Agent Prudential Landing Page",
+      "description": "Landing page untuk agent asuransi Prudential. Desain profesional dengan informasi produk dan kontak agent untuk memudahkanprospek dalam berkonsultasi.",
       "img": "/v1630400155/uki.my.id/portfolio/agenpru.png",
       "icon": "Shield",
       "stacks": ["html5.png", "css3.png", "javascript.png", "bootstrap-5.png"],
@@ -100,6 +132,7 @@
     {
       "title": "Wedding Invitation Service",
       "text": "A website that provides wedding invitation template.",
+      "description": "Platform undangan digital premium Indonesia. Buat undangan pernikahan cantik dalam hitungan menit dengan template elegan, musik, RSVP online, dan pengiriman via WhatsApp. 1.244+ template tersedia.",
       "img": "/v1630400606/uki.my.id/portfolio/Screenshot_50_ebfmzj.png",
       "icon": "Mail",
       "stacks": ["nextjs.png", "bootstrap-5.png"],
@@ -108,6 +141,7 @@
     {
       "title": "Whatsapp UI Clone",
       "text": "Just a Whatsapp UI cloned version",
+      "description": "Clone UI WhatsApp dengan React untuk latihan/implementasi desain messenger modern. Mengambil inspirasi dari antarmuka WhatsApp Web yang familiar.",
       "img": "/v1602297081/uki.my.id/portfolio/whatsapp-clone_zfbef3.png",
       "icon": "MessageSquare",
       "stacks": ["reactjs.png"],

@@ -8,7 +8,7 @@ const WebTemplates = () => {
 
   useEffect(() => {
     const webObject = {
-      "sc-hospital": "https://uki.my.id/web-templates/sc-hospital/",
+      "sc-hospital": "https://ukay.dev/web-templates/sc-hospital/",
     };
     iFrame.current.src = webObject[web];
     disableRightClick();

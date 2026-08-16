@@ -14,9 +14,7 @@ class DirectoryIo {
      *        path of a directory
      */
     async create(dest) {
-        fs.mkdirSync(dest, { recursive: true }, (err) => {
-            if (err) throw err;
-        })
+        fs.mkdirSync(dest, { recursive: true })
     }
 
     /**
@@ -24,9 +22,7 @@ class DirectoryIo {
      * @param {string} dest 
      */
     async remove(dest) {
-        fs.rmSync(dest, { recursive: true }, (err) => {
-            if (err) throw err;
-        })
+        fs.rmSync(dest, { recursive: true })
     }
 }
 
