@@ -115,3 +115,38 @@ footer {
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
+
+/* ===== v3 — Swiss precision craft-floor polish ===== */
+
+::selection {
+  background-color: #18181b; /* zinc-900 */
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background-color: #f4f4f5; /* zinc-100 */
+}
+::-webkit-scrollbar-thumb {
+  background-color: #d4d4d8; /* zinc-300 */
+  border-radius: 2px;
+}
+
+*:focus-visible {
+  outline: 2px solid #0a0a0a;
+  outline-offset: 2px;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+@layer components {
+  .font-mono-label {
+    @apply font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-400;
+  }
+}
