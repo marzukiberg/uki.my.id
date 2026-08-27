@@ -49,8 +49,7 @@ ssh "$SERVER_HOST" << ENDSSH
     pm2 save
     
     # Install dependencies
-    CI=true pnpm install --prod --no-frozen-lockfile
-    
+    CI=true PUPPETEER_SKIP_DOWNLOAD=true pnpm install --prod --no-frozen-lockfile
     # Start service
     pm2 start ecosystem.config.js
     pm2 save
