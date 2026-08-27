@@ -198,8 +198,7 @@ async function deployToServer(host, remotePath) {
             pm2 delete ukay.dev 2>/dev/null || true
             
             # Install dependencies (non-interactive)
-            CI=true pnpm install --prod --no-frozen-lockfile --silent
-            
+            CI=true PUPPETEER_SKIP_DOWNLOAD=true pnpm install --prod --no-frozen-lockfile --silent
             # Start service
             pm2 start ecosystem.config.js
             pm2 save
@@ -217,7 +216,7 @@ async function deployToServer(host, remotePath) {
 }
 
 async function main() {
-    const host = "stb-local"; // alias provided in request
+    const host = "stb";
     const remotePath = "/mnt/sdcard/stb/apps/ukay.dev/";
 
     try {

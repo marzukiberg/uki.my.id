@@ -2,10 +2,10 @@
   "name": "uki.thedev.id",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "deploy:build": "pnpm build && rsync -avz --delete --exclude='node_modules' --exclude='.git' .next public package.json server.js next.config.js stb-local:/mnt/sdcard/stb/apps/ukay.dev/ && ssh stb-local 'source ~/.zshrc && cd /mnt/sdcard/stb/apps/ukay.dev && pnpm install --prod && pm2 delete ukay.dev 2>/dev/null; pm2 start server.js --name ukay.dev && pm2 save && pm2 logs ukay.dev --lines 20'",
+    "start": "PORT=3001 next start",
+    "deploy": "./deploy.sh",
+    "deploy:build": "./deploy.sh",
     "lint": "next lint",
     "format": "prettier --write \"pages/**/*.{js,jsx,ts,tsx}\" \"components/**/*.{js,jsx,ts,tsx}\" \"lib/**/*.{js,jsx,ts,tsx}\" \"utils/**/*.{js,jsx,ts,tsx}\" \"hooks/**/*.{js,jsx,ts,tsx}\""
   },
@@ -74,7 +74,9 @@
   },
   "pnpm": {
     "overrides": {
-      "glob": ">=10.5.0"
+      "glob": ">=10.5.0",
+      "js-yaml@3": "^3.15.2",
+      "js-yaml@4": "^4.3.2"
     },
     "onlyBuiltDependencies": [
       "fsevents",
