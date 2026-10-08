@@ -3,6 +3,14 @@ import path from "path";
 import fs from "fs/promises";
 import { existsSync } from "fs";
 
+// HIGH-2 fix: strict hostname allowlist (prevents youtube.com.evil.com bypass)
+const ALLOWED_HOSTS = ['instagram.com', 'www.instagram.com'];
+function isAllowedHost(hostname) {
+  const h = hostname.toLowerCase();
+  return ALLOWED_HOSTS.some((d) => h === d || h.endsWith("." + d));
+}
+
+
 // Rate limiting configuration
 const rateLimitStore = new Map();
 const RATE_LIMITS = {
@@ -100,7 +108,7 @@ export default async function handler(req, res) {
 
   try {
     const urlObj = new URL(url);
-    if (!urlObj.hostname.includes("instagram.com")) {
+    if (!isAllowedHost(urlObj.hostname)) {
       return res.status(400).json({ message: "Invalid Instagram URL" });
     }
   } catch (error) {
@@ -335,14 +343,14 @@ async function getInstaloaderInfo(shortcode) {
         }
       } catch (error) {
         console.error("Error processing instaloader output:", error);
-        resolve({ success: false, error: error.message });
+        resolve({ success: false });
       }
     });
 
     instaloaderProcess.on("error", (error) => {
       clearTimeout(timeout);
       console.error("instaloader process error:", error);
-      resolve({ success: false, error: error.message });
+      resolve({ success: false });
     });
   });
 }
@@ -493,14 +501,14 @@ async function downloadWithInstaloader(shortcode, res) {
         if (existsSync(tempDir)) {
           await fs.rm(tempDir, { recursive: true, force: true });
         }
-        resolve({ success: false, error: error.message });
+        resolve({ success: false });
       }
     });
 
     instaloaderProcess.on("error", (error) => {
       clearTimeout(timeout);
       console.error("instaloader process error:", error);
-      resolve({ success: false, error: error.message });
+      resolve({ success: false });
     });
   });
 }

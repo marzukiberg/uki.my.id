@@ -1,9 +1,16 @@
 import fs from "fs";
 import path from "path";
 
+import { verifyAuthCookie } from "../../lib/auth.js";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
+  }
+
+  // HIGH-1 fix: require authenticated session for all writes
+  if (!verifyAuthCookie(req.cookies?.auth)) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   try {

@@ -1,4 +1,5 @@
 import { serialize } from "cookie";
+import { signAuthCookie } from "../../../lib/auth.js";
 
 // In-memory rate limiting: track attempts per IP
 const rateLimitMap = new Map();
@@ -68,7 +69,7 @@ export default async function handler(req, res) {
       // Set a cookie or token for authentication
       res.setHeader(
         "Set-Cookie",
-        serialize("auth", "true", {
+        serialize("auth", signAuthCookie(), {
           path: "/",
           httpOnly: true,
           secure: process.env.NODE_ENV !== "development",

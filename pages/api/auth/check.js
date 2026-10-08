@@ -1,7 +1,9 @@
+import { verifyAuthCookie } from "../../../lib/auth.js";
+
 export default async function handler(req, res) {
   if (req.method === "GET") {
     const auth = req.cookies.auth;
-    if (auth === "true") {
+    if (verifyAuthCookie(auth)) {
       res.status(200).json({ authenticated: true });
     } else {
       res.status(401).json({ authenticated: false });

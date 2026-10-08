@@ -2,6 +2,14 @@ import { spawn } from "child_process";
 import path from "path";
 import got from "got";
 
+// HIGH-2 fix: strict hostname allowlist (prevents youtube.com.evil.com bypass)
+const ALLOWED_HOSTS = ['tiktok.com', 'www.tiktok.com', 'm.tiktok.com', 'vm.tiktok.com', 'vt.tiktok.com'];
+function isAllowedHost(hostname) {
+  const h = hostname.toLowerCase();
+  return ALLOWED_HOSTS.some((d) => h === d || h.endsWith("." + d));
+}
+
+
 // TikWM API rate limiting - 1 request per second
 let lastTikwmRequest = 0;
 const TIKWM_RATE_LIMIT = 1000; // 1 second between requests
@@ -183,7 +191,7 @@ export default async function handler(req, res) {
   // Basic URL validation
   try {
     const urlObj = new URL(url);
-    if (!urlObj.hostname.includes("tiktok.com")) {
+    if (!isAllowedHost(urlObj.hostname)) {
       return res.status(400).json({ message: "Invalid TikTok URL" });
     }
   } catch (error) {

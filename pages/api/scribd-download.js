@@ -25,9 +25,10 @@ export default async function handler(req, res) {
     const AUTH_SECRET_KEY = process.env.AUTH_SECRET_KEY;
     const providedSecret = req.body?.secret || req.headers['x-secret'];
     const authHeader = req.headers['authorization'];
+    const { verifyAuthCookie } = await import("../../lib/auth.js");
     const cookieAuth = req.cookies?.auth;
     if (AUTH_SECRET_KEY) {
-        if (cookieAuth !== 'true' && providedSecret !== AUTH_SECRET_KEY && !(authHeader && authHeader.startsWith('Bearer ') && authHeader.split(' ')[1] === AUTH_SECRET_KEY)) {
+        if (!verifyAuthCookie(cookieAuth) && providedSecret !== AUTH_SECRET_KEY && !(authHeader && authHeader.startsWith('Bearer ') && authHeader.split(' ')[1] === AUTH_SECRET_KEY)) {
             return res.status(401).json({ message: 'Unauthorized: invalid session or secret' });
         }
     }
@@ -330,7 +331,7 @@ export default async function handler(req, res) {
                 await fs.promises.rm(tempDir, { recursive: true, force: true }).catch(() => { });
                 responseSent = true;
                 if (!res.headersSent) {
-                    res.status(500).json({ message: 'Error reading downloaded file', error: error.message });
+                    res.status(500).json({ message: 'Error reading downloaded file' });
                 }
             }
         };
@@ -341,7 +342,7 @@ export default async function handler(req, res) {
             await fs.promises.rm(tempDir, { recursive: true, force: true }).catch(() => { });
             responseSent = true;
             if (!res.headersSent) {
-                res.status(500).json({ message: 'Internal server error', error: error.message });
+                res.status(500).json({ message: 'Internal server error' });
             }
         });
 
@@ -350,7 +351,7 @@ export default async function handler(req, res) {
         console.error('Error in Scribd download API:', error);
         responseSent = true;
         if (!res.headersSent) {
-            res.status(500).json({ message: 'Internal server error', error: error.message });
+            res.status(500).json({ message: 'Internal server error' });
         }
     }
 }

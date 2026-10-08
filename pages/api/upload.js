@@ -46,9 +46,16 @@ function getMimeFromMagicBytes(filepath) {
   return null;
 }
 
+import { verifyAuthCookie } from "../../lib/auth.js";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
+  }
+
+  // HIGH-1 fix: require authenticated session for uploads
+  if (!verifyAuthCookie(req.cookies?.auth)) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   try {

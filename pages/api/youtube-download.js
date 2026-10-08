@@ -3,6 +3,14 @@ import path from "path";
 import fs from "fs";
 import { promisify } from "util";
 
+// HIGH-2 fix: strict hostname allowlist (prevents youtube.com.evil.com bypass)
+const ALLOWED_HOSTS = ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be', 'www.youtu.be'];
+function isAllowedHost(hostname) {
+  const h = hostname.toLowerCase();
+  return ALLOWED_HOSTS.some((d) => h === d || h.endsWith("." + d));
+}
+
+
 const unlinkAsync = promisify(fs.unlink);
 
 // Improved rate limiting with sliding window (same as TikTok)
@@ -124,8 +132,8 @@ export default async function handler(req, res) {
   try {
     const urlObj = new URL(url);
     if (
-      !urlObj.hostname.includes("youtube.com") &&
-      !urlObj.hostname.includes("youtu.be")
+      !isAllowedHost(urlObj.hostname) &&
+      !isAllowedHost(urlObj.hostname)
     ) {
       return res.status(400).json({ message: "Invalid YouTube URL" });
     }

@@ -25,8 +25,15 @@ const writePortfolioData = async (data) => {
   }
 };
 
+import { verifyAuthCookie } from "../../lib/auth.js";
+
 export default function handler(req, res) {
   const { method } = req;
+
+  // HIGH-1 fix: require auth for writes; GET stays public
+  if (method !== "GET" && !verifyAuthCookie(req.cookies?.auth)) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
   switch (method) {
     case "GET":
@@ -38,7 +45,7 @@ export default function handler(req, res) {
         .catch((error) => {
           res
             .status(500)
-            .json({ message: "Error fetching portfolio items", error });
+            .json({ message: "Error fetching portfolio items" });
         });
       break;
 
@@ -69,7 +76,7 @@ export default function handler(req, res) {
         .catch((error) => {
           res
             .status(500)
-            .json({ message: "Error adding portfolio item", error });
+            .json({ message: "Error adding portfolio item" });
         });
       break;
 
@@ -102,7 +109,7 @@ export default function handler(req, res) {
         .catch((error) => {
           res
             .status(500)
-            .json({ message: "Error updating portfolio item", error });
+            .json({ message: "Error updating portfolio item" });
         });
       break;
 
@@ -134,7 +141,7 @@ export default function handler(req, res) {
         .catch((error) => {
           res
             .status(500)
-            .json({ message: "Error deleting portfolio item", error });
+            .json({ message: "Error deleting portfolio item" });
         });
       break;
 

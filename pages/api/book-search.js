@@ -14,17 +14,18 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Run Python script
+        // SECURITY (CRITICAL-2 fix): never interpolate user input into Python source.
+        // Pass the query as a separate argv element instead.
         const pythonProcess = spawn('python3', [
             '-c',
             `
-import sys
+import sys, json
 sys.path.insert(0, './scripts/libgen-api-enhanced')
 from libgen_api_enhanced import LibgenSearch
-import json
 
+query = sys.argv[1]
 s = LibgenSearch()
-results = s.search_default('${query.replace(/'/g, "\\'")}')
+results = s.search_default(query)
 
 books = []
 for book in results:
@@ -42,7 +43,8 @@ for book in results:
     })
 
 print(json.dumps(books))
-            `
+            `,
+            query,
         ], { cwd: process.cwd() });
 
         let output = '';
